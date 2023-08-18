@@ -16,10 +16,10 @@ export class Users {
     username: string;
 
     @Column()
-    status: number;
+    role: string;
 
     @Column()
-    tel: string;
+    tel: number;
 
     @Column({nullable: true})
     resetToken?: string;
