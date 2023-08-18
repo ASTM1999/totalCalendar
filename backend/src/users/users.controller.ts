@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectId } from 'mongodb';
 import { Repository } from 'typeorm';
@@ -43,22 +43,20 @@ export class UsersController {
         return this.usersService.getUsers();
     }
 
-    @Put(':id')
-    async updateUser(@Param('id', ParseObjectIdPipe) userId: ObjectId, @Body() updateUserDto: CreateUserDto): Promise<Users> {
-        updateUserDto._id = new ObjectId(updateUserDto._id)
-        updateUserDto.teacherId = new ObjectId(updateUserDto.teacherId);
-        updateUserDto.status = 1
-        const updatedUser = await this.usersService.updateUser(userId, updateUserDto);
-        return updatedUser;
-    }
 
-    // @Get('teacher')
-    // async getTeachername(): Promise<Users[]> {
-    //     const user = this.usersService.getUsers()
-
-    //     const teachername = firstname + " " + lastname
-    //     return teachername
+    // @Put(':id')
+    // async updateUser(
+    //     @Param('id', ParseObjectIdPipe) userId: ObjectId,
+    //     @Body() updateUserDto: CreateUserDto): Promise<Users> {
+    //     console.log("userId", userId)
+    //     console.log("updateUserDto", updateUserDto)
+    //     updateUserDto._id = new ObjectId(updateUserDto._id)
+    //     // updateUserDto.teacherId = new ObjectId(updateUserDto.teacherId);
+    //     updateUserDto.status = "userAdmin"
+    //     const updatedUser = await this.usersService.updateUser(userId, updateUserDto);
+    //     return updatedUser;
     // }
+
 
     @Post('register')
     async registerUser(
@@ -66,10 +64,10 @@ export class UsersController {
         console.log("createUserDto: ", createUserDto)
         try {
             const user = await this.userRepository.findOne({ where: { email: createUserDto.email } });
-            console.log(user);
+            console.log("const user:", user);
 
             if (user && createUserDto.email === user.email) {
-                return false; // Email already exists
+                return "Email already exists"
             } else {
                 return this.usersService.registerUser(createUserDto);
             }
