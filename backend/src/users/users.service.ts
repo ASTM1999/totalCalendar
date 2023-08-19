@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -7,11 +7,15 @@ import { ObjectId } from 'mongodb';
 import Users from './users.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { EmailService } from './mail.service';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 export type User = any
 
 @Injectable()
 export class UsersService {
+    findOne(userId: ObjectId) {
+        throw new Error('Method not implemented.');
+    }
 
     constructor(
         @InjectRepository(Users)
@@ -36,14 +40,14 @@ export class UsersService {
         await this.userRepository.save(user);
         const Message = `${resetToken}`;
         // const resetUrl = `http://localhost:3000/reset-password?token=${resetToken}`;
-        console.log("resetUrl:",resetToken)
+        console.log("resetUrl:", resetToken)
         await this.emailService.sendPasswordResetEmail(email, Message);
     }
 
     async resetPassword(token: string, newPassword: string): Promise<void> {
-        console.log("get token:",token)
+        console.log("get token:", token)
         const user = await this.userRepository.findOne({ where: { resetToken: token } });
-        console.log("user after get token",user)
+        console.log("user after get token", user)
 
         if (!user) {
             throw new NotFoundException('Invalid reset token');
@@ -55,26 +59,45 @@ export class UsersService {
         await this.userRepository.save(user);
     }
 
-    // reset password
-    async updateUser(id: ObjectId, updateUserDto: CreateUserDto): Promise<User | null> {
+    async updateUser(id: ObjectId, updateUserDto: UpdateUserDto): Promise<Users> {
         try {
-            const user = await this.userRepository.findOne({ where: { _id: new ObjectId(id) } });
-            if (!user) {
-                return null; // User not found
+            const user = await this.userRepository.findOne({ where: { _id: new ObjectId(id) } })
+            if(!user){
+                return null //ถ้าไม่พยให้ return null
             }
-
-            // Update the user entity with the values from the DTO
-            Object.assign(user, updateUserDto);
-
-            // Save the updated user entity
-            const updatedUser = await this.userRepository.save(user);
-
-            return updatedUser;
+            if(updateUserDto.role){
+                user.role = updateUserDto.role
+            }
+            const updateUser = await this.userRepository.save(user)
+            return updateUser
         } catch (error) {
             console.error(error);
-            return null; // Handle any errors that occurred during the update process
+            throw new InternalServerErrorException('Error updating user');
         }
     }
+
+    // // reset password
+    // async updateUser(id: ObjectId, updateUserDto: CreateUserDto): Promise<User | null> {
+    //     try {
+    //         const user = await this.userRepository.findOne({ where: { _id: new ObjectId(id) } });
+    //         if (!user) {
+    //             return null; // User not found
+    //         }
+
+    //         // Update the user entity with the values from the DTO
+    //         Object.assign(user, updateUserDto);
+
+    //         // Save the updated user entity
+    //         const updatedUser = await this.userRepository.save(user);
+
+    //         return updatedUser;
+    //     } catch (error) {
+    //         console.error(error);
+    //         return null; // Handle any errors that occurred during the update process
+    //     }
+    // }
+
+
     async findOneAuth(email: string): Promise<Users | undefined> {
         console.log("findOneAuth:", email)
         return this.userRepository.findOne({ where: { email } })

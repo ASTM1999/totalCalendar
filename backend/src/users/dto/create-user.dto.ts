@@ -8,36 +8,22 @@ export class CreateUserDto {
     _id?: ObjectId;
 
     @IsEmail()
+    // @IsNotEmpty()
     email: string
 
     @IsNotEmpty()
     password: string
 
     @IsNotEmpty()
-    firstname: string
+    username: string
 
-    @IsNotEmpty()
-    lastname: string
-
-    @IsNotEmpty()
-    address: string
-
-    @IsNotEmpty()
-    city: string
-
+    //กำหรดให่เมื่อเริ่มสมัครเป็น user // เมื่อได้รับการแก้ไขบทบาทให้เป็น userAdmin
+    
+    @IsNotEmpty() //user //userAdmin
+    role: string
+    
     @IsInt()
-    role: number
-
-    @IsInt()
-    status: number
-
-    @IsNotEmpty()
-    tel: string
-
-    @IsNotEmpty()
-    idnumber: string
-
-    teacherId: ObjectId
+    tel: number
     
     resetToken?:string
 

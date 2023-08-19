@@ -8,6 +8,8 @@ import Users from './users.entity';
 import { UsersService } from './users.service';
 
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+
 
 @Controller('users')
 export class UsersController {
@@ -44,18 +46,27 @@ export class UsersController {
     }
 
 
+    @Put(':id/user-update')
+    async updateUser(
+        @Param('id', ParseObjectIdPipe) userId: ObjectId,
+        @Body() updateUserDto: UpdateUserDto): 
+        Promise<Users> {
+        // console.log("userId", userId)
+        // console.log("updateUserDto", updateUserDto)
+   
+        const updatedUser = await this.usersService.updateUser(userId, updateUserDto);
+        return updatedUser;
+    }
+
     // @Put(':id')
-    // async updateUser(
-    //     @Param('id', ParseObjectIdPipe) userId: ObjectId,
-    //     @Body() updateUserDto: CreateUserDto): Promise<Users> {
-    //     console.log("userId", userId)
-    //     console.log("updateUserDto", updateUserDto)
+    // async updateUser1(@Param('id', ParseObjectIdPipe) userId: ObjectId, @Body() updateUserDto: CreateUserDto): Promise<Users> {
     //     updateUserDto._id = new ObjectId(updateUserDto._id)
-    //     // updateUserDto.teacherId = new ObjectId(updateUserDto.teacherId);
-    //     updateUserDto.status = "userAdmin"
+    //     updateUserDto.teacherId = new ObjectId(updateUserDto.teacherId);
+    //     updateUserDto.status = 1
     //     const updatedUser = await this.usersService.updateUser(userId, updateUserDto);
     //     return updatedUser;
     // }
+
 
 
     @Post('register')
