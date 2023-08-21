@@ -5,12 +5,12 @@ import { AnnouncementService } from './announcement.service';
 @Controller('announcement')
 export class AnnouncementController {
     constructor(
-        private announceService: AnnouncementService
+        private announcementService: AnnouncementService
     ){}
 
     @Get()
     async getAnnouncement() {
-        return this.announceService.getAnnouncement()
+        return this.announcementService.getAnnouncement()
     }
 
 
@@ -18,6 +18,6 @@ export class AnnouncementController {
     async createAnouncement(
         @Body() createAnnouncementDto: CreateAnnouncementDto) {
         console.log(createAnnouncementDto)
-        return this.announceService.createAnouncement(createAnnouncementDto)
+        return this.announcementService.createAnouncement(createAnnouncementDto)
     }
 }

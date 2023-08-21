@@ -23,8 +23,6 @@ export class Announcement {
 
     @Column()
     option: string;
-    // @Column({nullable: true})
-    // resetToken?: string;
 
 
 }

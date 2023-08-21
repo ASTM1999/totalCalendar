@@ -10,6 +10,8 @@ import { CalendarModule } from './calendar/calendar.module';
 import { CampModule } from './camp/camp.module';
 import Activity from './activity/activity.entity';
 import Announcement from './announcement/announcement.entity';
+import Camp from './camp/camp.entity';
+import { AnnouncementModule } from './announcement/announcement.module';
 
 @Module({
   imports: [
@@ -22,13 +24,15 @@ import Announcement from './announcement/announcement.entity';
       entities: [
         Users,
         Activity,
-        Announcement
+        Announcement,
+        Camp,
       ],
     }),
     UsersModule,
     AuthModule,
     ActivityModule,
     CalendarModule,
+    AnnouncementModule,
     CampModule,
   ],
   controllers: [AppController],
