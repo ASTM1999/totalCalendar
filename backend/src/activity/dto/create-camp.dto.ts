@@ -20,5 +20,6 @@ export class CreateCampDto {
 
     userComment: ObjectId
 
-
+    @IsNotEmpty()
+    option: string
 }

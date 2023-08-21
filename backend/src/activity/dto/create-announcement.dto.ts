@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsInt, IsEmail, Validate } from "class-validator"
+import { IsNotEmpty, IsInt, IsEmail, Validate, isNotEmpty } from "class-validator"
 import { ObjectId } from "mongodb"
 // import { EmailExists } from "src/common/Validation"
 
@@ -17,8 +17,9 @@ export class CreateAnnouncementDto {
     userOwner: ObjectId
 
     comment: string
-
+    
     userComment: ObjectId
-
-
+    
+    @IsNotEmpty()
+    option: string
 }

@@ -20,5 +20,6 @@ export class CreateActivityDto {
 
     userComment: ObjectId
 
-
+    @IsNotEmpty()
+    option: string
 }
