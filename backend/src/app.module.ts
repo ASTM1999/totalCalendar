@@ -7,24 +7,32 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ActivityModule } from './activity/activity.module';
 import { CalendarModule } from './calendar/calendar.module';
+import { CampModule } from './camp/camp.module';
+import Activity from './activity/activity.entity';
+import Announcement from './announcement/announcement.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mongodb',
       url: 'mongodb://0.0.0.0:27017/',
-      database:"totalCalendar",
+      database: "totalCalendar",
       synchronize: true,
       logging: true,
-      entities: [Users],
+      entities: [
+        Users,
+        Activity,
+        Announcement
+      ],
     }),
     UsersModule,
     AuthModule,
     ActivityModule,
     CalendarModule,
+    CampModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
 
