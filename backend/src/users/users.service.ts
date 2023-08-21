@@ -68,6 +68,9 @@ export class UsersService {
             if(updateUserDto.role){
                 user.role = updateUserDto.role
             }
+            if(updateUserDto.username){
+                user.username = updateUserDto.username
+            }
             const updateUser = await this.userRepository.save(user)
             return updateUser
         } catch (error) {
