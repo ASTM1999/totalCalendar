@@ -2,7 +2,7 @@ import { Entity, Column, ObjectIdColumn } from 'typeorm';
 import { ObjectId } from 'mongodb';
 
 @Entity()
-export class Camp {
+export class Announcement {
     @ObjectIdColumn()
     _id?: ObjectId;
 
@@ -21,9 +21,11 @@ export class Camp {
     @ObjectIdColumn()
     userComment: ObjectId;
 
+    @Column()
+    option: string;
     // @Column({nullable: true})
     // resetToken?: string;
 
 
 }
-export default Camp;
+export default Announcement;

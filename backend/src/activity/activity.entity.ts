@@ -2,7 +2,7 @@ import { Entity, Column, ObjectIdColumn } from 'typeorm';
 import { ObjectId } from 'mongodb';
 
 @Entity()
-export class ActivityEntity {
+export class Activity {
     @ObjectIdColumn()
     _id?: ObjectId;
 
@@ -21,9 +21,8 @@ export class ActivityEntity {
     @ObjectIdColumn()
     userComment: ObjectId;
 
-    // @Column({nullable: true})
-    // resetToken?: string;
-
+    @Column()
+    option: string
 
 }
-export default ActivityEntity;
+export default Activity;
