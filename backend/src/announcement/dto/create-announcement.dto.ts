@@ -16,9 +16,6 @@ export class CreateAnnouncementDto {
     @IsNotEmpty()
     userOwner: ObjectId
 
-    comment: string
-    
-    userComment: ObjectId
     
     @IsNotEmpty()
     option: string

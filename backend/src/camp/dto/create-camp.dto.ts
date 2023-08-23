@@ -16,10 +16,6 @@ export class CreateCampDto {
     @IsNotEmpty()
     userOwner: ObjectId
 
-    comment: string
-
-    userComment: ObjectId
-
     @IsNotEmpty()
     option: string
 }

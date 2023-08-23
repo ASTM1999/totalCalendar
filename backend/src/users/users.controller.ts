@@ -49,11 +49,11 @@ export class UsersController {
     @Put(':id/user-update')
     async updateUser(
         @Param('id', ParseObjectIdPipe) userId: ObjectId,
-        @Body() updateUserDto: UpdateUserDto): 
-        Promise<Users> {
+        @Body() updateUserDto: UpdateUserDto
+    ): Promise<Users> {
         // console.log("userId", userId)
         // console.log("updateUserDto", updateUserDto)
-   
+
         const updatedUser = await this.usersService.updateUser(userId, updateUserDto);
         return updatedUser;
     }

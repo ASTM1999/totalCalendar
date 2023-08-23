@@ -16,12 +16,6 @@ export class Camp {
     userOwner: ObjectId;
 
     @Column()
-    comment: string;
-
-    @ObjectIdColumn()
-    userComment: ObjectId;
-
-    @Column()
     option: string
     // @Column({nullable: true})
     // resetToken?: string;

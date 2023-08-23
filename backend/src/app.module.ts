@@ -12,6 +12,7 @@ import Activity from './activity/activity.entity';
 import Announcement from './announcement/announcement.entity';
 import Camp from './camp/camp.entity';
 import { AnnouncementModule } from './announcement/announcement.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { AnnouncementModule } from './announcement/announcement.module';
     CalendarModule,
     AnnouncementModule,
     CampModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

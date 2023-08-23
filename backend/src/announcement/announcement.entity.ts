@@ -16,12 +16,6 @@ export class Announcement {
     userOwner: ObjectId;
 
     @Column()
-    comment: string;
-
-    @ObjectIdColumn()
-    userComment: ObjectId;
-
-    @Column()
     option: string;
 
 

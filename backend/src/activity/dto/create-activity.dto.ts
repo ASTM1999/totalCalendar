@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsInt, IsEmail, Validate } from "class-validator"
+import { IsNotEmpty, IsInt, IsEmail, Validate, IsString } from "class-validator"
 import { ObjectId } from "mongodb"
 // import { EmailExists } from "src/common/Validation"
 
@@ -13,12 +13,9 @@ export class CreateActivityDto {
     @IsNotEmpty()
     time: string
 
+    @IsString()
     @IsNotEmpty()
     userOwner: ObjectId
-
-    comment: string
-
-    userComment: ObjectId
 
     @IsNotEmpty()
     option: string
