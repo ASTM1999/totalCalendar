@@ -19,14 +19,19 @@ export class AnnouncementController {
         private commentService: CommentService
     ) { }
 
-    // @Put(':activityId/comment:id/update')
+    @Delete(':activityId/comment/:id/delete')
+    async deleteComment(
+        @Param('id') id: string) {
+        return this.commentService.delete(id)
+    }
+
     @Put(':activityId/comment/:id/update')
     async updateComment(
         // @Param('activityId', ParseObjectIdPipe) activityId: ObjectId,
         @Param('id', ParseObjectIdPipe) id: ObjectId,
         @Body() updateCommentDTO: UpdateCommentDto,
     ) {
-        console.log("id:",id)
+        console.log("id:", id)
         console.log(updateCommentDTO)
         const update = await this.commentService.updateComment(id, updateCommentDTO)
         return update

@@ -16,10 +16,15 @@ export class CampController {
         private campService: CampService,
         private commentService: CommentService,
     ) { }
-
+    
+    @Delete(':activityId/comment/:id/delete')
+    async deleteComment(
+        @Param('id') id: string) {
+        return this.commentService.delete(id)
+    }
 
     @Get()
-    async findComment():Promise<Comment[]>{
+    async findComment(): Promise<Comment[]> {
         return this.commentService.findComment()
     }
 
@@ -30,8 +35,8 @@ export class CampController {
         @Body() updateCommentDTO: UpdateCommentDto,
     ) {
         console.log("Update controller")
-        console.log("id",id)
-        console.log("DTO",updateCommentDTO)
+        console.log("id", id)
+        console.log("DTO", updateCommentDTO)
         console.log("Update controller")
         const update = await this.commentService.updateComment(id, updateCommentDTO)
         return update
