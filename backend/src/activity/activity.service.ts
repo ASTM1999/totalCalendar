@@ -7,32 +7,43 @@ import { CreateActivityDto } from './dto/create-activity.dto';
 import { ObjectId } from 'mongodb';
 import { UpdateActivityDto } from './dto/update-activity.dto';
 
-
 @Injectable()
 export class ActivityService {
 
     constructor(
         @InjectRepository(Activity)
         private activityRepository: Repository<Activity>,
+
     ) { }
 
 
-    async update(id: ObjectId, updateActivityDto: UpdateActivityDto) {
+
+    async delete(id: string): Promise<boolean> {
         try {
-            const user = await this.activityRepository.findOne({ where: { _id: new ObjectId(id) } })
-            if(!user){
+            const result = await this.activityRepository.delete(id)
+            return result.affected > 0;
+        } catch (error) {
+            console.error(error)
+            return false
+        }
+    }
+
+    async update(id: ObjectId, updateActivityDto: UpdateActivityDto): Promise<Activity | null> {
+        try {
+            const res = await this.activityRepository.findOne({where: {_id: id}})
+            console.log("res:",res)
+            if (!res) {
                 return null //ถ้าไม่พยให้ return null
             }
-            if(updateActivityDto.time){
-                user.time = updateActivityDto.time
+
+            if(res){
+                res.userOwner = new ObjectId(updateActivityDto.userOwner)
             }
-            if(updateActivityDto.title){
-                user.title = updateActivityDto.title
-            }
-            const update = await this.activityRepository.save(user)
-            console.log("update success")
-            console.log(update)
-            return update
+            const update = await this.activityRepository.save(res)
+            console.log('updateActivityDto: ', updateActivityDto)
+            console.log('res: ', res)
+            console.log('update: ', update)
+            // return update
         } catch (error) {
             console.error(error);
             throw new InternalServerErrorException('Error updating user');

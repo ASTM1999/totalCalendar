@@ -2,21 +2,21 @@ import { Entity, Column, ObjectIdColumn } from 'typeorm';
 import { ObjectId } from 'mongodb';
 
 @Entity()
-export class Activity {
+export class Comment {
     @ObjectIdColumn()
     _id?: ObjectId;
 
     @Column()
-    title: string;
+    comment: string;
 
     @Column()
-    time: string;
+    userId?: ObjectId;
 
     @Column()
-    userOwner?: ObjectId;
+    like: number
 
     @Column()
-    option: string
+    activityId?: ObjectId;
 
 }
-export default Activity;
+export default Comment;

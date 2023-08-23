@@ -12,7 +12,7 @@ export class Announcement {
     @Column()
     time: string;
 
-    @ObjectIdColumn()
+    @Column()
     userOwner: ObjectId;
 
     @Column()

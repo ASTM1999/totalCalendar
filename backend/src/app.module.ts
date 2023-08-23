@@ -13,6 +13,7 @@ import Announcement from './announcement/announcement.entity';
 import Camp from './camp/camp.entity';
 import { AnnouncementModule } from './announcement/announcement.module';
 import { CommentModule } from './comment/comment.module';
+import Comment from './comment/comment.entity';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CommentModule } from './comment/comment.module';
         Activity,
         Announcement,
         Camp,
+        Comment
       ],
     }),
     UsersModule,

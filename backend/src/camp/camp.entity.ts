@@ -12,7 +12,7 @@ export class Camp {
     @Column()
     time: string;
 
-    @ObjectIdColumn()
+    @Column()
     userOwner: ObjectId;
 
     @Column()
