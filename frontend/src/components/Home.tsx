@@ -14,10 +14,10 @@ const Home = () => {
                 <MyContextProvider>
                     <Counter />
                     <ChildComponent />
-                    {/* <p>Todolist Practice</p>
-                    <TodoList /> */}
                 </MyContextProvider>
             </RecoilRoot>
+            <p>Todolist Practice</p>
+            <TodoList />
 
         </div>
     )

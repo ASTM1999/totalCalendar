@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import { Todo } from "../../services/interface";
 
 // ในส่วนนี้ไม่ค่อยได้ใช้งาน เลยไม่ต้องแยกออกไปเป็น Component ตามตัวอื่นก็ได้
 
@@ -7,7 +8,7 @@ export const contextValueState = atom({
     default: 'Initial Value'
 });
 
-export const todoListState = atom({
+export const todoListState = atom<Todo[]>({
     key: 'todoListState',
     default: []
 })
