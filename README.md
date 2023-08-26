@@ -7,13 +7,22 @@ Module Auth:
     Status
     User (UserAdmin)
 
-Module Activity:
+Module Camp:
     User (UserAdmin)
     Camp
-    Activity
-    Announcement
-    Comment
 
+Module Activity:
+    User (UserAdmin)
+    Activity
+
+Module Annoucement:
+    User (UserAdmin)
+    Annoucement
+
+Moduel Comment:
+    Comment
+    User(UserAdmin)
+    
 Module Calendar:
     UserAdmin
     TotalCalendar
