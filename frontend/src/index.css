@@ -1,17 +1,4 @@
 /* Default styles */
 body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-}
-
-/* Theme styles */
-.theme-light {
-  background-color: white;
-  color: black;
-}
-
-.theme-dark {
-  background-color: black;
-  color: white;
+  text-align: center;
 }
