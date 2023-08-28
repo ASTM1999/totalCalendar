@@ -1,4 +1,10 @@
 /* Default styles */
+html {
+  display: flex;
+  justify-content: center;
+}
+
 body {
   text-align: center;
+  width: 60%;
 }

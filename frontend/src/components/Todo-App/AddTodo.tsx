@@ -1,7 +1,7 @@
 import { useRecoilState } from 'recoil'
-import { todoListState } from '../contexts/atoms/contextValueState'
+import { todoListState } from '../../contexts/atoms/contextValueState'
 import { useState } from 'react'
-import { Todo } from '../services/interface'
+import { Todo } from '../../services/interface'
 
 const AddTodo = () => {
     const [newTodo, setNewTodo] = useState('')

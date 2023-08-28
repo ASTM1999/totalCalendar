@@ -1,6 +1,7 @@
-import { todoListState } from "../contexts/atoms/contextValueState"
+import { todoListState } from "../../contexts/atoms/contextValueState"
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import AddTodo from "./AddTodo"
+import { Link } from "react-router-dom"
 
 
 
@@ -31,18 +32,33 @@ const TodoList = () => {
 
     return (
         <div>
+            {location.pathname === '/practice/todolist' && (
+                <nav>
+                    <ul>
+                        <li><Link to='/practice'>Practice</Link></li>
+                    </ul>
+                </nav>
+            )}
             <h2>Todo List</h2>
+            <p>Todolist Practice</p>
             <AddTodo />
-            <ul>
+            <ul style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'flex-start'
+            }}>
                 {todoList.map((todo) => (
-                    <li key={todo.id}>
-                        {todo.text}
-                        <button onClick={() => handleEditTodo(todo.id)}>Edit</button>
-                        <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
+                    <li key={todo.id} style={{ width: '100%', display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <span>{todo.text}</span>
+                        <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+                            <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
+                            <button onClick={() => handleEditTodo(todo.id)}>Edit</button>
+                        </div>
                     </li>
                 ))}
             </ul>
-        </div>
+        </div >
     )
 }
 export default TodoList
