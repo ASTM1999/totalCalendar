@@ -3,8 +3,8 @@ import { Link } from "react-router-dom"
 
 const Looper = () => {
     const [text, setText] = useState('');
-    const [round, setRound] = useState('');
-    const [rows, setRows] = useState([]); // Store generated rows
+    const [round, setRound] = useState(0);
+    const [rows, setRows] = useState(['']); // Store generated rows
 
     function handleLoop() {
         const generatedRows = [];
@@ -61,9 +61,9 @@ const Looper = () => {
                         alignItems: 'center'
                     }}>
                     <input
-                        type="text"
+                        type="number"
                         value={round}
-                        onChange={(e) => setRound(e.target.value)}
+                        onChange={(e) => setRound(parseInt(e.target.value,10))}
                     />
                     <p>Enter Round</p>
                 </div>
