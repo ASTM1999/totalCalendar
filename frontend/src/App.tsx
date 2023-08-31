@@ -7,6 +7,8 @@ import TodoList from './components/Todo-App/TodoList';
 import Practice from './components/Todo-App/Practice';
 import Looper from './components/Todo-App/Looper';
 import Login from './components/Login';
+import Register from './components/Register';
+import RegisterOption from './components/RegisterOption';
 
 
 
@@ -22,7 +24,9 @@ function App() {
           <Route path="/practice/todolist" element={<TodoList />} />
           <Route path="/practice/looper" element={<Looper />} />
           <Route path="/practice" element={<Practice />} />
-          <Route path="/Login" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/registerOption" element={<RegisterOption />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
