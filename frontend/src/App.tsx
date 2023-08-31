@@ -9,6 +9,8 @@ import Looper from './components/Todo-App/Looper';
 import Login from './components/Login';
 import Register from './components/Register';
 import RegisterOption from './components/RegisterOption';
+import Calendar from './components/Calendar';
+
 
 
 
@@ -27,6 +29,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/registerOption" element={<RegisterOption />} />
+          <Route path="/calendar" element={<Calendar />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
