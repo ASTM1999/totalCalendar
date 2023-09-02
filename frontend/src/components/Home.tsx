@@ -10,7 +10,7 @@ const Home = () => {
                     <li><Link to="/practice">Practice</Link></li>
                     <li><Link to="/login">Login</Link></li>
                     <li><Link to="/register">Register</Link></li>
-                    <li><Link to="/registerOption">Sign With Google</Link></li>
+                    {/* <li><Link to="/registerOption">Sign With Google</Link></li> */}
                     <li><Link to="/calendar">Calendar</Link></li>
                 </ul>
             </nav>

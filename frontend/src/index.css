@@ -22,11 +22,15 @@ body {
 
 
 .iconT {
+  display: flex;
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
   border: none;
   background-color: #FFFFFF;
   width: 165px;
   height: 123px;
+
 }
 
 .iconT:hover {
@@ -225,7 +229,7 @@ header {
   gap: 10px;
   margin-top: 10px;
   margin-left: 13px;
-  
+
 }
 
 h1 {
@@ -289,6 +293,15 @@ li {
 }
 
 button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button a {
   background-color: #007bff;
   color: #fff;
   border: none;

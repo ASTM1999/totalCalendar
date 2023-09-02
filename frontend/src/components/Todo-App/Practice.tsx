@@ -15,7 +15,8 @@ const Practice = () => {
             <div style={{ textAlign: "center", width: "60%", display: "flex", alignItems: "center", flexDirection: "column" }}>
                 {location.pathname === '/practice' && (
                     <nav>
-                        <ul style={{
+                        <ul className="ul-link"
+                        style={{
                             display: "flex",
                             justifyContent: 'space-evenly'
                         }}>
