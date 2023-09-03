@@ -17,6 +17,10 @@ const RegisterOption = () => {
     const handleSignInWithGoogle = () => {
         signInWithGoogle();
     };
+    const handleNavigateHome = () => {
+        navigate('/')
+    }
+
 
 
     return (
@@ -26,7 +30,7 @@ const RegisterOption = () => {
             <div className="SingIn">
                 <header>
 
-                    <button className="iconT">
+                    <button className="iconT" onClick={handleNavigateHome}>
                         <img
                             src="../../public/iconTotalCalendar.png"
                         />

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 
 const Home = () => {
-    
+
     return (
         <div>
             <nav>
@@ -12,9 +12,10 @@ const Home = () => {
                     <li><Link to="/register">Register</Link></li>
                     {/* <li><Link to="/registerOption">Sign With Google</Link></li> */}
                     <li><Link to="/calendar">Calendar</Link></li>
+                    <li><Link to="/testcalendar">Test Calendar</Link></li>
                 </ul>
             </nav>
-            
+
         </div>
     )
 }

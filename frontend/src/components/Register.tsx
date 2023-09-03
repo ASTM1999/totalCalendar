@@ -28,6 +28,9 @@ const Register = () => {
     const handleNavagate = () => {
         navigate('/registerOption')
     }
+    const handleNavigateHome = () => {
+        navigate('/')
+    }
 
     const handleSubmit = () => {
         if (passwordsMatch) {
@@ -45,7 +48,7 @@ const Register = () => {
 
             <div className="SingIn">
                 <header>
-                    <button className="iconT">
+                    <button className="iconT" onClick={handleNavigateHome}>
                         <img
                             src="../../public/iconTotalCalendar.png"
                         />

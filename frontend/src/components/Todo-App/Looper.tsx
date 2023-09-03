@@ -69,7 +69,6 @@ const Looper = () => {
                 </div>
 
                 <button onClick={handleLoop}>Loop</button>
-
                 <div>
                     {rows.map((row, index) => (
                         <p key={index}>{row}</p>

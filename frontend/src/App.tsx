@@ -10,6 +10,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import RegisterOption from './components/RegisterOption';
 import Calendar from './components/Calendar';
+import TestCalendar from './components/TestCalendar';
 
 
 
@@ -17,7 +18,6 @@ import Calendar from './components/Calendar';
 
 function App() {
   return (
-    
       <Router>
         <div>
           <Routes>
@@ -31,11 +31,11 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/registerOption" element={<RegisterOption />} />
             <Route path="/calendar" element={<Calendar />} />
+            <Route path="/testCalendar" element={<TestCalendar />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </div>
       </Router>
-    
   );
 }
 
