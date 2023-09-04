@@ -26,7 +26,7 @@ const Month = ({ year, month }) => {
   const handleDateClick = (date) => {
     // console.log("data", data)
     // แปลงรูปแบบของวันที่ใน selectedDate เพื่อให้เหมือนกับรูปแบบใน events
-    const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+    const formattedDate = `${String(date).padStart(2, '0')}`;
     setSelectedDate(formattedDate);
 
     // ดึงเหตุการณ์ที่ตรงกับวันที่เลือก

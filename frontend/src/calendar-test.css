@@ -31,16 +31,27 @@ table {
   width: 100%;
 }
 
-table th,
-table td {
+
+table th {
   padding: 5px;
   text-align: center;
+}
+
+table td {
+  /* padding: 5px; */
+  text-align: center;
+  border: 1px solid #ccc;
+  width: 25px;
+  height: 25px;
+  border-radius: 15px;
+  padding: 0.7rem;
 }
 
 table th {
   background-color: #f0f0f0;
 }
-.month-navigation button{
+
+.month-navigation button {
   padding: 10px;
   margin: 10px;
 }
