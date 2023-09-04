@@ -1,0 +1,48 @@
+/* CSS for the calendar */
+.container-calendart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: row;
+  width: 60%;
+}
+
+.month-navigation {
+  display: flex;
+  justify-content: center;
+}
+
+.month {
+  /* width: 30%; */
+  /* ปรับความกว้างของแต่ละเดือนตามความเหมาะสม */
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+table {
+  width: 100%;
+}
+
+table th,
+table td {
+  padding: 5px;
+  text-align: center;
+}
+
+table th {
+  background-color: #f0f0f0;
+}
+.month-navigation button{
+  padding: 10px;
+  margin: 10px;
+}
+
+/* You can add more styles as needed */
