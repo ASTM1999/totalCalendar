@@ -13,12 +13,25 @@ const Calendar = () => {
     };
     const getDaysInMonth = (year: number, month: number) => {
         const daysInMonth = new Date(year, month + 1, 0).getDate();
+        // const daysInMonth1 = new Date(year, month + 2, 0).getDate();
+        console.log("daysInMonth :", daysInMonth)
+        // console.log("daysInMonth1 :", daysInMonth1)
         return Array.from({ length: daysInMonth }, (_, index) => new Date(year, month, index + 1));
     };
 
     const currentDate = new Date();
-    const daysInCurrentMonth = getDaysInMonth(currentDate.getFullYear(), currentDate.getMonth());
+    const daysInCurrentMonth = getDaysInMonth(currentDate.getFullYear(), currentDate.getMonth()+1);
 
+
+    //Test
+    const date = new Date(); // สร้างอ็อบเจกต์ Date ปัจจุบัน
+    const dayOfMonth = date.getDate();
+    console.log(selectedDate)
+    console.log("day :", date)
+    console.log("day of month:", dayOfMonth)
+    console.log("currentDate.getMonth(): ",currentDate.getMonth())
+    console.log("currentDate", currentDate.getFullYear())
+    console.log("currentDate.getMonth(): ", currentDate.getMonth() + 1)
 
     return (
         <div className='container-calendar'>

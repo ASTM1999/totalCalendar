@@ -6,9 +6,13 @@ interface CalendarPopupProps {
 }
 
 const eventData = [
-    { date: new Date(2023, 7, 28), name: 'Workshop A' },
+    { date: new Date(2023, 9, 28), name: 'Workshop A' },
     { date: new Date(2023, 7, 28), name: 'Meeting B' },
     { date: new Date(2023, 7, 30), name: 'Conference C' },
+    { date: new Date(2023, 9, 30), name: 'Conference C' },
+    { date: new Date(2023, 9, 30), name: 'Conference C' },
+    { date: new Date(2023, 8, 30), name: 'Conference C' },
+    { date: new Date(2023,8, 30), name: 'Conference C' },
     // ... เพิ่มข้อมูลเหตุการณ์ต่อไป
   ];
 

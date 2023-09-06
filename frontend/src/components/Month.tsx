@@ -1,16 +1,26 @@
 import { useState } from 'react';
 import '../calendar-test.css'
+import { useRecoilState } from 'recoil';
+// import { selectedDateState, selectedDateEventsState } from './../contexts/atoms/'; // แนะนำตรวจสอบ path ที่ถูกต้อง
+import { selectedDateState, selectedDateEventsState } from '../contexts/atoms/contextValueState';
+import { format } from 'date-fns';
 
-const Month = ({ year, month }) => {
+const Month = ({ year, month }: any) => {
   // สร้างปฏิทินของเดือนและปีที่กำหนด
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstDayOfMonth = new Date(year, month, 1).getDay();
   // ข้อมูล
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedDateEvents, setSelectedDateEvents] = useState([]);
+  // const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  // const [selectedDateEvents, setSelectedDateEvents] = useState([]);
+
+
+  // recoil
+  const [selectedDate, setSelectedDate] = useRecoilState(selectedDateState);
+  const [selectedDateEvents, setSelectedDateEvents] = useRecoilState(selectedDateEventsState);
+
 
   // สร้างวันของเดือน
-  const days = [];
+  const days: any = [];
   for (let i = 0; i < firstDayOfMonth; i++) {
     days.push(null);
   }
@@ -18,25 +28,43 @@ const Month = ({ year, month }) => {
     days.push(i);
   }
 
-  const [events, setEvents] = useState({
-    '2023-01-01': 'New Year\'s Day',
-    '2023-01-05': 'Sample Event 1',
-    // เพิ่มข้อมูลเหตุการณ์เพิ่มเติมตามต้องการ ไว้เชื่อม data base
-  });
-  const handleDateClick = (date) => {
-    // console.log("data", data)
-    // แปลงรูปแบบของวันที่ใน selectedDate เพื่อให้เหมือนกับรูปแบบใน events
-    const formattedDate = `${String(date).padStart(2, '0')}`;
-    setSelectedDate(formattedDate);
+  const [events, setEvents] = useState([
+    { date: '2023-01-01', name: 'New Year\'s Day' },
+    { date: '2023-01-05', name: 'Sample Event 1' },
+  ]);
 
-    // ดึงเหตุการณ์ที่ตรงกับวันที่เลือก
-    const selectedDateEvents = events[formattedDate] ? [events[formattedDate]] : [];
 
-    setSelectedDateEvents(selectedDateEvents);
+
+  const handleDateClick = (date: string) => {
+
+    const clickedDate = new Date(date);
+    const formattedDate = format(clickedDate, 'yyyy-MM-dd');
+
+    const event = events.find(event => event.date === formattedDate);
+
+    // console.log(event)
+    // console.log(date)
+    // console.log(typeof (date))
+    // const event = events.find(event => event.date === date);
+
+    if (event) {
+      setSelectedDate(formattedDate);
+      setSelectedDateEvents([event.name]);
+      // มีเหตุการณ์ในวันที่คลิก
+      console.log(`Event on ${date}: ${event.name}`);
+    } else {
+      setSelectedDate(formattedDate);
+      setSelectedDateEvents([]);
+      // ไม่มีเหตุการณ์ในวันที่คลิก
+      console.log(`No event on ${date}`);
+    }
   };
-  console.log(selectedDate);
-  console.log(events);
-  console.log(selectedDateEvents);
+
+
+
+  console.log("selectedDate: ", selectedDate);
+  console.log("events: ", events);
+  console.log("selectedDateEvents", selectedDateEvents);
 
 
   return (
@@ -61,24 +89,27 @@ const Month = ({ year, month }) => {
                 const dayIndex = rowIndex * 7 + colIndex;
                 const day = days[dayIndex];
                 return (
+                  // <td key={colIndex} onClick={() => handleDateClick(`${year}-${month + 1}-${day}`)}>
+                  //   {day !== null ? day : ''}
+                  // </td>
                   <td key={colIndex} onClick={() => handleDateClick(`${year}-${month + 1}-${day}`)}>
                     {day !== null ? day : ''}
+                    {day !== null && events.some(event => event.date === `${year}-${month + 1}-${day}`) && (
+                      <span>Event!</span>
+                    )}
                   </td>
+
                 );
               })}
             </tr>
           ))}
 
-          {days.length < 7 && (
-            <tr>
-              {[...Array(7 - days.length)].map((_, index) => (
-                <td key={index}>{index + 1}</td>
-              ))}
-            </tr>
-          )}
+
         </tbody>
+
       </table>
 
+      {/* recoil */}
       {selectedDate && (
         <div className="event-details">
           <h4>Events for {selectedDate}</h4>

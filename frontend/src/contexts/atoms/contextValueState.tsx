@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { Todo, Users } from "../../services/interface";
+import { Todo } from "../../services/interface";
 
 // ในส่วนนี้ไม่ค่อยได้ใช้งาน เลยไม่ต้องแยกออกไปเป็น Component ตามตัวอื่นก็ได้
 
@@ -22,7 +22,20 @@ export const userState = atom({
     key: "userState",
     default: {
         email: "", // Add other user properties here
-        password:"",
-        username:""
+        password: "",
+        username: ""
     },
+});
+
+export const selectedDateState = atom({
+    key: 'selectedDateState',
+    default: null, // ค่าเริ่มต้น
+});
+
+// สร้าง atom สำหรับ selectedDateEvents
+export const selectedDateEventsState = atom({
+    key: 'selectedDateEventsState',
+    default: [
+
+    ], // ค่าเริ่มต้น
 });
