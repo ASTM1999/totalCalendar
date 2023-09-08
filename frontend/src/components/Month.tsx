@@ -4,6 +4,8 @@ import { useRecoilState } from 'recoil';
 // import { selectedDateState, selectedDateEventsState } from './../contexts/atoms/'; // แนะนำตรวจสอบ path ที่ถูกต้อง
 import { selectedDateState, selectedDateEventsState } from '../contexts/atoms/contextValueState';
 import { format } from 'date-fns';
+import EventsPopup from './Popup';
+import Popup from './Popup';
 
 const Month = ({ year, month }: any) => {
   // สร้างปฏิทินของเดือนและปีที่กำหนด
@@ -17,7 +19,8 @@ const Month = ({ year, month }: any) => {
   // recoil
   const [selectedDate, setSelectedDate] = useRecoilState(selectedDateState);
   const [selectedDateEvents, setSelectedDateEvents] = useRecoilState(selectedDateEventsState);
-
+  const [selectedEvent, setSelectedEvent] = useState(null);
+ 
 
   // สร้างวันของเดือน
   const days: any = [];
@@ -41,7 +44,7 @@ const Month = ({ year, month }: any) => {
     const formattedDate = format(clickedDate, 'yyyy-MM-dd');
 
     const event = events.find(event => event.date === formattedDate);
-
+    setSelectedEvent(event);
     // console.log(event)
     // console.log(date)
     // console.log(typeof (date))
@@ -61,7 +64,9 @@ const Month = ({ year, month }: any) => {
   };
 
 
-
+  const handleClosePopup = () => {
+    setSelectedEvent(null);
+  };
   console.log("selectedDate: ", selectedDate);
   console.log("events: ", events);
   console.log("selectedDateEvents", selectedDateEvents);
@@ -110,17 +115,20 @@ const Month = ({ year, month }: any) => {
       </table>
 
       {/* recoil */}
-      {selectedDate && (
-        <div className="event-details">
-          <h4>Events for {selectedDate}</h4>
-          <ul>
-            {events[selectedDate] && <li>{events[selectedDate]}</li>}
-            {selectedDateEvents.map((event, index) => (
-              <li key={index}>{event}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {selectedEvent && <Popup event={selectedEvent} onClose={handleClosePopup} />}
+      
+      {/* {selectedDate && (
+       
+         <div className="event-details">
+            <h4>Events for {selectedDate}</h4>
+            <ul>
+              {events[selectedDate] && <li>{events[selectedDate]}</li>}
+              {selectedDateEvents.map((event, index) => (
+                <li key={index}>{event}</li>
+              ))}
+            </ul>
+          </div>
+      )} */}
 
     </div>
   );

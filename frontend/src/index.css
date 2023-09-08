@@ -48,6 +48,49 @@ header {
   align-items: center;
 }
 
+
+.container-activity {
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* border: 2px solid #817D7D; */
+  padding-bottom: 50px;
+}
+
+.container-post {
+  background-color: #FAF0D7;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.title-activity {
+  padding: 15px;
+  height: 60px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+.title-activity button{
+  border-radius: 8px;
+  border: none;
+  background-color: #FFD9C0;
+  cursor: pointer;
+}
+
+
+
+.Home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .SingIn {
   width: 407px;
   height: 510px;
@@ -261,6 +304,13 @@ h1 {
   background-color: #f0f0f0;
 }
 
+.container-popup {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 2px solid #D9D9D9;
+  padding: 10px;
+}
 
 .popup {
   position: fixed;
@@ -292,7 +342,7 @@ li {
   margin: 5px 0;
 }
 
-button {
+/* button {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -312,7 +362,7 @@ button a {
 
 button:hover {
   background-color: #0056b3;
-}
+} */
 
 .month-jan {
   /* width: 24%; */

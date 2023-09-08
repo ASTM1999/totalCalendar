@@ -18,7 +18,6 @@ const TestCalendar = () => {
 
   return (
     <div className='container-calendart'>
-
       <div className="calendar">
         {[...Array(6)].map((_, index) => (
           <Month key={currentMonth + index} year={year} month={currentMonth + index} />

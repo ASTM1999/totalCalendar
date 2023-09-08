@@ -99,7 +99,7 @@ const Register = () => {
                         />
                     </div>
                     <div className="div-input">
-                        <button onClick={handleSubmit}>
+                        <button className="next" onClick={handleSubmit}>
                             Submit
                         </button>
                     </div>
@@ -113,8 +113,8 @@ const Register = () => {
                     </p>
                 </div>
                 <br />
-                <p>{user.email}</p>
-                <p>{user.password}</p>
+                {/* <p>{user.email}</p>
+                <p>{user.password}</p> */}
             </div>
         </div>
     )

@@ -3,9 +3,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-    const [userlogin, setUserLogin] = useState('Anusorn sriprom')
-    const [email, setEmail] = useState('anusornsriprom1999@gmail.com')
+    // const [userlogin, setUserLogin] = useState('Anusorn sriprom')
+    const [email, setEmail] = useState('')
+    const [name, setName] = useState('')
     const [showPassword, setShowPassword] = useState(false);
+    const [emailloged, setEmailloged] = useState(0)
     const navigate = useNavigate()
 
     const handleCheckboxChange = () => {
@@ -26,6 +28,27 @@ const Login = () => {
         navigate('/')
     }
 
+
+    // ทอสอบ code
+    const handleNextClick = () => {
+        setEmail(email)
+        setName('anusorn')
+        if (emailloged === 1) {
+            navigate('/')
+        }
+        else if (email === 'anusornsriprom1999@gmail.com') { // เปรียบเทียบ email กับ visual data
+            setEmailloged(1); // เปลี่ยน emailloged เป็น 1
+        } else {
+            alert('email not have in database')
+            // กรณี email ไม่ตรงกับ visual data
+            // ใส่โค้ดที่คุณต้องการในกรณีนี้
+        }
+    }
+    const handleEmailChange = (event: any) => {
+        setEmail(event.target.value); // อัพเดตค่า email เมื่อผู้ใช้กรอก email
+    }
+
+    console.log(emailloged)
     return (
         <div className="container-signin">
 
@@ -39,51 +62,85 @@ const Login = () => {
                     </button>
 
                     <div className="sign-in"><h2>Sign In</h2></div>
-                    {/* <div className="sign-in"><h4>Hi  &nbsp; {userlogin}</h4></div>
-                        <div style={{ paddingBottom: '20px' }}>
-                            <b>
-                                <p className="show-user">
-                                    {email}
-                                </p>
-                            </b>
-                        </div> */}
+
+
+                    {emailloged === 1 && (
+                        <div>
+
+                            <div className="sign-in">
+                                <h4 style={{
+                                    display: "flex",
+                                    justifyContent: "center"
+                                }}>Hi
+                                    &nbsp; {name}
+                                </h4>
+                            </div>
+                            <div style={{ paddingBottom: '20px' }}>
+                                <b>
+                                    <p className="show-user">
+                                        {email}
+                                    </p>
+                                </b>
+                            </div>
+                        </div>
+                    )}
+
                     <div className="enter-you-accout">
                         <h4>Enter Your Accout</h4>
                     </div>
                 </header>
 
-                {/* <div className="continue"><p>To Continue, first verify it's you</p></div> */}
-                <div className="input-div">
-                    <input
-                        className="input"
-                        placeholder="Enter your email" />
+                {emailloged === 1 && (
+                    <div className="continue"><p>To Continue, first verify it's you</p></div>
+                )}
 
-                    {/* <input
-                        className="input"
-                        placeholder="Enter your password"
-                        type={showPassword ? 'text' : 'password'}
-                    />
+                {emailloged === 0 ? (
 
-                    <br />
-                    <label>
+                    <div className="input-div">
                         <input
-                            type="checkbox"
-                            checked={showPassword}
-                            onChange={handleCheckboxChange}
-
+                            className="input"
+                            placeholder="Enter your email"
+                            value={email}
+                            onChange={handleEmailChange}
                         />
-                        &nbsp;&nbsp;&nbsp;&nbsp;Show password
-                    </label> */}
-                </div>
+                    </div>
+                ) : (
+                    <div className="input-div">
+                        <input
+
+                            className="input"
+                            placeholder="Enter your password"
+                            type={showPassword ? 'text' : 'password'}
+                        />
+
+                        <br />
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={showPassword}
+                                onChange={handleCheckboxChange}
+
+                            />
+                            &nbsp;&nbsp;&nbsp;&nbsp;Show password
+                        </label>
+                    </div>
+                )}
 
                 <div className="button-cn" >
-                    <div className="createAccout" onClick={handleNavigateRegister}>
-                        <a><b>Create Accout</b></a>
-                    </div>
-                    {/* <div className="createAccout-1">
-                        <a><b>Forgot password?</b></a>
-                    </div> */}
-                    <button className="next">
+
+                    {emailloged === 0 ? (
+                        <div className="createAccout" onClick={handleNavigateRegister}>
+                            <a><b>Create Accout</b></a>
+                        </div>
+
+                    ) : (
+                        <div className="createAccout-1">
+                            <a><b>Forgot password?</b></a>
+                        </div>
+
+                    )}
+
+                    <button className="next" onClick={handleNextClick}>
                         <b>
                             Next
                         </b>
@@ -103,10 +160,6 @@ const Login = () => {
 
                     <b><p>Sign up with Google</p></b>
                 </button>
-                {/* <div className="createAccout-1">
-                <a><b>Continue with email</b></a>
-            </div> */}
-
 
             </div>
         </div>
