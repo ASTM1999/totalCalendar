@@ -24,6 +24,22 @@ export class UsersService {
 
     ) { }
 
+    async findOneAuth(email: string): Promise<Users | undefined> {
+        email = email.toLocaleLowerCase()
+        console.log(typeof(email))
+        console.log("findOneAuth:", email)
+        const user = await this.userRepository.findOne({ where: { email } })
+        console.log(`user : ${user}`)
+        return user
+    }
+
+    async findById(item: ObjectId): Promise<Users> {
+        console.log(item);
+        const user = this.userRepository.findOne({ where: { _id: item } });
+        console.log("user:", user);
+        return user;
+    }
+
     async requestPasswordReset(email: string): Promise<void> {
         const user = await this.userRepository.findOne({ where: { email: email } });
 
@@ -101,21 +117,13 @@ export class UsersService {
     // }
 
 
-    async findOneAuth(email: string): Promise<Users | undefined> {
-        console.log("findOneAuth:", email)
-        return this.userRepository.findOne({ where: { email } })
-    }
+   
+   
 
     async registerUser(createUserDto: CreateUserDto) {
         return this.userRepository.save(createUserDto)
     }
 
-    async findById(item: ObjectId): Promise<Users> {
-        console.log(item);
-        const user = await this.userRepository.findOne({ where: { _id: item } });
-        console.log("user:", user);
-        return user;
-    }
 
     async getUsers(): Promise<Users[]> {
         const users = await this.userRepository.find();

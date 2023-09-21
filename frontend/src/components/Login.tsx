@@ -1,14 +1,21 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { userState } from "../contexts/atoms/contextValueState";
+import { UserService } from "../services/userServices";
 
 const Login = () => {
     // const [userlogin, setUserLogin] = useState('Anusorn sriprom')
     const [email, setEmail] = useState('')
+    const [password, setPassword] = useState<string | undefined>(undefined);
     const [name, setName] = useState('')
     const [showPassword, setShowPassword] = useState(false);
     const [emailloged, setEmailloged] = useState(0)
+    const users = useRecoilValue(userState)
+
     const navigate = useNavigate()
+    const setUserState = useSetRecoilState(userState)
 
     const handleCheckboxChange = () => {
         setShowPassword(!showPassword);
@@ -30,25 +37,34 @@ const Login = () => {
 
 
     // ทอสอบ code
-    const handleNextClick = () => {
-        setEmail(email)
-        setName('anusorn')
-        if (emailloged === 1) {
-            navigate('/')
-        }
-        else if (email === 'anusornsriprom1999@gmail.com') { // เปรียบเทียบ email กับ visual data
-            setEmailloged(1); // เปลี่ยน emailloged เป็น 1
+    const handleNextClick = async () => {
+        if (!password) {
+            try {
+                // const params = { username, password }; // แนบข้อมูลที่จำเป็นในการยืนยันตัวตน
+                const userData = await UserService.authUser({ username: email });
+                setName(userData.name)
+                setEmailloged(1)
+                // ทำสิ่งที่คุณต้องการกับข้อมูลผู้ใช้ที่ได้
+            } catch (err) {
+                console.error(`Login failed: ${err}`);
+            }
         } else {
-            alert('email not have in database')
-            // กรณี email ไม่ตรงกับ visual data
-            // ใส่โค้ดที่คุณต้องการในกรณีนี้
+            try {
+                const userData = await UserService.authUser({ username: email, password: password })
+                console.log("from recoil: loogin", users)
+                
+                setUserState((prevUserState) => [...prevUserState, userData])
+                navigate('/')
+            } catch (error) {
+                console.error(`Login failed: ${error}`);
+            }
         }
-    }
-    const handleEmailChange = (event: any) => {
-        setEmail(event.target.value); // อัพเดตค่า email เมื่อผู้ใช้กรอก email
     }
 
-    console.log(emailloged)
+    const handleEmailChange = (event: any) => {
+        setEmail(event.target.value);
+    }
+
     return (
         <div className="container-signin">
 
@@ -111,6 +127,7 @@ const Login = () => {
                             className="input"
                             placeholder="Enter your password"
                             type={showPassword ? 'text' : 'password'}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
 
                         <br />

@@ -8,7 +8,13 @@ export class CreateActivityDto {
     _id?: ObjectId;
 
     @IsNotEmpty()
+    type: string
+    
+    @IsNotEmpty()
     title: string
+
+    @IsNotEmpty()
+    detail: string
 
     @IsNotEmpty()
     time: string

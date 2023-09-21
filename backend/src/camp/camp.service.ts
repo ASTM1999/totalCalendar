@@ -7,13 +7,8 @@ import { CreateCampDto } from './dto/create-camp.dto';
 import { UpdateCampDto } from './dto/update-camp.dto';
 import Camp from './camp.entity';
 
-import { CreateCommentDto } from 'src/comment/dto/create-comment.dto';
-import { UpdateCommentDto } from 'src/comment/dto/update-comment.dto';
-import Comment from 'src/comment/comment.entity';
-
 @Injectable()
 export class CampService {
-
     constructor(
         @InjectRepository(Camp)
         private campRepository: Repository<Camp>,
@@ -56,6 +51,13 @@ export class CampService {
     }
 
     async getAll() {
-        return this.campRepository.find()
+        try{
+            const camp = await this.campRepository.find()
+            // console.log(camp)
+            return camp
+        }catch(error){
+            console.error(error)
+            throw new InternalServerErrorException("Error get camp")
+        }
     }
 }

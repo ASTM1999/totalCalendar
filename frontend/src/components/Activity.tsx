@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { activitiesState, announcementsState, campsState, writingPostState } from "../contexts/atoms/contextValueState";
+import { announcementsState, activityState, campsState, writingPostState } from "../contexts/atoms/contextValueState";
 import PostList from "./PostList";
+import { activityServices } from "../services/activityService";
+import { campServices } from "../services/campService";
+import { announcementServices } from "../services/announementService";
 
 const Activity = () => {
     const [writingPost, setWritingPost] = useRecoilState(writingPostState);
-    const announcements = useRecoilValue(announcementsState);
-    const camps = useRecoilValue(campsState);
-    const activities = useRecoilValue(activitiesState);
+    // const announcements = useRecoilValue(announcementsState);
+    // const camps = useRecoilValue(campsState);
+    const [activities, setActivities] = useRecoilState(activityState);
+    const [camp, setCamp] = useRecoilState(campsState)
+    const [announcement, setAnnouncement] = useRecoilState(announcementsState)
 
     // 1. กำหนดค่าเริ่มต้นเป็น 'announcement'
     const [activeType, setActiveType] = useState('announcement');
@@ -17,6 +22,29 @@ const Activity = () => {
         setActiveType(type);
         setWritingPost({ type, title: '', detail: '' });
     };
+
+    const createActivity = async () => {
+        // console.log(activeType)
+
+    }
+    const getActivity = async () => {
+        try {
+            const ac = await activityServices.getActivity()
+            const ca = await campServices.getCamp()
+            const an = await announcementServices.getannouncement()
+            // console.log(ac,ca,an)
+            setActivities(ac)
+            setCamp(ca)
+            setAnnouncement(an)
+        } catch (err) {
+            console.log(`Error fetching data: ${err}`)
+        }
+    }
+
+    useEffect(() => {
+        getActivity()
+    },[])
+
 
     return (
         <div className="container-activity">
@@ -40,12 +68,18 @@ const Activity = () => {
                     กิจกรรม
                 </button>
             </div>
+
+
             <div className="container-post">
                 <div className="search">
                     <input placeholder="search" />
                 </div>
                 <PostList type={writingPost.type} />
-                <button>เขียน</button>
+                <button
+                    onClick={createActivity}
+                >
+                    เขียน
+                </button>
             </div>
         </div>
     );

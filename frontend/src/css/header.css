@@ -1,0 +1,56 @@
+.frame {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .frame .header-wrapper {
+    background-color: #ffffff;
+    height: 1040px;
+    width: 1440px;
+  }
+  
+  .frame .header {
+    background-color: transparent;
+    left: 62px;
+    position: relative;
+    top: 62px;
+    width: 1322px;
+  }
+  
+  .frame .group-8 {
+    left: 995px !important;
+    position: absolute !important;
+    top: 1px !important;
+  }
+  
+  .frame .overlap-group-wrapper {
+    height: 38px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 147px;
+  }
+  
+  .frame .overlap-group {
+    background-color: #d9d9d9;
+    border-radius: 5px;
+    height: 38px;
+    position: relative;
+    width: 145px;
+  }
+  
+  .frame .div {
+    color: #000000;
+    font-family: "Inter-Bold", Helvetica;
+    font-size: 18px;
+    font-weight: 700;
+    left: 22px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 7px;
+  }
+  

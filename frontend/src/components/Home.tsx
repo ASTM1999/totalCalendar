@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import TestCalendar from "./TestCalendar"
 import Activity from "./Activity"
+import Header from "./Header"
 
 
 const Home = () => {
@@ -17,8 +18,33 @@ const Home = () => {
                     {/* <li><Link to="/testcalendar">Calendar</Link></li> */}
                 </ul>
             </nav>
+            <Header />
             <TestCalendar />
-            <Activity/>
+            <Activity />
+            <p>
+                header เหลือใส่ Icon
+            </p>
+            <p>profile เมื่อกดจาก Icon ใน header</p>
+            <p>
+                select สำหรับเลือกแสดงข้อมูล สร้าง database รับและ CRUD เชื่อม recoil
+            </p>
+            <p>
+                login เหลือ validate
+            </p>
+            <p>
+                ปฏิทิน: 1upload 2แก้ไข 3จัดตามหมวด excel
+            </p>
+            <p>
+                activity: 1comment  2like 3edit
+            </p>
+            <p>ปุ่ม search</p>
+            <p>role admin: แก้ไขบทบาท</p>
+            <p> ss </p>
+
+
+
+
+
 
         </div>
     )

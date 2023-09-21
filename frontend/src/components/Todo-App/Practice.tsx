@@ -1,5 +1,5 @@
 
-import { RecoilRoot } from "recoil"
+// import { RecoilRoot } from "recoil"
 import { MyContextProvider } from "../../contexts/MyContextProvider"
 import Counter from "./Counter"
 import { ChildComponent } from "../../contexts/ChildComponent"
@@ -16,10 +16,10 @@ const Practice = () => {
                 {location.pathname === '/practice' && (
                     <nav>
                         <ul className="ul-link"
-                        style={{
-                            display: "flex",
-                            justifyContent: 'space-evenly'
-                        }}>
+                            style={{
+                                display: "flex",
+                                justifyContent: 'space-evenly'
+                            }}>
                             <button><Link to='/'>Home</Link></button>
                             <button><Link to='/practice/counter'>Counter</Link></button>
                             <button><Link to='/practice/todolist'>TodoList</Link></button>
@@ -36,6 +36,15 @@ const Practice = () => {
                 </MyContextProvider>
                 <Counter />
                 <TodoList />
+
+                <div className="myDiv">
+                    Hover over me
+                </div>
+                <div className="hide">
+                    <li>
+                        I am shown when someone hover over the  div above.
+                    </li>
+                </div>
 
 
             </div>

@@ -11,6 +11,10 @@ import Register from './components/Register';
 import RegisterOption from './components/RegisterOption';
 import Calendar from './components/Calendar';
 import TestCalendar from './components/TestCalendar';
+import Header from './components/Header';
+import ContactAdmin from './components/Contact';
+import UserProfile from './components/UserProfile';
+
 
 
 
@@ -32,6 +36,9 @@ function App() {
             <Route path="/registerOption" element={<RegisterOption />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/testCalendar" element={<TestCalendar />} />
+            <Route path="/Header" element={<Header />} />
+            <Route path="/contactAdmin" element={<ContactAdmin />} />
+            <Route path="/UserProfile" element={<UserProfile />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </div>

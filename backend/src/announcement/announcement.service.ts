@@ -6,10 +6,6 @@ import Announcement from './announcement.entity';
 import { ObjectId } from 'mongodb';
 import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
-import { CreateCommentDto } from 'src/comment/dto/create-comment.dto';
-import Comment from 'src/comment/comment.entity';
-import { UpdateCommentDto } from 'src/comment/dto/update-comment.dto';
-
 
 @Injectable()
 export class AnnouncementService {

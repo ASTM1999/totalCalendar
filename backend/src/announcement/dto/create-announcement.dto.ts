@@ -8,8 +8,14 @@ export class CreateAnnouncementDto {
     _id?: ObjectId;
 
     @IsNotEmpty()
+    type: string
+    
+    @IsNotEmpty()
     title: string
 
+    @IsNotEmpty()
+    detail: string
+    
     @IsNotEmpty()
     time: string
 

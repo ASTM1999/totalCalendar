@@ -7,7 +7,13 @@ export class Camp {
     _id?: ObjectId;
 
     @Column()
+    type: string;
+
+    @Column()
     title: string;
+
+    @Column()
+    detail: string;
 
     @Column()
     time: string;
@@ -16,9 +22,7 @@ export class Camp {
     userOwner: ObjectId;
 
     @Column()
-    option: string
-    // @Column({nullable: true})
-    // resetToken?: string;
+    option: string;
 
 
 }

@@ -1,6 +1,7 @@
 import Month from './Month';
-import React, { useState } from 'react';
-import '../calendar-test.css';
+import { useState } from 'react';
+import '../css/calendar-test.css';
+import Form from 'react-bootstrap/Form';
 
 const TestCalendar = () => {
   const year = new Date().getFullYear();
@@ -15,9 +16,18 @@ const TestCalendar = () => {
     if (currentMonth === 6)
       setCurrentMonth((prevMonth) => prevMonth - 6);
   };
+  
 
   return (
     <div className='container-calendart'>
+      <div className="options">
+        <Form.Select aria-label="Default select example">
+          <option>Open this select menu</option>
+          <option value="มหา">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </Form.Select>
+      </div>
       <div className="calendar">
         {[...Array(6)].map((_, index) => (
           <Month key={currentMonth + index} year={year} month={currentMonth + index} />

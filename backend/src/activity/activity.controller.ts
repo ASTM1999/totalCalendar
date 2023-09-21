@@ -57,6 +57,7 @@ export class ActivityController {
 
     @Get()
     async getActivity() {
+        // console.log('hello')
         return this.activityService.findActivity()
     }
 

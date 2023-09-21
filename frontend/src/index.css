@@ -11,14 +11,168 @@
 }
 
 html {
-  /* display: flex; */
-  /* justify-content: center; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 body {
   /* text-align: center; */
   /* width: 60%; */
 }
+
+/* Contact Admin*/
+.boxInsite1 {
+  position: relative;
+}
+.custom-select{
+  width: 415px;
+  height: 60px;
+  border-radius: 8px;
+  border: none;
+  font-size: 20px;
+}
+.submit-bt{
+  background-color: #6E95FA;
+  border-radius: 20px;
+  width: 160px;
+  height: 42px;
+  border: none;
+  margin: 20px;
+  cursor: pointer;
+  margin-top: 50px;
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.inputContact {
+  padding: 30px;
+  width: 811px;
+  height: 226px;
+  background-color: #FFD9C0;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+.headerContact {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+.headerContact1{
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 70px;
+  margin-bottom: 50px;
+  width: 413px;
+  height: 41px;
+  background-color: #FFD9C0;
+
+}
+
+.boxInsite1 {
+  background-color: #FAF0D7;
+  width: 949px;
+  height: 396px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 20.5px solid #D9D9D9;
+}
+
+.boxInsite2 {
+  background-color: #FAF0D7;
+  width: 949px;
+  height: 396px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 20.5px solid #D9D9D9;
+}
+
+.bt-title {
+  cursor: pointer;
+  border: none;
+  font-size: 24px;
+  height: 60px;
+  width: 494.5px;
+  border-radius: 20px;
+  background-color: #FAF0D7;
+  margin-bottom: 25px;
+}
+
+.ContactAdmin {
+  width: 1440px;
+  height: 1040px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.box-ContactAdmin {
+  /* background-color: #817D7D; */
+  width: 990px;
+  height: 523px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+
+/* Header */
+.contactAdminButton {
+  width: 145px;
+  height: 38px;
+  border: none;
+  background-color: #D9D9D9;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* .contactAdminDiv {
+  cursor: pointer;
+  border-radius: 5px;
+  width: 145px;
+  height: 38;
+  border: none;
+  background-color: #D9D9D9;
+} */
+
+.header {
+  width: 1322px;
+  height: 38px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
+
+.userinfo {
+  cursor: pointer;
+  font-family: 'Inria Serif', serif;
+}
+
+
+/* test */
+.hide {
+  display: none;
+}
+
+.myDiv {
+  /* display: block; */
+  color: #00aaff;
+}
+
+.myDiv:hover+.hide {
+  display: block;
+  color: red;
+}
+
 
 
 .iconT {
@@ -76,7 +230,8 @@ header {
   justify-content: space-between;
 
 }
-.title-activity button{
+
+.title-activity button {
   border-radius: 8px;
   border: none;
   background-color: #FFD9C0;
@@ -312,8 +467,18 @@ h1 {
   padding: 10px;
 }
 
+
+
+
+
+
+
+
+
+/* Popup CSS */
 .popup {
-  position: fixed;
+  position: absolute;
+  /* ทำให้พื้นหลัง Popup อยู่ในตำแหน่งแน่นอนบนเพจ */
   top: 0;
   left: 0;
   width: 100%;
@@ -325,13 +490,26 @@ h1 {
   z-index: 100;
 }
 
-.popup-content {
+/* 'month' CSS */
+.calendar {
+  position: relative;
+  /* ทำให้สามารถควบคุมพิสัยของ 'month' ได้ */
+  /* ส่วนอื่น ๆ ของ CSS ของ 'month' อาจมีอยู่ต่อไป */
+}
+
+
+
+
+
+
+
+/* .popup-content {
   background-color: #fff;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
   max-width: 400px;
-}
+}  */
 
 ul {
   list-style: none;

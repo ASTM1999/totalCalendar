@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '../calendar-test.css'
+import '../css/calendar-test.css'
 import { useRecoilState } from 'recoil';
 // import { selectedDateState, selectedDateEventsState } from './../contexts/atoms/'; // แนะนำตรวจสอบ path ที่ถูกต้อง
 import { selectedDateState, selectedDateEventsState } from '../contexts/atoms/contextValueState';
@@ -34,6 +34,7 @@ const Month = ({ year, month }: any) => {
   const [events, setEvents] = useState([
     { date: '2023-01-01', name: 'New Year\'s Day' },
     { date: '2023-01-05', name: 'Sample Event 1' },
+    { date: '2023-03-05', name: 'Sample Event 1' },
   ]);
 
 
@@ -45,6 +46,7 @@ const Month = ({ year, month }: any) => {
 
     const event = events.find(event => event.date === formattedDate);
     setSelectedEvent(event);
+    // alert(event?.name)
     // console.log(event)
     // console.log(date)
     // console.log(typeof (date))
@@ -67,9 +69,9 @@ const Month = ({ year, month }: any) => {
   const handleClosePopup = () => {
     setSelectedEvent(null);
   };
-  console.log("selectedDate: ", selectedDate);
-  console.log("events: ", events);
-  console.log("selectedDateEvents", selectedDateEvents);
+  // console.log("selectedDate: ", selectedDate);
+  // console.log("events: ", events);
+  // console.log("selectedDateEvents", selectedDateEvents);
 
 
   return (
@@ -97,7 +99,7 @@ const Month = ({ year, month }: any) => {
                   // <td key={colIndex} onClick={() => handleDateClick(`${year}-${month + 1}-${day}`)}>
                   //   {day !== null ? day : ''}
                   // </td>
-                  <td key={colIndex} onClick={() => handleDateClick(`${year}-${month + 1}-${day}`)}>
+                  <td key={colIndex} onClick={() => handleDateClick(`${year}-${month + 1}-${day}`) }>
                     {day !== null ? day : ''}
                     {day !== null && events.some(event => event.date === `${year}-${month + 1}-${day}`) && (
                       <span>Event!</span>
