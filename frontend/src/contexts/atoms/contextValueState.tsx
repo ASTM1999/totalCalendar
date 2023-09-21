@@ -18,6 +18,11 @@ export const counterState = atom({
   default: 0,
 })
 
+export const loginState = atom({
+  key:'loginState',
+  default: false,
+})
+
 export const userState = atom<Users[]>({
   key: "userState",
   default: [],

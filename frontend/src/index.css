@@ -16,23 +16,21 @@ html {
   align-items: center;
 }
 
-body {
-  /* text-align: center; */
-  /* width: 60%; */
-}
 
 /* Contact Admin*/
 .boxInsite1 {
   position: relative;
 }
-.custom-select{
+
+.custom-select {
   width: 415px;
   height: 60px;
   border-radius: 8px;
   border: none;
   font-size: 20px;
 }
-.submit-bt{
+
+.submit-bt {
   background-color: #6E95FA;
   border-radius: 20px;
   width: 160px;
@@ -59,7 +57,8 @@ body {
   margin-top: 20px;
   margin-bottom: 30px;
 }
-.headerContact1{
+
+.headerContact1 {
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -150,6 +149,11 @@ body {
   justify-content: space-between;
   flex-direction: row;
   align-items: center;
+}
+
+.pleaseLogin {
+  cursor: pointer;
+  font-family: 'Inria Serif', serif;
 }
 
 .userinfo {
@@ -542,14 +546,14 @@ button:hover {
   background-color: #0056b3;
 } */
 
-.month-jan {
-  /* width: 24%; */
-  /* margin: 1% .5%; */
-  /* display: inline; */
-  /* float: left; */
-  /* box-sizing: border-box;
-  box-shadow: 0 4px 6 */
-}
+/* .month-jan {
+  width: 24%;
+  margin: 1% .5%;
+  display: inline;
+  float: left;
+   box-sizing: border-box; 
+  box-shadow: 0 4px 6 
+} */
 
 .month-a {
   display: flex;

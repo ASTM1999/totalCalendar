@@ -1,8 +1,8 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { userState } from "../contexts/atoms/contextValueState";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { loginState, userState } from "../contexts/atoms/contextValueState";
 import { UserService } from "../services/userServices";
 
 const Login = () => {
@@ -13,6 +13,7 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [emailloged, setEmailloged] = useState(0)
     const users = useRecoilValue(userState)
+    const [, setLogin] = useRecoilState(loginState)
 
     const navigate = useNavigate()
     const setUserState = useSetRecoilState(userState)
@@ -52,8 +53,8 @@ const Login = () => {
             try {
                 const userData = await UserService.authUser({ username: email, password: password })
                 console.log("from recoil: loogin", users)
-                
                 setUserState((prevUserState) => [...prevUserState, userData])
+                setLogin(true)
                 navigate('/')
             } catch (error) {
                 console.error(`Login failed: ${error}`);

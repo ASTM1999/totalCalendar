@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+// import { Link } from "react-router-dom"
 import TestCalendar from "./TestCalendar"
 import Activity from "./Activity"
 import Header from "./Header"
@@ -11,7 +11,7 @@ const Home = () => {
             <nav>
                 <ul>
                     {/* <li><Link to="/practice">Practice</Link></li> */}
-                    <li><Link to="/login">Login</Link></li>
+                    {/* <li><Link to="/login">Login</Link></li> */}
                     {/* <li><Link to="/register">Register</Link></li> */}
                     {/* <li><Link to="/registerOption">Sign With Google</Link></li> */}
                     {/* <li><Link to="/calendar">Calendar</Link></li> */}
