@@ -24,7 +24,7 @@ const Home = () => {
             <p>
                 header เหลือใส่ Icon
             </p>
-            <p>profile เมื่อกดจาก Icon ใน header</p>
+            <p>เพิ่มการแจ้งเตือน == ให้กับ admin </p>
             <p>
                 select สำหรับเลือกแสดงข้อมูล สร้าง database รับและ CRUD เชื่อม recoil
             </p>

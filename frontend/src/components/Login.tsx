@@ -45,7 +45,7 @@ const Login = () => {
                 const userData = await UserService.authUser({ username: email });
                 setName(userData.name)
                 setEmailloged(1)
-                // ทำสิ่งที่คุณต้องการกับข้อมูลผู้ใช้ที่ได้
+                
             } catch (err) {
                 console.error(`Login failed: ${err}`);
             }

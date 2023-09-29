@@ -1,18 +1,18 @@
 import { Controller, Get, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
-import { AnyFilesInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { EventsService } from './events.service';
-import mime from 'mime';
-import * as fs from 'fs';
-import * as xlsx from 'xlsx';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+// import mime from 'mime';
+// import * as fs from 'fs';
+// import * as xlsx from 'xlsx';
+// import { diskStorage } from 'multer';
+// import { extname } from 'path';
 
 @Controller('events')
 export class EventsController {
     constructor(private eventsService: EventsService) { }
 
     @Get('pullbuffer')
-    async pullBuffer(){
+    async pullBuffer() {
         return this.eventsService.get()
     }
 
@@ -33,5 +33,5 @@ export class EventsController {
         return this.eventsService.createEvent(files)
     }
 
-    
+
 }
