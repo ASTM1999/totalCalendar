@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { announcementsState, activityState, campsState, writingPostState } from "../contexts/atoms/contextValueState";
+import { useRecoilState } from "recoil";
+import { announcementsState, activityState, campsState, writingPostState, dataEventState } from "../contexts/atoms/contextValueState";
 import PostList from "./PostList";
 import { activityServices } from "../services/activityService";
 import { campServices } from "../services/campService";
 import { announcementServices } from "../services/announementService";
+import SearchBar from "./SearchBar";
+import { EventsServices } from "../services/eventsService";
 
 const Activity = () => {
     const [writingPost, setWritingPost] = useRecoilState(writingPostState);
@@ -13,6 +15,8 @@ const Activity = () => {
     const [activities, setActivities] = useRecoilState(activityState);
     const [camp, setCamp] = useRecoilState(campsState)
     const [announcement, setAnnouncement] = useRecoilState(announcementsState)
+    const [searchText, setSearchText] = useState('');
+    const [dataEvent, setDataEvent] = useRecoilState(dataEventState)
 
     // 1. กำหนดค่าเริ่มต้นเป็น 'announcement'
     const [activeType, setActiveType] = useState('announcement');
@@ -41,9 +45,23 @@ const Activity = () => {
         }
     }
 
+    const getEventData = async () => {
+        try{
+            const dataEvent = await EventsServices.getEvents()
+            setDataEvent(dataEvent)
+        } catch (err) {
+            console.log(`Error fetch data: ${err}`)
+        }
+    }
+    
+
+    const handleSearch = (text:any) => {
+        setSearchText(text);
+    };
     useEffect(() => {
         getActivity()
-    },[])
+        getEventData()
+    }, [])
 
 
     return (
@@ -71,9 +89,7 @@ const Activity = () => {
 
 
             <div className="container-post">
-                <div className="search">
-                    <input placeholder="search" />
-                </div>
+                <SearchBar onSearch={handleSearch} />
                 <PostList type={writingPost.type} />
                 <button
                     onClick={createActivity}

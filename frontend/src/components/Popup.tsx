@@ -19,7 +19,7 @@ const Popup: React.FC<PopupProps> = ({ event, onClose }) => {
     return ReactDOM.createPortal(
         <div className="popup" onClick={handlePopupClick}>
             <div className="container-popup">
-                <h2> Event: {event.name}</h2>
+                <h2> Event: {event.event}</h2>
                 <p>Date: {event.date}</p>
                 <button onClick={onClose}>Close</button>
             </div>

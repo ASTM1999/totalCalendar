@@ -13,8 +13,12 @@ import Announcement from './announcement/announcement.entity';
 import Camp from './camp/camp.entity';
 import { AnnouncementModule } from './announcement/announcement.module';
 import { CommentModule } from './comment/comment.module';
+import { EventsModule } from './events/events.module';
+import { Events } from './events/events.entity';
 import Comment from './comment/comment.entity';
 
+
+import { MulterModule } from '@nestjs/platform-express'
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -28,9 +32,11 @@ import Comment from './comment/comment.entity';
         Activity,
         Announcement,
         Camp,
-        Comment
+        Comment,
+        Events,
       ],
     }),
+    MulterModule.register({ dest: './uploads'}),
     UsersModule,
     AuthModule,
     ActivityModule,
@@ -38,9 +44,10 @@ import Comment from './comment/comment.entity';
     AnnouncementModule,
     CampModule,
     CommentModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+  export class AppModule { }
 

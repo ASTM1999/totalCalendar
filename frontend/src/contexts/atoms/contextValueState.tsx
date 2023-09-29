@@ -41,6 +41,11 @@ export const selectedDateEventsState = atom({
   ], // ค่าเริ่มต้น
 })
 
+export const dataEventState = atom({
+  key:'dataEventState',
+  default: [],
+})
+
 export const announcementsState = atom<Activity[]>({
   key: 'announcementsState',
   default: [],

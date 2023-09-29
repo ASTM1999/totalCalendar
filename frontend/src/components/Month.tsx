@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import '../css/calendar-test.css'
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 // import { selectedDateState, selectedDateEventsState } from './../contexts/atoms/'; // แนะนำตรวจสอบ path ที่ถูกต้อง
-import { selectedDateState, selectedDateEventsState } from '../contexts/atoms/contextValueState';
+import { selectedDateState, selectedDateEventsState, dataEventState } from '../contexts/atoms/contextValueState';
 import { format } from 'date-fns';
 import EventsPopup from './Popup';
 import Popup from './Popup';
@@ -20,7 +20,7 @@ const Month = ({ year, month }: any) => {
   const [selectedDate, setSelectedDate] = useRecoilState(selectedDateState);
   const [selectedDateEvents, setSelectedDateEvents] = useRecoilState(selectedDateEventsState);
   const [selectedEvent, setSelectedEvent] = useState(null);
- 
+
 
   // สร้างวันของเดือน
   const days: any = [];
@@ -31,32 +31,35 @@ const Month = ({ year, month }: any) => {
     days.push(i);
   }
 
-  const [events, setEvents] = useState([
-    { date: '2023-01-01', name: 'New Year\'s Day' },
-    { date: '2023-01-05', name: 'Sample Event 1' },
-    { date: '2023-03-05', name: 'Sample Event 1' },
-  ]);
-
-
+  // const [eventstest, setEventstest] = useState([
+  //   { date: '2023-01-01', name: 'New Year\'s Day' },
+  //   { date: '2023-01-05', name: 'Sample Event 1' },
+  //   { date: '2023-03-05', name: 'Sample Event 1' },
+  // ]);
+  const events = useRecoilValue(dataEventState)
+  // console.log(eventstest)
+  console.log(events)
 
   const handleDateClick = (date: string) => {
+    console.log(date)
 
     const clickedDate = new Date(date);
     const formattedDate = format(clickedDate, 'yyyy-MM-dd');
 
+
     const event = events.find(event => event.date === formattedDate);
-    setSelectedEvent(event);
-    // alert(event?.name)
-    // console.log(event)
-    // console.log(date)
-    // console.log(typeof (date))
-    // const event = events.find(event => event.date === date);
+    // console.log(`event ${event.date} && ${event.event}`)
+    if (event.event) {
+      setSelectedEvent(event);
+    }
+
+
 
     if (event) {
       setSelectedDate(formattedDate);
-      setSelectedDateEvents([event.name]);
+      setSelectedDateEvents([event.event]);
       // มีเหตุการณ์ในวันที่คลิก
-      console.log(`Event on ${date}: ${event.name}`);
+      console.log(`Event on ${date}: ${event.event}`);
     } else {
       setSelectedDate(formattedDate);
       setSelectedDateEvents([]);
@@ -95,16 +98,19 @@ const Month = ({ year, month }: any) => {
               {[...Array(7)].map((_, colIndex) => {
                 const dayIndex = rowIndex * 7 + colIndex;
                 const day = days[dayIndex];
+
                 return (
-                  // <td key={colIndex} onClick={() => handleDateClick(`${year}-${month + 1}-${day}`)}>
-                  //   {day !== null ? day : ''}
-                  // </td>
-                  <td key={colIndex} onClick={() => handleDateClick(`${year}-${month + 1}-${day}`) }>
+                  <td
+                    key={colIndex}
+                    onClick={() => handleDateClick(`${year}-${month + 1}-${day}`)}
+                    style={{
+                      border: day !== null && day !== undefined ? '1px solid #ccc' : 'none',
+                      
+                    }}
+                  >
                     {day !== null ? day : ''}
-                    {day !== null && events.some(event => event.date === `${year}-${month + 1}-${day}`) && (
-                      <span>Event!</span>
-                    )}
                   </td>
+
 
                 );
               })}
@@ -118,20 +124,6 @@ const Month = ({ year, month }: any) => {
 
       {/* recoil */}
       {selectedEvent && <Popup event={selectedEvent} onClose={handleClosePopup} />}
-      
-      {/* {selectedDate && (
-       
-         <div className="event-details">
-            <h4>Events for {selectedDate}</h4>
-            <ul>
-              {events[selectedDate] && <li>{events[selectedDate]}</li>}
-              {selectedDateEvents.map((event, index) => (
-                <li key={index}>{event}</li>
-              ))}
-            </ul>
-          </div>
-      )} */}
-
     </div>
   );
 };

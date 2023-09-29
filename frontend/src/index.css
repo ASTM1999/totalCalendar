@@ -17,6 +17,47 @@ html {
 }
 
 
+/* UserInfo */
+.userprofile {
+  width: 1440px;
+  display: flex;
+  flex-direction: column;
+  /* align-content: center; */
+  align-items: center;
+  border: 1px solid #1A73E8;
+  margin-top: 30px;
+}
+
+.info {
+  width: 1000px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid #e81a1a;
+  margin: 20px;
+}
+
+.boxInfo {
+  width: 1000px;
+}
+
+.boxPassword {
+  width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+}
+
+.password-info {
+  margin: 20px;
+  border: 1px solid #e81a1a;
+  width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 /* Contact Admin*/
 .boxInsite1 {
   position: relative;
@@ -143,6 +184,7 @@ html {
 } */
 
 .header {
+  margin: 20px;
   width: 1322px;
   height: 38px;
   display: flex;

@@ -32,7 +32,7 @@ const Home = () => {
                 login เหลือ validate
             </p>
             <p>
-                ปฏิทิน: 1upload 2แก้ไข 3จัดตามหมวด excel
+                ปฏิทิน: 2แก้ไข 3จัดตามหมวด excel
             </p>
             <p>
                 activity: 1comment  2like 3edit
