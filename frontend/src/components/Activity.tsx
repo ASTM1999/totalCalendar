@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { announcementsState, activityState, campsState, writingPostState, dataEventState } from "../contexts/atoms/contextValueState";
 import PostList from "./PostList";
 import { activityServices } from "../services/activityService";
@@ -7,6 +7,7 @@ import { campServices } from "../services/campService";
 import { announcementServices } from "../services/announementService";
 import SearchBar from "./SearchBar";
 import { EventsServices } from "../services/eventsService";
+import { UserService } from "../services/userServices";
 
 const Activity = () => {
     const [writingPost, setWritingPost] = useRecoilState(writingPostState);
@@ -18,8 +19,17 @@ const Activity = () => {
     const [searchText, setSearchText] = useState('');
     const [dataEvent, setDataEvent] = useRecoilState(dataEventState)
 
+
+
     // 1. กำหนดค่าเริ่มต้นเป็น 'announcement'
     const [activeType, setActiveType] = useState('announcement');
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [role, setRole] = useState<string | null>()
+    const [detail, setdetail] = useState('')
+    const [title, setTitle] = useState('')
+    const [id, setId] = useState('')
+    // const [userId, setUserId] = useState('')
+
 
     // 2. ฟังก์ชันเมื่อคลิกปุ่มเปลี่ยนประเภทของโพสต์
     const handleTypeChange = (type: any) => {
@@ -27,10 +37,7 @@ const Activity = () => {
         setWritingPost({ type, title: '', detail: '' });
     };
 
-    const createActivity = async () => {
-        // console.log(activeType)
 
-    }
     const getActivity = async () => {
         try {
             const ac = await activityServices.getActivity()
@@ -46,21 +53,55 @@ const Activity = () => {
     }
 
     const getEventData = async () => {
-        try{
+        try {
             const dataEvent = await EventsServices.getEvents()
             setDataEvent(dataEvent)
         } catch (err) {
             console.log(`Error fetch data: ${err}`)
         }
     }
-    
 
-    const handleSearch = (text:any) => {
+    async function fetchUser() {
+        const id = await UserService.getUserId()
+        const data = await UserService.getUserData(id)
+        setRole(data.role)
+        setId(id)
+    }
+
+    const handleSearch = (text: any) => {
         setSearchText(text);
     };
+
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
+
+    const handleCancelClick = () => {
+        setIsEditing(false);
+    };
+    const handleSaveClick = async () => {
+        const currentDate = new Date()
+        try {
+            const createActivityData = {
+                type: activeType,
+                title: title,
+                detail: detail,
+                userOwner: id,
+                dateTime: currentDate.toISOString(),
+                //
+            };
+            console.log(createActivityData)
+            await activityServices.createActivity(createActivityData, activeType);
+            setIsEditing(false);
+            getActivity()
+        } catch (error) {
+            console.error("เกิดข้อผิดพลาดในการอัปเดตข้อมูลผู้ใช้:", error);
+        }
+    }
     useEffect(() => {
         getActivity()
         getEventData()
+        fetchUser()
     }, [])
 
 
@@ -90,12 +131,39 @@ const Activity = () => {
 
             <div className="container-post">
                 <SearchBar onSearch={handleSearch} />
+
+                {isEditing && (
+                    <div className="writebox">
+                        <p>1. ระบุหัวข้อในใบประกาศ</p>
+                        <input
+                            style={{ width: "980px" }}
+                            type="title"
+                            value={title || ""}
+                            onChange={(e) => setTitle(e.target.value)}
+                        /><br />
+                        <p>2. เขียนรายละเอียดเพื่ออธิบาย</p>
+                        <textarea
+                            style={{ width: "980px" }}
+                            value={detail || ""}
+                            onChange={(e) => setdetail(e.target.value)}
+                        />
+                    </div>
+                )}
+                {(role === "useradmin" || role === "admin" || (role === "user" && activeType !== "announcement")) &&
+                    (isEditing ? (
+                        <>
+                            <button onClick={handleSaveClick}>ยืนยัน</button>
+                            <button onClick={handleCancelClick}>ยกเลิก</button>
+                        </>
+                    ) : (
+                        <button onClick={handleEditClick}>เขียน</button>
+                    ))}
                 <PostList type={writingPost.type} />
-                <button
-                    onClick={createActivity}
-                >
-                    เขียน
-                </button>
+
+
+
+
+
             </div>
         </div>
     );

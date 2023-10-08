@@ -32,6 +32,7 @@ export class ActivityController {
         const update = await this.commentService.updateComment(id, updateCommentDTO)
         return update
     }
+    
 
     @Post(':activityId/comment')
     async createComment(
@@ -51,6 +52,7 @@ export class ActivityController {
         @Param('id', ParseObjectIdPipe) activityId: ObjectId,
         @Body() updateActivityDto: UpdateActivityDto
     ) {
+        console.log(`activityUpdate ${updateActivityDto}`)
         const update = await this.activityService.update(activityId, updateActivityDto)
         return update
     }

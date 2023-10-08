@@ -1,11 +1,71 @@
 
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { announcementsState, activityState, campsState } from '../contexts/atoms/contextValueState';
+import { useEffect, useState } from 'react';
+import { UserService } from '../services/userServices';
+import { activityServices } from '../services/activityService';
+import { campServices } from '../services/campService';
+import { announcementServices } from '../services/announementService';
 
 const PostList = ({ type }: { type: string }) => {
     const posts = useRecoilValue(type === 'activity' ? activityState : type === 'camp' ? campsState : announcementsState);
-    // const posts = useRecoilValue(type === 'activityState' ? activityState: type === 'camp'? campsState: announcementsState)
-    // console.log(`Post : ${posts}`)
+    const [isEditingMap, setIsEditingMap] = useState<{ [key: string]: boolean }>({});
+    const login = UserService.isUserloggedIn()
+    const [userId, setUserId] = useState<string>()
+    const [title, setTitle] = useState<string>()
+    const [detail, setDetail] = useState<string>()
+
+    const [activities, setActivities] = useRecoilState(activityState);
+    const [camp, setCamp] = useRecoilState(campsState)
+    const [announcement, setAnnouncement] = useRecoilState(announcementsState)
+    const getActivity = async () => {
+        try {
+            const ac = await activityServices.getActivity()
+            const ca = await campServices.getCamp()
+            const an = await announcementServices.getannouncement()
+            // console.log(ac,ca,an)
+            setActivities(ac)
+            setCamp(ca)
+            setAnnouncement(an)
+        } catch (err) {
+            console.log(`Error fetching data: ${err}`)
+        }
+    }
+    const handleEditClick = (postId: string) => {
+        setIsEditingMap((prevState) => ({
+            ...prevState,
+            [postId]: true,
+        }));
+    };
+    const handleUpdateActivity = async (postId: string) => {
+        try {
+            console.log(postId)
+            await activityServices.updateActivity(postId, title, detail, type);
+            setIsEditingMap((prevState) => ({
+                ...prevState,
+                [postId]: false,
+            }));
+            getActivity()
+
+        } catch (error) {
+            console.error(`Error updating activity: ${error}`);
+        }
+    };
+    const handleCancelClick = (postId: string) => {
+        setIsEditingMap((prevState) => ({
+            ...prevState,
+            [postId]: false, // ตั้งค่าการแก้ไขเฉพาะโพสต์นี้เป็น false เพื่อยกเลิก
+        }));
+    };
+    async function fetchUser() {
+        const id = await UserService.getUserId()
+        setUserId(id)
+    }
+    useEffect(() => {
+        fetchUser()
+        
+    }, [])
+
 
     return (
         <div className="post" style={{ width: "100%" }}>
@@ -21,8 +81,36 @@ const PostList = ({ type }: { type: string }) => {
                         backgroundColor: "#D9D9D9",
                         borderRadius: "8px",
                     }}>
-                        <h3>{post.title}</h3>
-                        <p>{post.detail}</p>
+                        {isEditingMap[post._id] ? (
+                            <>
+                                <input
+                                    value={title}
+                                    placeholder={post.title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                /><br />
+                                <input
+                                    value={detail}
+                                    placeholder={post.detail}
+                                    onChange={(e) => setDetail(e.target.value)}
+                                /><br />
+                            </>
+                        ) : (
+                            <>
+                                <h3>{post.title}</h3>
+                                <p>{post.detail}</p>
+                            </>
+
+                        )}
+                        {(post.userOwner === userId) && (
+                            isEditingMap[post._id] ? (
+                                <>
+                                    <button onClick={() => handleUpdateActivity(post._id)}>ยืนยัน</button>
+                                    <button onClick={() => handleCancelClick(post._id)}>ยกเลิก</button>
+                                </>
+                            ) : (
+                                <button onClick={() => handleEditClick(post._id)}>แก้ไข</button>
+                            )
+                        )}
                     </li>
                 ))}
             </ul>

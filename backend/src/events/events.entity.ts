@@ -29,4 +29,8 @@ export class Events {
 
   @Column() 
   path: string;
+  
+  @Column() 
+  option: string;
+
 }

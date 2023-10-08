@@ -38,6 +38,9 @@ export class AnnouncementService {
             if (updateActivityDto.title) {
                 user.title = updateActivityDto.title
             }
+            if (updateActivityDto.detail) {
+                user.detail = updateActivityDto.detail
+            }
             const update = await this.announcementRepository.save(user)
             console.log("update success")
             console.log(update)

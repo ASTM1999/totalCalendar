@@ -38,7 +38,7 @@ const Month = ({ year, month }: any) => {
   // ]);
   const events = useRecoilValue(dataEventState)
   // console.log(eventstest)
-  console.log(events)
+  // console.log(events)
 
   const handleDateClick = (date: string) => {
     console.log(date)

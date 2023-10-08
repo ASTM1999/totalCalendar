@@ -1,48 +1,50 @@
-import { useRecoilState, useRecoilValue } from "recoil";
-import { userState } from "../contexts/atoms/contextValueState";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-    const [user, setUser] = useRecoilState(userState)
-    const [passwordConfirm, setPasswordConfirm] = useState(undefined);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordConfirm, setPasswordConfirm] = useState('');
+    const [username, setUsername] = useState('');
     const [passwordsMatch, setPasswordsMatch] = useState(true);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
+    const handleEmailChange = (e:any) => {
+        setEmail(e.target.value);
+    };
 
+    const handlePasswordChange = (e:any) => {
+        setPassword(e.target.value);
+    };
 
-    const handleEmailChange = (e: any) => {
-        setUser({ ...user, email: e.target.value });
+    const handleUsername = (e:any) => {
+        setUsername(e.target.value);
     };
-    const handlePasswordChange = (e: any) => {
-        setUser({ ...user, password: e.target.value });
-    };
-    const handleUsername = (e: any) => {
-        setUser({ ...user, username: e.target.value });
-    };
-    const handlePasswordConfirmChange = (e: any) => {
+
+    const handlePasswordConfirmChange = (e:any) => {
         setPasswordConfirm(e.target.value);
-        setPasswordsMatch(user.password === e.target.value);
+        setPasswordsMatch(password === e.target.value);
     };
 
-    const handleNavagate = () => {
-        navigate('/registerOption')
-    }
     const handleNavigateHome = () => {
-        navigate('/')
-    }
+        navigate('/');
+    };
+    const handleNavigate = () => {
+        navigate('/registerOption');
+    };
 
     const handleSubmit = () => {
         if (passwordsMatch) {
-            console.log("Registration data:", user);
-            navigate('/')
+            console.log("Registration data:", { email, password, username });
+            navigate('/');
         } else {
             console.error("Passwords do not match");
-            alert("Passwords do not match")
+            alert("Passwords do not match");
         }
     };
 
-    console.log("user", user)
+   
     return (
         <div className="container-signin">
 
@@ -66,7 +68,7 @@ const Register = () => {
                 <div className="container-register">
                     <div className="div-input">
                         <input
-                            value={user.email}
+                            value={email}
                             className="input"
                             placeholder="Enter your email"
                             onChange={handleEmailChange}
@@ -74,7 +76,7 @@ const Register = () => {
                     </div>
                     <div className="div-input">
                         <input
-                            value={user.password}
+                            value={password}
                             className="input"
                             placeholder="Enter your password"
                             type='password'
@@ -92,7 +94,7 @@ const Register = () => {
                     </div>
                     <div className="div-input">
                         <input
-                            value={user.username}
+                            value={username}
                             className="input"
                             placeholder="Enter your name"
                             onChange={handleUsername}
@@ -106,7 +108,7 @@ const Register = () => {
                 </div>
                 <div
                     className="createAccout-1"
-                    onClick={handleNavagate}
+                    onClick={handleNavigate}
                 >
                     <p>
                         <b>Use One-Tap options instead</b>

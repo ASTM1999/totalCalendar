@@ -12,6 +12,28 @@ async function getActivity() {
         throw err
     }
 }
+async function createActivity(createActivityData: any, activityType: any) {
+    try {
+        const response = await axios.post(`${API_BASE_URL}/${activityType}`, createActivityData)
+        console.log(response.data)
+        return response.data
+    } catch (err) {
+        console.log(`Error create data`, err)
+        throw err
+    }
+}
+async function updateActivity(activityId:any, title:any, detail:any, type:any) {
+    try {
+      const response = await axios.put(
+        `${API_BASE_URL}/${type}/${activityId}/update`,
+        { title, detail }
+      );
+      return response.data; 
+    } catch (error) {
+      console.error(`Error updating activity: ${error}`);
+      throw new Error('Failed to update activity');
+    }
+  }
 
 // async function createActivity() {
 //     try{
@@ -21,4 +43,6 @@ async function getActivity() {
 
 export const activityServices = {
     getActivity,
+    createActivity,
+    updateActivity,
 }

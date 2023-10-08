@@ -1,6 +1,6 @@
 
 import { useNavigate } from "react-router-dom"
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google"
+import {  useGoogleLogin } from "@react-oauth/google"
 
 
 const RegisterOption = () => {
@@ -20,8 +20,6 @@ const RegisterOption = () => {
     const handleNavigateHome = () => {
         navigate('/')
     }
-
-
 
     return (
 

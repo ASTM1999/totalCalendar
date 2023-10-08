@@ -13,13 +13,13 @@ export class Users {
     password: string;
 
     @Column()
-    username: string;
+    username: string; //userAdmin //user //Admin
 
     @Column()
-    role: string;
+    role: string;  
 
     @Column()
-    tel: number;
+    tel: string;
 
     @Column({nullable: true})
     resetToken?: string;

@@ -27,14 +27,14 @@ const ContactAdmin = () => {
                             <button
                                 className='bt-title'
                                 onClick={() => handleClickTitle(1)}
-                                style={{ backgroundColor: title === 1 ? '#FFD9C0' : '#FAF0D7' }}
+                                style={{ backgroundColor: title === 1 ? '#FAF0D7' : '#FFD9C0' }}
                             >
                                 ข้อเสนอแนะ
                             </button>
                             <button
                                 className='bt-title'
                                 onClick={() => handleClickTitle(0)}
-                                style={{ backgroundColor: title === 0 ? '#FFD9C0' : '#FAF0D7' }}
+                                style={{ backgroundColor: title === 0 ? '#FAF0D7' : '#FFD9C0' }}
                             >
                                 ติดต่อเรื่องบทบาท
                             </button>

@@ -52,7 +52,8 @@ export class UsersController {
         @Body() updateUserDto: UpdateUserDto
     ): Promise<Users> {
         // console.log("userId", userId)
-        // console.log("updateUserDto", updateUserDto)
+        console.log("updateUserDto", updateUserDto)
+        console.log("updateUser work")
 
         const updatedUser = await this.usersService.updateUser(userId, updateUserDto);
         return updatedUser;

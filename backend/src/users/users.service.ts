@@ -78,6 +78,7 @@ export class UsersService {
     async updateUser(id: ObjectId, updateUserDto: UpdateUserDto): Promise<Users> {
         try {
             const user = await this.userRepository.findOne({ where: { _id: new ObjectId(id) } })
+            console.log("found:",user)
             if(!user){
                 return null //ถ้าไม่พยให้ return null
             }
@@ -86,6 +87,15 @@ export class UsersService {
             }
             if(updateUserDto.username){
                 user.username = updateUserDto.username
+            }
+            if(updateUserDto.tel){
+                user.tel = updateUserDto.tel
+            }
+            if(updateUserDto.email){
+                user.email = updateUserDto.email
+            }
+            if(updateUserDto.password){
+                user.password = updateUserDto.password
             }
             const updateUser = await this.userRepository.save(user)
             return updateUser

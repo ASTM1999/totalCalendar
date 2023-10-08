@@ -68,6 +68,7 @@ export class EventsService {
                     event: item.event,
                 })),
             );
+
             // console.log(`event : ${event.path}`)
             // console.log(formattedData);
 

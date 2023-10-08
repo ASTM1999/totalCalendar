@@ -3,11 +3,24 @@ import { useState } from 'react';
 import '../css/calendar-test.css';
 import Form from 'react-bootstrap/Form';
 import { EventsServices } from '../services/eventsService';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../contexts/atoms/contextValueState';
 
 const TestCalendar = () => {
   const year = new Date().getFullYear();
   const [currentMonth, setCurrentMonth] = useState(0); // 0 คือเดือนที่ 1
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const users = useRecoilValue(userState);
+  const role = users.map((user) => user.role);
+  // console.log(`user: ${userEmails[0]}`)
+  // console.log(typeof (userEmails[0]))
+  
+  
+  // console.log(typeof (role[0]))
+  // users.map((user) => {
+    // console.log(user)
+  // })
 
   const handleNextMonth = () => {
     if (currentMonth === 0)
@@ -30,19 +43,20 @@ const TestCalendar = () => {
       formData.append('files', selectedFile);
 
       try {
-        await EventsServices.postEvent(formData); 
+        await EventsServices.postEvent(formData);
         console.log('File uploaded successfully');
-      
+
       } catch (error) {
         console.error('Error uploading file:', error);
       }
     }
   };
 
-  const handleload = async () => {
-    const load = await EventsServices.getEvents()
-    console.log(load)
-  }
+  // const handleload = async () => {
+  //   const load = await EventsServices.getEvents()
+  //   console.log(load)
+  // }
+
 
 
 
@@ -65,12 +79,15 @@ const TestCalendar = () => {
         <button onClick={handlePrevMonth}>Previous</button>
         <button onClick={handleNextMonth}>Next</button>
       </div>
-      <div>
-        <p>Excel</p>
-        <input type="file" onChange={handleFileChange} />
-        <button onClick={handleUpload}>Upload</button>
-        <button onClick={handleload}>load</button>
-      </div>
+      {(role[0] === "useradmin" || role[0] === "admin") && (
+        <div>
+          <p>Excel</p>
+          <input type="file" onChange={handleFileChange} />
+          <button onClick={handleUpload}>Upload</button>
+          {/* <button onClick={handleload}>load</button> */}
+        </div>
+      )}
+
     </div>
   );
 };

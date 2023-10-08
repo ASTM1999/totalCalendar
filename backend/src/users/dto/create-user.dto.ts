@@ -12,7 +12,7 @@ export class CreateUserDto {
     email: string
 
     @IsNotEmpty()
-    password: string
+    password?: string
 
     @IsNotEmpty()
     username: string
@@ -20,10 +20,10 @@ export class CreateUserDto {
     //กำหรดให่เมื่อเริ่มสมัครเป็น user // เมื่อได้รับการแก้ไขบทบาทให้เป็น userAdmin
     
     @IsNotEmpty() //user //userAdmin
-    role: string
+    role?: string
     
     @IsInt()
-    tel: number
+    tel: string
     
     resetToken?:string
 

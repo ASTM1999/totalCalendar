@@ -15,6 +15,11 @@ const Login = () => {
     const users = useRecoilValue(userState)
     const [, setLogin] = useRecoilState(loginState)
 
+
+
+
+
+
     const navigate = useNavigate()
     const setUserState = useSetRecoilState(userState)
 
@@ -39,23 +44,34 @@ const Login = () => {
 
     // ทอสอบ code
     const handleNextClick = async () => {
+        console.log(password)
         if (!password) {
             try {
                 // const params = { username, password }; // แนบข้อมูลที่จำเป็นในการยืนยันตัวตน
                 const userData = await UserService.authUser({ username: email });
-                setName(userData.name)
-                setEmailloged(1)
-                
+                console.log(userData)
+                if (userData.message === 'Email not found') {
+                    console.log(`test`)
+                } else {
+                    setName(userData.name)
+                    setEmailloged(1)
+                }
             } catch (err) {
                 console.error(`Login failed: ${err}`);
             }
         } else {
             try {
                 const userData = await UserService.authUser({ username: email, password: password })
-                console.log("from recoil: loogin", users)
-                setUserState((prevUserState) => [...prevUserState, userData])
-                setLogin(true)
-                navigate('/')
+                // console.log("from recoil: loogin", userData)
+                // console.log("from recoil: loogin", userData.message)
+                if (userData.message === 'Inconrect email') {
+                    console.log("try again")
+                } else {
+                    setUserState((prevUserState) => [...prevUserState, userData])
+                    // setLogin(true)
+                    navigate('/')
+
+                }
             } catch (error) {
                 console.error(`Login failed: ${error}`);
             }

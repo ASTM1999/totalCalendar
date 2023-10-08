@@ -5,7 +5,7 @@ import { API_BASE_URL } from "../config/apiBase";
 async function getEvents() {
   try {
     const response = await axios.get(`${API_BASE_URL}/Events/pullbuffer`)
-    console.log(response) 
+    // console.log(response) 
     return response.data
   } catch (err) {
     console.log(`Error fetching data`, err)
