@@ -1,9 +1,10 @@
-import { useGoogleLogin } from "@react-oauth/google";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { loginState, userState } from "../contexts/atoms/contextValueState";
+import { useSetRecoilState } from "recoil";
+import { userState } from "../contexts/atoms/contextValueState";
 import { UserService } from "../services/userServices";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
     // const [userlogin, setUserLogin] = useState('Anusorn sriprom')
@@ -12,13 +13,6 @@ const Login = () => {
     const [name, setName] = useState('')
     const [showPassword, setShowPassword] = useState(false);
     const [emailloged, setEmailloged] = useState(0)
-    const users = useRecoilValue(userState)
-    const [, setLogin] = useRecoilState(loginState)
-
-
-
-
-
 
     const navigate = useNavigate()
     const setUserState = useSetRecoilState(userState)
@@ -26,12 +20,24 @@ const Login = () => {
     const handleCheckboxChange = () => {
         setShowPassword(!showPassword);
     };
+    const googleLogin = useGoogleLogin({
+        onSuccess: async tokenResponse => {
+            console.log("google login")
+            try {
+                await UserService.getGoogle(tokenResponse)
+                await navigate('/')
+            } catch (err) {
+                console.log(`Register Failed ${err}`)
+            }
+        },
+        onError: errorResponse => console.log(errorResponse),
+    });
 
-    const signInWithGoogle = useGoogleLogin({
-        onSuccess: tokenResponse => console.log(tokenResponse)
-    })
-    const handleSignInWithGoogle = () => {
-        signInWithGoogle()
+
+    const handleSignInWithGoogle = async () => {
+        console.log('คลิก Sign up with Google')
+        googleLogin()
+    
     }
 
     const handleNavigateRegister = () => {
@@ -181,19 +187,24 @@ const Login = () => {
                     </button>
 
                 </div>
-                <div className="or">
-                    <p><b>Or</b></p>
-                </div>
+                {emailloged === 0 && (
+                    <>
+                        <div className="or">
+                            <p><b>Or</b></p>
+                        </div>
 
-                <button className="google-sign" onClick={handleSignInWithGoogle}>
-                    <img
-                        src="../../public/google-icon.png"
-                        alt="Google Logo"
-                        className="google-logo"
-                    />
 
-                    <b><p>Sign up with Google</p></b>
-                </button>
+                        <button className="google-sign" onClick={handleSignInWithGoogle}>
+                            <img
+                                src="../../public/google-icon.png"
+                                alt="Google Logo"
+                                className="google-logo"
+                            />
+
+                            <b><p>Sign up with Google</p></b>
+                        </button>
+                    </>
+                )}
 
             </div>
         </div>

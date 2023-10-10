@@ -2,6 +2,7 @@ import axios from "axios"
 import { API_BASE_URL } from "../config/apiBase"
 import { UserData, Users } from "./interface";
 
+
 function logOutUser(): void {
     if (isUserloggedIn()) {
         localStorage.removeItem("accessToken")
@@ -47,21 +48,21 @@ async function getrole(): Promise<string | null> {
 
 async function authUser(params: any) {
     try {
-        // console.log(`params : ${params}`)
+        console.log(`params : ${params.password}`)
+        console.log(`params : ${params.username}`)
         const userData = await axios.post(`${API_BASE_URL}/auth/login`, params)
         if (userData) {
             console.log("test authUser")
             localStorage.setItem("accessToken", userData.data.accessToken)
             localStorage.setItem("userId", userData.data.userId)
             localStorage.setItem("useremail", userData.data.email)
-
             return userData.data
         } else {
             console.log('else')
         }
+        
     } catch (err) {
         console.error(`Error authenticating user: ${err}`);
-        // สร้างข้อความผิดพลาดที่เหมาะสมสำหรับผู้ใช้แสดงบน UI
         throw new Error("Email not found");
     }
 }
@@ -69,7 +70,6 @@ async function authUser(params: any) {
 async function updateUserData(userId: any, updatedUserData: any) {
     if (isUserloggedIn()) {
         try {
-            // ส่งข้อมูลไปยังเซิร์ฟเวอร์เพื่ออัปเดตข้อมูลผู้ใช้
             const response = await axios.put(`${API_BASE_URL}/users/${userId}/user-update`, updatedUserData, {
                 headers: {
                     Authorization: `Bearer ${localStorage.accessToken}`,
@@ -77,10 +77,6 @@ async function updateUserData(userId: any, updatedUserData: any) {
             });
 
             if (response.status === 200) {
-                // อัปเดตข้อมูลผู้ใช้ใน localStorage หรือตามที่คุณต้องการ
-                // ...
-
-                // ส่งข้อมูลผู้ใช้ที่อัปเดตกลับ
                 return response.data;
             } else {
                 throw new Error('เกิดข้อผิดพลาดในการอัปเดตข้อมูลผู้ใช้');
@@ -104,6 +100,7 @@ async function getUserData(userId: any): Promise<UserData> {
         throw err
     }
 }
+
 function getUserId(): string {
     // console.log("localStorage: ", localStorage)
     if (isUserloggedIn()) {
@@ -123,6 +120,44 @@ function getAccessToken(): string {
     return localStorage.accessToken
 }
 
+async function getGoogle(tokenResponse: any) {
+    console.log("tokenResponse", tokenResponse)
+    const res = await axios
+        .get('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: {
+                Authorization: `Bearer ${tokenResponse.access_token}`
+            }
+        })
+
+    createDataUserGoogle(res.data)
+    return res.data
+}
+
+const createDataUserGoogle = async (userdata: any) => {
+    console.log("createDataUser work", userdata)
+    const newUser: Users = {
+        email: userdata.email,
+        username: userdata.name,
+        role: 'user',
+        tel: 'เพิ่มเบอร์โทร',
+        byGoogle: true,
+        sub: userdata.sub,
+    };
+    console.log("newuser:", newUser)
+    await createUser(newUser)
+    await authUser({ username: newUser.email, password: newUser.sub })
+}
+
+async function createUser(newUser: Users) {
+    try {
+        const res = await axios.post(`${API_BASE_URL}/users/register`, newUser)
+        console.log(res.data)
+
+    } catch (err) {
+        console.log(`Error create data`, err)
+        throw err
+    }
+}
 
 export const UserService = {
     fetchUsers,
@@ -137,4 +172,5 @@ export const UserService = {
     getTel,
     getrole,
     updateUserData,
+    getGoogle
 }

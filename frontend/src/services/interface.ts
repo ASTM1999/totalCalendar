@@ -5,14 +5,15 @@ export interface Todo {
 }
 
 export interface Users {
-    _id: string;
+    _id?: string;
     email: string;
-    password: string;
-    status: string;
-    tel: string;
+    password?: string;
+    status?: string;
+    tel?: string;
     username: string;
-    role: string;
-    login: boolean;
+    role?: string;
+    byGoogle?:boolean,
+    sub?:string
 }
 
 export interface UserData {

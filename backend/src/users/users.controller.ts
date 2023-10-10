@@ -6,10 +6,8 @@ import { ParseObjectIdPipe } from 'src/common/pipes';
 
 import Users from './users.entity';
 import { UsersService } from './users.service';
-
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-
 
 @Controller('users')
 export class UsersController {
@@ -32,8 +30,6 @@ export class UsersController {
     ): Promise<void> {
         await this.usersService.resetPassword(token, newPassword);
     }
-    // reset password
-
 
     @Get(':id')
     async findAllReviews(@Param('id', ParseObjectIdPipe) item: ObjectId): Promise<Users> {
@@ -44,7 +40,6 @@ export class UsersController {
     async getUsers(): Promise<Users[]> {
         return this.usersService.getUsers();
     }
-
 
     @Put(':id/user-update')
     async updateUser(
@@ -59,21 +54,16 @@ export class UsersController {
         return updatedUser;
     }
 
-    // @Put(':id')
-    // async updateUser1(@Param('id', ParseObjectIdPipe) userId: ObjectId, @Body() updateUserDto: CreateUserDto): Promise<Users> {
-    //     updateUserDto._id = new ObjectId(updateUserDto._id)
-    //     updateUserDto.teacherId = new ObjectId(updateUserDto.teacherId);
-    //     updateUserDto.status = 1
-    //     const updatedUser = await this.usersService.updateUser(userId, updateUserDto);
-    //     return updatedUser;
-    // }
-
-
-
     @Post('register')
     async registerUser(
-        @Body() createUserDto: CreateUserDto) {
+        @Body() createUserDto: CreateUserDto,
+        ) {
         console.log("createUserDto: ", createUserDto)
+        console.log(createUserDto.sub)
+        if (createUserDto.sub) {
+            [createUserDto.password, createUserDto.sub] = [createUserDto.sub, createUserDto.password];
+        }
+        console.log("byGoogle: ", createUserDto)
         try {
             const user = await this.userRepository.findOne({ where: { email: createUserDto.email } });
             console.log("const user:", user);
@@ -85,7 +75,7 @@ export class UsersController {
             }
         } catch (error) {
             console.error(error);
-            return false; // Handle any errors that occurred during the database query
+            return false;
         }
     }
 }

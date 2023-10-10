@@ -31,7 +31,7 @@ const Header = () => {
     const logOut = () => {
         UserService.logOutUser();
         setEmail(null);
-
+        window.location.reload();
     };
     const handleChangePage = () => {
         navigate('')

@@ -21,8 +21,13 @@ export class Users {
     @Column()
     tel: string;
 
+    @Column()
+    byGoogle?: boolean;
+
     @Column({nullable: true})
     resetToken?: string;
+    
+    sub?: string;
 
 
 }

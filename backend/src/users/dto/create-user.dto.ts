@@ -24,7 +24,10 @@ export class CreateUserDto {
     
     @IsInt()
     tel: string
+
     
+    byGoogle?: boolean
+    sub?:string
     resetToken?:string
 
 

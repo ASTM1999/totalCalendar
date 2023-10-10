@@ -36,7 +36,7 @@ export class AuthController {
         userId?:ObjectId;
     }> {
         const { username, password } = loginData;
-
+        console.log("login: ", loginData)
         const user = await this.userService.findOneAuth(username);
         console.log(`user ${user}`)
         if (!user) {
