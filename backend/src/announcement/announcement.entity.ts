@@ -16,7 +16,9 @@ export class Announcement {
     detail: string;
 
     @Column()
-    time: string;
+    startDate: string;
+    @Column()
+    endDate: string;
 
     @Column()
     userOwner: ObjectId;

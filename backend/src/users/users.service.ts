@@ -34,9 +34,9 @@ export class UsersService {
     }
 
     async findById(item: ObjectId): Promise<Users> {
-        console.log(item);
+        // console.log(item);
         const user = this.userRepository.findOne({ where: { _id: item } });
-        console.log("user:", user);
+        // console.log("user:", user);
         return user;
     }
 

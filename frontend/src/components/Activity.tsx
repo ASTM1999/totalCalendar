@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { announcementsState, activityState, campsState, writingPostState, dataEventState } from "../contexts/atoms/contextValueState";
 import PostList from "./PostList";
 import { activityServices } from "../services/activityService";
@@ -8,29 +8,41 @@ import { announcementServices } from "../services/announementService";
 import SearchBar from "./SearchBar";
 import { EventsServices } from "../services/eventsService";
 import { UserService } from "../services/userServices";
+import WritingPopup from "./WritingPopup";
 
-const Activity = () => {
+interface activityProp {
+    selectedOption: string
+}
+
+
+const Activity = (selectedOption: activityProp) => {
     const [writingPost, setWritingPost] = useRecoilState(writingPostState);
     // const announcements = useRecoilValue(announcementsState);
     // const camps = useRecoilValue(campsState);
-    const [activities, setActivities] = useRecoilState(activityState);
-    const [camp, setCamp] = useRecoilState(campsState)
-    const [announcement, setAnnouncement] = useRecoilState(announcementsState)
-    const [searchText, setSearchText] = useState('');
-    const [dataEvent, setDataEvent] = useRecoilState(dataEventState)
+    const setActivities = useSetRecoilState(activityState);
+    const setCamp = useSetRecoilState(campsState)
+    const setAnnouncement = useSetRecoilState(announcementsState)
+    const setDataEvent = useSetRecoilState(dataEventState)
 
+    const [, setSearchText] = useState('');
 
+    // console.log("selecttion: ",selectedOption)
 
     // 1. กำหนดค่าเริ่มต้นเป็น 'announcement'
     const [activeType, setActiveType] = useState('announcement');
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [role, setRole] = useState<string | null>()
-    const [detail, setdetail] = useState('')
+    const [detail, setDetail] = useState('')
     const [title, setTitle] = useState('')
     const [id, setId] = useState('')
+
+    const [selectedDateStart, setSelectedDateStart] = useState<Date | null>(new Date());
+    const [selectedDateEnd, setSelectedDateEnd] = useState<Date | null>(new Date());
+
     // const [userId, setUserId] = useState('')
 
-
+    console.log("selectedDateStart", selectedDateStart)
+    console.log("selectedDateEnd", selectedDateEnd)
     // 2. ฟังก์ชันเมื่อคลิกปุ่มเปลี่ยนประเภทของโพสต์
     const handleTypeChange = (type: any) => {
         setActiveType(type);
@@ -38,7 +50,7 @@ const Activity = () => {
     };
 
 
-    const getActivity = async () => {
+    const fetchActivity = async () => {
         try {
             const ac = await activityServices.getActivity()
             const ca = await campServices.getCamp()
@@ -87,19 +99,24 @@ const Activity = () => {
                 title: title,
                 detail: detail,
                 userOwner: id,
-                dateTime: currentDate.toISOString(),
+                startDate: selectedDateStart,
+                endDate: selectedDateEnd,
+                option: selectedOption.selectedOption
                 //
             };
             console.log(createActivityData)
             await activityServices.createActivity(createActivityData, activeType);
             setIsEditing(false);
-            getActivity()
+            fetchActivity()
         } catch (error) {
             console.error("เกิดข้อผิดพลาดในการอัปเดตข้อมูลผู้ใช้:", error);
         }
     }
+
+
+
     useEffect(() => {
-        getActivity()
+        fetchActivity()
         getEventData()
         fetchUser()
     }, [])
@@ -131,7 +148,7 @@ const Activity = () => {
 
             <div className="container-post">
                 <SearchBar onSearch={handleSearch} />
-
+                {/* 
                 {isEditing && (
                     <div className="writebox">
                         <p>1. ระบุหัวข้อในใบประกาศ</p>
@@ -148,22 +165,34 @@ const Activity = () => {
                             onChange={(e) => setdetail(e.target.value)}
                         />
                     </div>
-                )}
+                )} */}
+
+
                 {(role === "useradmin" || role === "admin" || (role === "user" && activeType !== "announcement")) &&
                     (isEditing ? (
                         <>
-                            <button onClick={handleSaveClick}>ยืนยัน</button>
-                            <button onClick={handleCancelClick}>ยกเลิก</button>
+                            {/* <button onClick={handleSaveClick}>ยืนยัน</button>
+                            <button onClick={handleCancelClick}>ยกเลิก</button> */}
+                            <WritingPopup
+                                title={title}
+                                detail={detail}
+                                selectedDateStart={selectedDateStart}
+                                selectedDateEnd={selectedDateEnd}
+                                onStartDate={(date) => setSelectedDateStart(date)}
+                                onEndDate={(date) => setSelectedDateEnd(date)}
+                                onTitleChange={(e) => setTitle(e.target.value)}
+                                onDetailChange={(e) => setDetail(e.target.value)}
+                                onConfirm={handleSaveClick}
+                                onCancel={handleCancelClick}
+                            />
+
                         </>
                     ) : (
                         <button onClick={handleEditClick}>เขียน</button>
-                    ))}
+                    )
+                    )
+                }
                 <PostList type={writingPost.type} />
-
-
-
-
-
             </div>
         </div>
     );

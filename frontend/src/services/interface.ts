@@ -4,6 +4,13 @@ export interface Todo {
     completed: boolean;
 }
 
+export interface Contract {
+    id?: string;
+    recommend?: string;
+    require_role?: string;
+    userOwner: string
+}
+
 export interface Users {
     _id?: string;
     email: string;
@@ -12,8 +19,8 @@ export interface Users {
     tel?: string;
     username: string;
     role?: string;
-    byGoogle?:boolean,
-    sub?:string
+    byGoogle?: boolean,
+    sub?: string
 }
 
 export interface UserData {
@@ -34,3 +41,4 @@ export interface Activity {
     option: string;
     role: string;
 }
+

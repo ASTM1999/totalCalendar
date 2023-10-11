@@ -17,7 +17,10 @@ export class CreateAnnouncementDto {
     detail: string
     
     @IsNotEmpty()
-    time: string
+    endDate: string
+    
+    @IsNotEmpty()
+    startDate: string
 
     @IsNotEmpty()
     userOwner: ObjectId

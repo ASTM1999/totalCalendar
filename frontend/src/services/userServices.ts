@@ -44,7 +44,17 @@ async function getrole(): Promise<string | null> {
     }
 }
 
+async function createUser(newUser: Users) {
+    try {
+        const res = await axios.post(`${API_BASE_URL}/users/register`, newUser)
+        console.log("res data creat user")
+        console.log(res.data)
 
+    } catch (err) {
+        console.log(`Error create data`, err)
+        throw err
+    }
+}
 
 async function authUser(params: any) {
     try {
@@ -56,6 +66,7 @@ async function authUser(params: any) {
             localStorage.setItem("accessToken", userData.data.accessToken)
             localStorage.setItem("userId", userData.data.userId)
             localStorage.setItem("useremail", userData.data.email)
+            localStorage.setItem("role", userData.data.role)
             return userData.data
         } else {
             console.log('else')
@@ -130,7 +141,7 @@ async function getGoogle(tokenResponse: any) {
         })
 
     createDataUserGoogle(res.data)
-    return res.data
+    return createDataUserGoogle(res.data)
 }
 
 const createDataUserGoogle = async (userdata: any) => {
@@ -145,19 +156,11 @@ const createDataUserGoogle = async (userdata: any) => {
     };
     console.log("newuser:", newUser)
     await createUser(newUser)
-    await authUser({ username: newUser.email, password: newUser.sub })
+    const user = await authUser({ username: newUser.email, password: newUser.sub })
+    return user
 }
 
-async function createUser(newUser: Users) {
-    try {
-        const res = await axios.post(`${API_BASE_URL}/users/register`, newUser)
-        console.log(res.data)
 
-    } catch (err) {
-        console.log(`Error create data`, err)
-        throw err
-    }
-}
 
 export const UserService = {
     fetchUsers,

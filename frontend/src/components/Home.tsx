@@ -1,6 +1,5 @@
 // import { Link } from "react-router-dom"
 import TestCalendar from "./TestCalendar"
-import Activity from "./Activity"
 import Header from "./Header"
 
 
@@ -20,8 +19,7 @@ const Home = () => {
             </nav>
             <Header />
             <TestCalendar />
-            <Activity />
-
+            
             <p>เพิ่มการแจ้งเตือน == ให้กับ admin </p>
             <p>
                 select สำหรับเลือกแสดงข้อมูล สร้าง database รับและ CRUD เชื่อม recoil

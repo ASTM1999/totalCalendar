@@ -4,7 +4,7 @@ interface PopupProps {
     event: string | null;
     onClose: () => void;
 }
-const Popup: React.FC<PopupProps> = ({ event, onClose }) => {
+const Popup = ({ event, onClose }: PopupProps) => {
 
     if (!event) {
         return null;
@@ -23,7 +23,6 @@ const Popup: React.FC<PopupProps> = ({ event, onClose }) => {
                 <p>Date: {event.date}</p>
                 <button onClick={onClose}>Close</button>
             </div>
-
         </div>,
         document.querySelector('.month') // เลือกตำแหน่งที่จะแสดง Popup
     );

@@ -17,7 +17,10 @@ export class CreateActivityDto {
     detail: string
 
     @IsNotEmpty()
-    time: string
+    endDate: string
+    
+    @IsNotEmpty()
+    startDate: string
 
     @IsString()
     @IsNotEmpty()

@@ -28,14 +28,22 @@ export class ActivityService {
         }
     }
 
-    async update(id: ObjectId, updateActivityDto: UpdateActivityDto): Promise<Activity | null> {
+    async update(id: ObjectId, updateActivityDto: UpdateActivityDto) {
         try {
             const res = await this.activityRepository.findOne({where: {_id: id}})
             console.log("res:",res)
-            if (!res) {
-                return null //ถ้าไม่พยให้ return null
+            if (updateActivityDto.startDate) {
+                res.startDate = updateActivityDto.startDate
             }
-
+            if (updateActivityDto.endDate) {
+                res.endDate = updateActivityDto.endDate
+            }
+            if (updateActivityDto.title) {
+                res.title = updateActivityDto.title
+            }
+            if (updateActivityDto.detail) {
+                res.detail = updateActivityDto.detail
+            }
             if(res){
                 res.userOwner = new ObjectId(updateActivityDto.userOwner)
             }

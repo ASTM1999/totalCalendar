@@ -19,6 +19,8 @@ import Comment from './comment/comment.entity';
 
 
 import { MulterModule } from '@nestjs/platform-express'
+import { ContractModule } from './contract/contract.module';
+import Contract from './contract/contract.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -34,6 +36,7 @@ import { MulterModule } from '@nestjs/platform-express'
         Camp,
         Comment,
         Events,
+        Contract,
       ],
     }),
     MulterModule.register({ dest: './uploads'}),
@@ -45,6 +48,7 @@ import { MulterModule } from '@nestjs/platform-express'
     CampModule,
     CommentModule,
     EventsModule,
+    ContractModule,
   ],
   controllers: [AppController],
   providers: [AppService],

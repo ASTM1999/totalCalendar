@@ -16,7 +16,10 @@ export class Camp {
     detail: string;
 
     @Column()
-    time: string;
+    startDate: string;
+    @Column()
+    endDate: string;
+
 
     @Column()
     userOwner: ObjectId;

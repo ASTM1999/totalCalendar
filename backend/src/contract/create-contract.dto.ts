@@ -3,28 +3,16 @@ import { ObjectId } from "mongodb"
 // import { EmailExists } from "src/common/Validation"
 
 
-export class CreateCampDto {
+export class CreateContractDto {
     // @Validate(EmailExists,{message:"message already"})
     _id?: ObjectId;
 
     @IsNotEmpty()
-    type: string
+    recomment: string
     
     @IsNotEmpty()
-    title: string
-
-    @IsNotEmpty()
-    detail: string
-
-    @IsNotEmpty()
-    endDate: string
-    
-    @IsNotEmpty()
-    startDate: string
+    require_role: string
 
     @IsNotEmpty()
     userOwner: ObjectId
-
-    @IsNotEmpty()
-    option: string
 }

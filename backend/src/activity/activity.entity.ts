@@ -6,18 +6,21 @@ export class Activity {
     @ObjectIdColumn()
     _id?: ObjectId;
 
-    
+
     @Column()
     type: string;
-    
+
     @Column()
     title: string;
-    
+
     @Column()
     detail: string;
 
     @Column()
-    time: string;
+    startDate: string;
+    @Column()
+    endDate: string;
+
 
     @Column()
     userOwner?: ObjectId;

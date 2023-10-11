@@ -30,11 +30,17 @@ export class CampService {
             if (!user) {
                 return null //ถ้าไม่พยให้ return null
             }
-            if (updateCampDto.time) {
-                user.time = updateCampDto.time
+            if (updateCampDto.startDate) {
+                user.startDate = updateCampDto.startDate
+            }
+            if (updateCampDto.endDate) {
+                user.endDate = updateCampDto.endDate
             }
             if (updateCampDto.title) {
                 user.title = updateCampDto.title
+            }
+            if (updateCampDto.detail) {
+                user.detail = updateCampDto.detail
             }
             const update = await this.campRepository.save(user)
             console.log("update success")
@@ -51,11 +57,11 @@ export class CampService {
     }
 
     async getAll() {
-        try{
+        try {
             const camp = await this.campRepository.find()
             // console.log(camp)
             return camp
-        }catch(error){
+        } catch (error) {
             console.error(error)
             throw new InternalServerErrorException("Error get camp")
         }

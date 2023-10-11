@@ -35,6 +35,7 @@ async function updateActivity(activityId:any, title:any, detail:any, type:any) {
     }
   }
 
+
 // async function createActivity() {
 //     try{
 //         const response = await axios.post(`${API_BASE_URL}acivity`)

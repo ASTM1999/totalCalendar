@@ -1,21 +1,51 @@
-import { useState } from 'react';
-import Form from 'react-bootstrap/Form';
+import { useEffect, useState } from 'react';
+import Option from './Option';
+import { Contract } from '../services/interface';
+import { contractService } from '../services/contractService';
+import { UserService } from '../services/userServices';
+
 
 const ContactAdmin = () => {
     const [title, setTitle] = useState(1);
     const [inputValue, setInputValue] = useState('');
+    const [selectedOption, setSelectedOption] = useState('');
+
+    const [id, setId] = useState('')
+    // const [role, setRole] = useState<string | null>()
 
     const handleClickTitle = (num: any) => {
         setTitle(num);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         console.log('submit');
+        const createContract: Contract = {
+            recommend: inputValue,
+            require_role: selectedOption,
+            userOwner: id
+        }
+        await contractService.createContract(createContract)
+        // console.log("create",create)
     };
 
     const handleInputChange = (e: any) => {
         setInputValue(e.target.value);
     };
+
+    const handleOptionChange = (event: any) => {
+        setSelectedOption(event.target.value);
+    };
+
+
+    async function fetchUser() {
+        const id = await UserService.getUserId()
+        const data = await UserService.getUserData(id)
+        // setRole(data.role)
+        setId(id)
+    }
+    useEffect(() => {
+        fetchUser()
+    }, [])
 
     return (
         <html>
@@ -56,14 +86,9 @@ const ContactAdmin = () => {
                             </div>
                         ) : (
                             <div className="boxInsite2">
-                                <h2 className='headerContact1'>บทบาท admin ของมหาลัย</h2>
+                                <h2 className='headerContact1'>บทบาท admin vvv</h2>
                                 <div className="options">
-                                    <Form.Select aria-label="Default select example" className="custom-select">
-                                        <option>Open this select menu</option>
-                                        <option value="1">Admin มหาวิทยาลัยเทคโนโลยีสุรนารี</option>
-                                        <option value="2">Admin มห่ลัย</option>
-                                        <option value="3">Three</option>
-                                    </Form.Select>
+                                    <Option selectedOption={selectedOption} onOptionChange={handleOptionChange} />
                                 </div>
                                 <div>
                                     <button className="submit-bt" onClick={handleSubmit}>Submit</button>

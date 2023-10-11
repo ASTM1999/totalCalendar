@@ -24,8 +24,11 @@ const Login = () => {
         onSuccess: async tokenResponse => {
             console.log("google login")
             try {
-                await UserService.getGoogle(tokenResponse)
+                const user = await UserService.getGoogle(tokenResponse)
                 await navigate('/')
+                // console.log("googleLogin",user)
+                setUserState((prevUserState) => [...prevUserState, user])
+                window.location.reload()
             } catch (err) {
                 console.log(`Register Failed ${err}`)
             }
@@ -37,7 +40,7 @@ const Login = () => {
     const handleSignInWithGoogle = async () => {
         console.log('คลิก Sign up with Google')
         googleLogin()
-    
+        // console.log(googleLogin)
     }
 
     const handleNavigateRegister = () => {

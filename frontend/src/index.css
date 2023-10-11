@@ -98,6 +98,8 @@ html {
   border-radius: 8px;
   border: none;
   font-size: 20px;
+  background-color: #F9F9F9;
+  padding-left: 20px;
 }
 
 .submit-bt {
@@ -438,9 +440,9 @@ header {
 .next {
   cursor: pointer;
   font-family: 'Inria Serif', serif;
-  font-size: 12px;
-  width: 59px;
-  height: 31px;
+  font-size: 18px;
+  width: 75px;
+  height: 45px;
   color: #FFFFFF;
   background-color: #1A73E8;
   border-radius: 20px;
@@ -563,6 +565,107 @@ h1 {
   align-items: center;
   z-index: 100;
 }
+
+.addNewEvent {
+  font-size: 32px;
+  padding: 22.5px;
+  color: #4B5675;
+}
+
+.writingPopup {
+  border-radius: 10px;
+}
+
+.writingPopup-container {
+  display: flex;
+  flex-direction: column;
+  padding: 2.25rem 4.25rem;
+  font-size: 20px;
+  border-bottom: 1px solid #d4d2d2;
+}
+
+.writingHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  border-bottom: 1px solid #d4d2d2;
+}
+
+.bt-write-popup {
+
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.div-cancel-write {
+  padding: 20px;
+}
+
+.div-submit-write {
+  padding: 20px;
+}
+
+.bt-cacel-write {
+  cursor: pointer;
+  width: 89px;
+  height: 43px;
+  border-radius: 5px;
+  border: none;
+}
+
+.bt-submit-write {
+  cursor: pointer;
+  width: 89px;
+  height: 43px;
+  border-radius: 5px;
+  border: none;
+  background-color: #3E97FF;
+  color: #ffffff;
+}
+
+.eventn {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+  color: #4B5675;
+}
+
+.eventds {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+  color: #4B5675;
+}
+
+.sdate {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20px;
+  color: #4B5675;
+}
+
+.edate {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #4B5675;
+}
+
+.datecustom-picker {
+  width: 230px;
+  height: 20px;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  background-color: #F9F9F9;
+  color: #4B5675;
+  cursor: pointer;
+}
+
 
 /* 'month' CSS */
 .calendar {

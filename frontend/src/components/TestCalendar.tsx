@@ -1,26 +1,21 @@
 import Month from './Month';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../css/calendar-test.css';
-import Form from 'react-bootstrap/Form';
 import { EventsServices } from '../services/eventsService';
-import { useRecoilValue } from 'recoil';
-import { userState } from '../contexts/atoms/contextValueState';
+
+import Option from './Option';
+import Activity from './Activity';
+import { UserService } from '../services/userServices';
 
 const TestCalendar = () => {
   const year = new Date().getFullYear();
   const [currentMonth, setCurrentMonth] = useState(0); // 0 คือเดือนที่ 1
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const users = useRecoilValue(userState);
-  const role = users.map((user) => user.role);
-  // console.log(`user: ${userEmails[0]}`)
-  // console.log(typeof (userEmails[0]))
-  
-  
-  // console.log(typeof (role[0]))
-  // users.map((user) => {
-    // console.log(user)
-  // })
+  // const users = useRecoilValue(userState);
+  // const role = users.map((user) => user.role);
+  const [selectedOption, setSelectedOption] = useState('วันหยุด');
+  const [role, setRole] = useState<string|null>('')
 
   const handleNextMonth = () => {
     if (currentMonth === 0)
@@ -34,7 +29,7 @@ const TestCalendar = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    setSelectedFile(file);
+    setSelectedFile(file || null);
   };
 
   const handleUpload = async () => {
@@ -52,23 +47,26 @@ const TestCalendar = () => {
     }
   };
 
-  // const handleload = async () => {
-  //   const load = await EventsServices.getEvents()
-  //   console.log(load)
-  // }
-
-
-
-
+  const handleOptionChange = (event: any) => {
+    setSelectedOption(event.target.value);
+  };
+  const fetchUserData = async () => {
+    try {
+      const role = await UserService.getrole();
+      setRole(role);
+      console.log("role", role)
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+  useEffect(() => {
+    fetchUserData()
+  })
   return (
     <div className='container-calendart'>
-      <div className="options">
-        <Form.Select aria-label="Default select example">
-          <option>Open this select menu</option>
-          <option value="มหา">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </Form.Select>
+
+      <div>
+        <Option selectedOption={selectedOption} onOptionChange={handleOptionChange} />
       </div>
       <div className="calendar">
         {[...Array(6)].map((_, index) => (
@@ -79,7 +77,7 @@ const TestCalendar = () => {
         <button onClick={handlePrevMonth}>Previous</button>
         <button onClick={handleNextMonth}>Next</button>
       </div>
-      {(role[0] === "useradmin" || role[0] === "admin") && (
+      {(role === "useradmin" || role === "admin") && (
         <div>
           <p>Excel</p>
           <input type="file" onChange={handleFileChange} />
@@ -87,7 +85,7 @@ const TestCalendar = () => {
           {/* <button onClick={handleload}>load</button> */}
         </div>
       )}
-
+      <Activity selectedOption={selectedOption} />
     </div>
   );
 };

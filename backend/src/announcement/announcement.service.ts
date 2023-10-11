@@ -32,8 +32,11 @@ export class AnnouncementService {
             if (!user) {
                 return null //ถ้าไม่พยให้ return null
             }
-            if (updateActivityDto.time) {
-                user.time = updateActivityDto.time
+            if (updateActivityDto.startDate) {
+                user.startDate = updateActivityDto.startDate
+            }
+            if (updateActivityDto.endDate) {
+                user.endDate = updateActivityDto.endDate
             }
             if (updateActivityDto.title) {
                 user.title = updateActivityDto.title
