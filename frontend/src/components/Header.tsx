@@ -4,12 +4,15 @@ import { UserService } from "../services/userServices";
 import { useEffect, useState } from "react";
 // import { useState } from "react";
 
+import userIcon from "../../public/user-solid.svg"
+
 const Header = () => {
     const [useremail, setEmail] = useState<string | null>()
     const [Role, setRole] = useState<string | null>()
     // console.log("useremail:",email)
     const login = UserService.isUserloggedIn()
     // console.log(userEmails);
+    console.log(userIcon)
     const navigate = useNavigate()
 
     function handleClick() {
@@ -57,12 +60,32 @@ const Header = () => {
     useEffect(() => {
         fetchUserData()
     })
+
+    const [activeTab, setActiveTab] = useState("overview");
+    const handleTabClick = (tabName: any) => {
+        setActiveTab(tabName);
+    };
     return (
         <div className="header">
 
-            <div className="contactAdminDiv">
-                <button className="contactAdminButton" onClick={handleClick}>ติดต่อ Admin</button>
+            <div className="div-bt-header">
+         
+                <ul className="tap-card">
+                    <li className="tap-item">
+                        <a className={`tap-link ${activeTab === "overview" ? "active" : ""}`} onClick={() => handleTabClick("overview")}>Overview</a>
+                    </li>
+                    <li className="tap-item">
+                        <a className={`tap-link ${activeTab === "setting" ? "active" : ""}`} onClick={() => handleTabClick("setting")}>Announcement</a>
+                    </li>
+                    <li className="tap-item">
+                        <a className={`tap-link ${activeTab === "security" ? "active" : ""}`} onClick={() => handleTabClick("security")}>Calendar</a>
+                    </li>
+                    <li className="tap-item">
+                        <a className={`contactAdminButton `} onClick={handleClick}>ติดต่อ Admin</a>
+                    </li>
+                </ul>
             </div>
+
             <div  >
                 {login === false ? (
                     <p className="pleaseLogin" onClick={handleLogin}>
@@ -84,7 +107,9 @@ const Header = () => {
                             />
                         )}
                         <p className="userinfo" onClick={handleClickUserInfo}>
-                            <b>{useremail}</b>
+                            {/* <b>{useremail}</b> */}
+                            <img src={userIcon} alt="react logo" width={"32px"} />
+
                         </p>
                         <button
                             style={{

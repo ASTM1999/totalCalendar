@@ -8,7 +8,8 @@ export interface Contract {
     id?: string;
     recommend?: string;
     require_role?: string;
-    userOwner: string
+    userOwner: string;
+    time:string;
 }
 
 export interface Users {

@@ -71,7 +71,7 @@ async function authUser(params: any) {
         } else {
             console.log('else')
         }
-        
+
     } catch (err) {
         console.error(`Error authenticating user: ${err}`);
         throw new Error("Email not found");
@@ -130,6 +130,11 @@ async function fetchUsers(): Promise<Users[]> {
 function getAccessToken(): string {
     return localStorage.accessToken
 }
+async function getPicture() {
+    if (isUserloggedIn()) {
+        return localStorage.picture
+    }
+}
 
 async function getGoogle(tokenResponse: any) {
     console.log("tokenResponse", tokenResponse)
@@ -139,7 +144,9 @@ async function getGoogle(tokenResponse: any) {
                 Authorization: `Bearer ${tokenResponse.access_token}`
             }
         })
-
+    if (res.data) {
+        localStorage.setItem('picture', res.data.picture)
+    }
     createDataUserGoogle(res.data)
     return createDataUserGoogle(res.data)
 }
@@ -175,5 +182,7 @@ export const UserService = {
     getTel,
     getrole,
     updateUserData,
-    getGoogle
+    getGoogle,
+    getPicture,
+
 }

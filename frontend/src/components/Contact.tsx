@@ -22,10 +22,11 @@ const ContactAdmin = () => {
         const createContract: Contract = {
             recommend: inputValue,
             require_role: selectedOption,
-            userOwner: id
+            userOwner: id,
+            time: new Date()
         }
+        console.log("createContract: ",createContract)
         await contractService.createContract(createContract)
-        // console.log("create",create)
     };
 
     const handleInputChange = (e: any) => {
