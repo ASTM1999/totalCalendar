@@ -28,7 +28,7 @@ const WritingPopup = ({ onConfirm, onCancel, title, detail, selectedDateStart, s
         <>
 
             <body>
-                <div className="popup"  >
+                <div className="writing"  >
                     <div className="writingPopup" style={{ backgroundColor: "white", width: "650px" }}>
                         <div className="writingHead">
                             <h3 className="addNewEvent">Add a New Event</h3>

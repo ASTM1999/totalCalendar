@@ -14,7 +14,7 @@ const TestCalendar = () => {
 
   // const users = useRecoilValue(userState);
   // const role = users.map((user) => user.role);
-  const [selectedOption, setSelectedOption] = useState('วันหยุด');
+  // const [selectedOption, setSelectedOption] = useState('วันหยุด');
   const [role, setRole] = useState<string | null>('')
 
 
@@ -50,9 +50,9 @@ const TestCalendar = () => {
     }
   };
 
-  const handleOptionChange = (event: any) => {
-    setSelectedOption(event.target.value);
-  };
+  // const handleOptionChange = (event: any) => {
+  //   setSelectedOption(event.target.value);
+  // };
   const fetchUserData = async () => {
     try {
       const role = await UserService.getrole();
@@ -68,9 +68,9 @@ const TestCalendar = () => {
   return (
     <div className='container-calendart'>
 
-      <div>
+      {/* <div>
         <Option selectedOption={selectedOption} onOptionChange={handleOptionChange} />
-      </div>
+      </div> */}
       <div className="calendar">
         {[...Array(6)].map((_, index) => (
           <Month key={currentMonth + index} year={year} month={currentMonth + index} />
@@ -88,7 +88,7 @@ const TestCalendar = () => {
           {/* <button onClick={handleload}>load</button> */}
         </div>
       )}
-      <Activity selectedOption={selectedOption} />
+      
     </div>
   );
 };

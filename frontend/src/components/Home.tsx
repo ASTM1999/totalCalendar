@@ -18,12 +18,13 @@ const Home = () => {
                 </ul>
             </nav>
             <Header />
-            <TestCalendar />
-            
-            <p>เพิ่มการแจ้งเตือน == ให้กับ admin </p>
+            {/* <TestCalendar /> */}
             <p>
-                select สำหรับเลือกแสดงข้อมูล สร้าง database รับและ CRUD เชื่อม recoil
+                activity: 1comment  2like 
             </p>
+            <p>ปุ่ม search</p>
+            <p>เพิ่มการแจ้งเตือน && หน้า approve && list user ให้กับ admin </p>
+    
             <p>
                 login เหลือ validate
             </p>
@@ -31,10 +32,10 @@ const Home = () => {
                 ปฏิทิน: 2แก้ไข 3จัดตามหมวด excel
             </p>
             <p>
-                activity: 1comment  2like 3edit
+                activity: 1comment  2like 
             </p>
             <p>ปุ่ม search</p>
-            <p>role admin: แก้ไขบทบาท</p>
+           
             <p> ss </p>
 
 
