@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { UserService } from "../services/userServices";
 import { Users } from "../services/interface";
+import { useNavigate } from "react-router-dom";
 
 function UserProfile() {
     const [name, setName] = useState<string | null>(null);
@@ -10,7 +11,8 @@ function UserProfile() {
     const [userId, setUserId] = useState<string | null>(null);
     const [isEditing, setIsEditing] = useState<boolean>(false);
 
-
+    const navigate = useNavigate()
+    const [activeTab, setActiveTab] = useState("overview");
     // resetpassword
     const [userLoggedIn, setUserLoggedIn] = useState<Users | undefined>();
     const [password, setPassword] = useState("");
@@ -63,7 +65,9 @@ function UserProfile() {
         }
     };
 
-
+    const handleClickHome = () => {
+        navigate('/')
+    }
 
     const handleResetPassword = async () => {
         try {
@@ -72,11 +76,10 @@ function UserProfile() {
                 return;
             }
             if (newPassword !== confirmPassword) {
-                // ตรวจสอบว่ารหัสผ่านและยืนยันรหัสผ่านตรงกัน
                 console.error("รหัสผ่านและยืนยันรหัสผ่านไม่ตรงกัน");
                 return;
             }
-            if(newPassword === ""){
+            if (newPassword === "") {
                 console.error("พลาสเวิดว่างเปล่า")
                 return;
             }
@@ -84,15 +87,90 @@ function UserProfile() {
 
             const updateuserPassword = { ...userLoggedIn, password: newPassword }
             console.log(updateuserPassword)
-            await UserService.updateUserData(userId,updateuserPassword);
+            await UserService.updateUserData(userId, updateuserPassword);
             // รีเซ็ตรหัสผ่านสำเร็จ
             console.log("รีเซ็ตรหัสผ่านสำเร็จ");
         } catch (error) {
             console.error("เกิดข้อผิดพลาดในการรีเซ็ตรหัสผ่าน:", error);
         }
     };
+
+    const handleTabClick = (tabName: any) => {
+        setActiveTab(tabName);
+    };
+
     return (
         <div className="userprofile">
+            <div className="head-info">
+                <div className="head-info1">
+                    <h1>Accout Overview</h1>
+                    <div className="breadcrum-info">
+                        <p onClick={handleClickHome} style={{ marginRight: "6px", cursor: "pointer" }}>Home</p>
+                        <p>- Accout</p>
+                    </div>
+                </div>
+            </div>
+
+            <div className="card-profile">
+                <div className="picture">
+                    test pic
+                </div>
+
+                <ul className="nav-card-profile">
+                    <li className="nav-item">
+                        <a className={`nav-link ${activeTab === "overview" ? "active" : ""}`} onClick={() => handleTabClick("overview")}>Overview</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className={`nav-link ${activeTab === "setting" ? "active" : ""}`} onClick={() => handleTabClick("setting")}>Setting</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className={`nav-link ${activeTab === "security" ? "active" : ""}`} onClick={() => handleTabClick("security")}>Security</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div className="profile-details" style={{ display: activeTab === "overview" ? "block" : "none" }}>
+                <div className="headPD">
+                    <h1>Profile Details</h1>
+                    <button className="bt-headPD">Edir Profile</button>
+                </div>
+                <div className="containerPD">
+                    <div className="lbox">
+                        <label style={{ width: "350px" }}>Full Name</label>
+                        <p>{name}</p>
+                    </div>
+
+                    <div className="lbox">
+                        <label style={{ width: "350px" }}>Contact Phone</label>
+                        <p>{tel}</p>
+                    </div>
+
+                    <div className="lbox">
+                        <label style={{ width: "350px" }}>Contact Email</label>
+                        <p>{email}</p>
+                    </div>
+
+                    <div className="lbox">
+                        <label style={{ width: "350px" }}>Role</label>
+                        <p>{role}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div className="profile-details" style={{ display: activeTab === "setting" ? "block" : "none" }}>
+                <div className="headSet">
+                    <h1>Profile Setting</h1>
+                </div>
+
+            </div>
+
+            <div className="profile-details" style={{ display: activeTab === "security" ? "block" : "none" }}>
+                <div className="headSet">
+                    <h1>security</h1>
+                </div>
+            </div>
+
+
             <div className="info">
                 <h3 className="infouser">ข้อมูลผู้ใช้</h3>
                 <div className="boxInfo">
