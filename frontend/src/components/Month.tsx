@@ -8,7 +8,7 @@ import EventsPopup from './Popup';
 import Popup from './Popup';
 
 const Month = ({ year, month }: any) => {
-  // สร้างปฏิทินของเดือนและปีที่กำหนด
+
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstDayOfMonth = new Date(year, month, 1).getDay();
   // ข้อมูล
@@ -58,12 +58,12 @@ const Month = ({ year, month }: any) => {
     if (event) {
       setSelectedDate(formattedDate);
       setSelectedDateEvents([event.event]);
-      // มีเหตุการณ์ในวันที่คลิก
+
       console.log(`Event on ${date}: ${event.event}`);
     } else {
       setSelectedDate(formattedDate);
       setSelectedDateEvents([]);
-      // ไม่มีเหตุการณ์ในวันที่คลิก
+
       console.log(`No event on ${date}`);
     }
   };

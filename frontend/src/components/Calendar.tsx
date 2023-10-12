@@ -24,7 +24,7 @@ const Calendar = () => {
 
 
     //Test
-    const date = new Date(); // สร้างอ็อบเจกต์ Date ปัจจุบัน
+    const date = new Date(); 
     const dayOfMonth = date.getDate();
     console.log(selectedDate)
     console.log("day :", date)

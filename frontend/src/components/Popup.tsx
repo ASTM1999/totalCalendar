@@ -11,7 +11,7 @@ const Popup = ({ event, onClose }: PopupProps) => {
     }
 
     const handlePopupClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        // ตรวจสอบว่าคลิกอยู่ภายในเนื้อหาของ Popup หรือไม่
+
         if (e.target === e.currentTarget) {
             onClose();
         }
@@ -24,7 +24,7 @@ const Popup = ({ event, onClose }: PopupProps) => {
                 <button onClick={onClose}>Close</button>
             </div>
         </div>,
-        document.querySelector('.month') // เลือกตำแหน่งที่จะแสดง Popup
+        document.querySelector('.month') 
     );
 };
 

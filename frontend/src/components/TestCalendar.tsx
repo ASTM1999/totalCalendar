@@ -54,7 +54,7 @@ const TestCalendar = () => {
     try {
       const role = await UserService.getrole();
       setRole(role);
-      console.log("role", role)
+      // console.log("role", role)
     } catch (error) {
       console.error("Error fetching user data:", error);
     }

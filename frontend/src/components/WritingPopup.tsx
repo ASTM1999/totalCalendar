@@ -22,7 +22,7 @@ const WritingPopup = ({ onConfirm, onCancel, title, detail, selectedDateStart, s
     // const [selectedDateEnd, setSelectedDateEnd] = useState<Date | null>(new Date());
 
     const handleSaveClick = () => {
-        onConfirm(); // เรียกใช้ฟังก์ชัน onConfirm ที่ถูกส่งผ่าน prop จาก Activity
+        onConfirm(); 
     };
     return (
         <>

@@ -16,6 +16,10 @@ html {
   align-items: center;
 }
 
+body {
+  background-color: whitesmoke;
+}
+
 /* UserProfile */
 /* UserInfo */
 
@@ -33,7 +37,7 @@ html {
   flex-direction: column;
   /* align-content: center; */
   align-items: center;
-  border: 1px solid #1A73E8;
+  /* border: 1px solid #1A73E8; */
   margin-top: 30px;
 }
 
@@ -52,7 +56,132 @@ html {
   flex-direction: column;
   border: 1px solid #e81a1a;
   margin: 20px;
+  padding: 20px;
 }
+
+.head-info {
+  /* height: 50px; */
+  /* padding: 30px; */
+  width: 1146px;
+}
+
+.head-info1 {
+  padding: 30px;
+}
+
+.breadcrum-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #949494;
+}
+
+.card-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  border: 2px solid rgb(245, 245, 245);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-card-profile {
+  width: 1041px;
+  display: flex;
+  flex-direction: row;
+}
+
+.nav-item {
+  margin-right: 32px;
+
+}
+
+.nav-link {
+  width: 70px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  border-bottom: 2px solid #3E97FF;
+}
+
+.nav-link:active,
+.nav-link:focus {
+  color: #3E97FF;
+  border-bottom: 2px solid #3E97FF;
+}
+
+.nav-link.active {
+  color: #3E97FF;
+  border-bottom: 2px solid #3E97FF;
+
+}
+
+.profile-details {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid rgb(245, 245, 245);
+  margin-top: 30px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.headPD {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-content: center;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+  width: 1041px;
+}
+
+.headSet{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-content: center;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+  width: 1041px;
+}
+
+.bt-headPD {
+  width: 98px;
+  height: 35px;
+  background-color: #3E97FF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.containerPD {
+  width: 1041px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.lbox {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+}
+
+
+
+
+
+
 
 .boxInfo {
   width: 1000px;
@@ -508,8 +637,8 @@ header {
 }
 
 h1 {
-  text-align: center;
-  margin-bottom: 20px;
+  /* text-align: center; */
+  /* margin-bottom: 20px; */
 }
 
 .calendar-week {

@@ -36,7 +36,8 @@ export interface Activity {
     type: string;
     title: string;
     detail: string;
-    time: string;
+    startDate: string;
+    endDate: string;
     userOwner: string;
     option: string;
     role: string;

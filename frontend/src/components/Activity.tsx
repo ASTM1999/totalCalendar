@@ -39,11 +39,6 @@ const Activity = (selectedOption: activityProp) => {
     const [selectedDateStart, setSelectedDateStart] = useState<Date | null>(new Date());
     const [selectedDateEnd, setSelectedDateEnd] = useState<Date | null>(new Date());
 
-    // const [userId, setUserId] = useState('')
-
-    console.log("selectedDateStart", selectedDateStart)
-    console.log("selectedDateEnd", selectedDateEnd)
-    // 2. ฟังก์ชันเมื่อคลิกปุ่มเปลี่ยนประเภทของโพสต์
     const handleTypeChange = (type: any) => {
         setActiveType(type);
         setWritingPost({ type, title: '', detail: '' });
@@ -92,7 +87,6 @@ const Activity = (selectedOption: activityProp) => {
         setIsEditing(false);
     };
     const handleSaveClick = async () => {
-        const currentDate = new Date()
         try {
             const createActivityData = {
                 type: activeType,

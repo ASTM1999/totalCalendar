@@ -46,7 +46,7 @@ const Header = () => {
         try {
             const role = await UserService.getrole();
             setRole(role);
-            console.log("role",role)
+            // console.log("role",role)
             const userEmail = await UserService.getEmail()
             setEmail(userEmail)
             // console.log("useEffect")

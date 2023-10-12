@@ -1,5 +1,5 @@
 
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { announcementsState, activityState, campsState } from '../contexts/atoms/contextValueState';
 import { useEffect, useState } from 'react';
 import { UserService } from '../services/userServices';
@@ -10,14 +10,14 @@ import { announcementServices } from '../services/announementService';
 const PostList = ({ type }: { type: string }) => {
     const posts = useRecoilValue(type === 'activity' ? activityState : type === 'camp' ? campsState : announcementsState);
     const [isEditingMap, setIsEditingMap] = useState<{ [key: string]: boolean }>({});
-    const login = UserService.isUserloggedIn()
+
     const [userId, setUserId] = useState<string>()
     const [title, setTitle] = useState<string>()
     const [detail, setDetail] = useState<string>()
 
-    const [activities, setActivities] = useRecoilState(activityState);
-    const [camp, setCamp] = useRecoilState(campsState)
-    const [announcement, setAnnouncement] = useRecoilState(announcementsState)
+    const setActivities = useSetRecoilState(activityState);
+    const setCamp = useSetRecoilState(campsState)
+    const setAnnouncement = useSetRecoilState(announcementsState)
     const getActivity = async () => {
         try {
             const ac = await activityServices.getActivity()
@@ -54,7 +54,7 @@ const PostList = ({ type }: { type: string }) => {
     const handleCancelClick = (postId: string) => {
         setIsEditingMap((prevState) => ({
             ...prevState,
-            [postId]: false, // ตั้งค่าการแก้ไขเฉพาะโพสต์นี้เป็น false เพื่อยกเลิก
+            [postId]: false,
         }));
     };
     async function fetchUser() {
@@ -63,7 +63,6 @@ const PostList = ({ type }: { type: string }) => {
     }
     useEffect(() => {
         fetchUser()
-        
     }, [])
 
 
@@ -98,6 +97,8 @@ const PostList = ({ type }: { type: string }) => {
                             <>
                                 <h3>{post.title}</h3>
                                 <p>{post.detail}</p>
+                                <p>{post.startDate}</p>
+                                <p>{post.endDate}</p>
                             </>
 
                         )}
