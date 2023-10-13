@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 function UserProfile() {
     const [name, setName] = useState<string | null>(null);
-    const [tel, setTel] = useState<string | null>(null);
+    const [tel, setTel] = useState<string | undefined>(undefined);
     const [email, setEmail] = useState<string | null>(null);
-    const [role, setRole] = useState<string | null>(null);
+    const [role, setRole] = useState<string | undefined>(undefined);
     const [userId, setUserId] = useState<string | null>(null);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [isEditingEmail, setIsEditingEmail] = useState<boolean>(false);

@@ -9,6 +9,7 @@ import SearchBar from "./SearchBar";
 import { EventsServices } from "../services/eventsService";
 import { UserService } from "../services/userServices";
 import WritingPopup from "./WritingPopup";
+import { useNavigate } from "react-router-dom";
 
 interface activityProp {
     selectedOption: string
@@ -29,7 +30,7 @@ const Activity = (selectedOption: activityProp) => {
     // console.log("selecttion: ",selectedOption)
 
     // 1. กำหนดค่าเริ่มต้นเป็น 'announcement'
-    const [activeType, setActiveType] = useState('announcement');
+    // const [activeType, setActiveType] = useState('announcement');
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [role, setRole] = useState<string | null>()
     const [detail, setDetail] = useState('')
@@ -39,9 +40,28 @@ const Activity = (selectedOption: activityProp) => {
     const [selectedDateStart, setSelectedDateStart] = useState<Date | null>(new Date());
     const [selectedDateEnd, setSelectedDateEnd] = useState<Date | null>(new Date());
 
+
+    // console.log(writingPost)
+    const [activeTab, setActiveTab] = useState("announcement");
+    const navigate = useNavigate()
+    const handleTabClick = (tabName: any) => {
+        setActiveTab(tabName);
+        setWritingPost({ type: tabName, title: '', detail: '' });
+    };
+    // console.log(writingPost)
+    // console.log(writingPost.type)
+    const handleClickHome = () => {
+        navigate('/')
+    }
+
+
+
+
+
     const handleTypeChange = (type: any) => {
-        setActiveType(type);
+        // setActiveType(type);
         setWritingPost({ type, title: '', detail: '' });
+        
     };
 
 
@@ -50,7 +70,7 @@ const Activity = (selectedOption: activityProp) => {
             const ac = await activityServices.getActivity()
             const ca = await campServices.getCamp()
             const an = await announcementServices.getannouncement()
-            // console.log(ac,ca,an)
+            console.log(ac,ca,an)
             setActivities(ac)
             setCamp(ca)
             setAnnouncement(an)
@@ -89,7 +109,7 @@ const Activity = (selectedOption: activityProp) => {
     const handleSaveClick = async () => {
         try {
             const createActivityData = {
-                type: activeType,
+                type: activeTab,
                 title: title,
                 detail: detail,
                 userOwner: id,
@@ -99,7 +119,7 @@ const Activity = (selectedOption: activityProp) => {
                 //
             };
             console.log(createActivityData)
-            await activityServices.createActivity(createActivityData, activeType);
+            await activityServices.createActivity(createActivityData, activeTab);
             setIsEditing(false);
             fetchActivity()
         } catch (error) {
@@ -117,8 +137,82 @@ const Activity = (selectedOption: activityProp) => {
 
 
     return (
-        <div className="container-activity">
-            <div className="title-activity">
+        <div className="activity">
+
+            <div className="container-activity">
+
+                <div className="nav-activity">
+                    <ul className="nav-card-profile">
+                        <li className="nav-item">
+                            <a className={`nav-link-activity ${activeTab === "announcement" ? "active" : ""}`}
+                                onClick={() => handleTabClick("announcement")}>ประกาศเกี่ยวกับมหาลัย</a>
+                        </li>
+                        <li className="nav-item">
+                            <a className={`nav-link-activity ${activeTab === "camp" ? "active" : ""}`}
+                                onClick={() => handleTabClick("camp")}>ค่ายของมหาลัย</a>
+                        </li>
+                        <li className="nav-item">
+                            <a className={`nav-link-activity ${activeTab === "activity" ? "active" : ""}`}
+                                onClick={() => handleTabClick("activity")}>กิจกรรมภายในมหาลัย</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+
+                <div className="headActivity">
+                    <div className="headBox">
+                        <h1>{activeTab}</h1>
+                        <div className="breadcrum-info">
+                            <b>
+                                <p onClick={handleClickHome} style={{ marginRight: "6px", cursor: "pointer" }}>Home</p>
+                            </b>
+                            <p>- Accout</p>
+                        </div>
+                    </div>
+
+                    <div className="bt-activity">
+                        <button onClick={handleEditClick} className="bt-headPD">Create</button>
+                    </div>
+                </div>
+
+
+
+                <div className="body-activity">
+                    <div>
+                        <PostList type={writingPost.type} />
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+            <p>w</p>
+            <p>w</p>
+            <p>w</p>
+            <p>w</p>
+            <p>w</p>
+            <p>w</p>
+            <p>w</p>
+            <p>w</p>
+            <p>w</p>
+            <p>w</p>
+            <p>w</p>
+            <p>w</p>
+            <p>w</p>
+            <p>w</p>
+            <p>w</p>
+            <p>w</p>
+
+            {/* <div className="title-activity">
                 <button
                     style={{ width: "33.33%", backgroundColor: activeType === 'announcement' ? '#FAF0D7' : '' }}
                     onClick={() => handleTypeChange('announcement')}
@@ -137,11 +231,11 @@ const Activity = (selectedOption: activityProp) => {
                 >
                     กิจกรรม
                 </button>
-            </div>
+            </div> */}
 
 
-            <div className="container-post">
-                <SearchBar onSearch={handleSearch} />
+            {/* <div className="container-post">
+                <SearchBar onSearch={handleSearch} /> */}
                 {/* 
                 {isEditing && (
                     <div className="writebox">
@@ -162,7 +256,7 @@ const Activity = (selectedOption: activityProp) => {
                 )} */}
 
 
-                {(role === "useradmin" || role === "admin" || (role === "user" && activeType !== "announcement")) &&
+                {(role === "useradmin" || role === "admin" || (role === "user" && activeTab !== "announcement")) &&
                     (isEditing ? (
                         <>
                             {/* <button onClick={handleSaveClick}>ยืนยัน</button>
@@ -182,12 +276,14 @@ const Activity = (selectedOption: activityProp) => {
 
                         </>
                     ) : (
-                        <button onClick={handleEditClick}>เขียน</button>
+                        <>
+                        {/*  <button onClick={handleEditClick}>เขียน</button> */}
+                        </>
                     )
                     )
                 }
-                <PostList type={writingPost.type} />
-            </div>
+                {/* <PostList type={writingPost.type} /> */}
+            {/* </div> */}
         </div>
     );
 }

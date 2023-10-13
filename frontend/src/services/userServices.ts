@@ -1,6 +1,6 @@
 import axios from "axios"
 import { API_BASE_URL } from "../config/apiBase"
-import { UserData, Users } from "./interface";
+import { Users } from "./interface";
 
 
 function logOutUser(): void {
@@ -58,8 +58,8 @@ async function createUser(newUser: Users) {
 
 async function authUser(params: any) {
     try {
-        console.log(`params : ${params.password}`)
-        console.log(`params : ${params.username}`)
+        // console.log(`params : ${params.password}`)
+        // console.log(`params : ${params.username}`)
         const userData = await axios.post(`${API_BASE_URL}/auth/login`, params)
         if (userData) {
             console.log("test authUser")
@@ -101,7 +101,7 @@ async function updateUserData(userId: any, updatedUserData: any) {
 
 // UserService.ts
 
-async function getUserData(userId: any): Promise<UserData> {
+async function getUserData(userId: any): Promise<Users> {
     try {
         const response = await axios.get(`${API_BASE_URL}/users/${userId}`)
         // console.log(response)

@@ -24,14 +24,14 @@ export interface Users {
     sub?: string
 }
 
-export interface UserData {
-    userId?: string | null;
-    username: string | null;
-    tel: string | null;
-    email: string | null;
-    role: string | null;
-    // เพิ่มคุณสมบัติอื่น ๆ ที่จำเป็นตามความต้องการ
-}
+// export interface UserData {
+//     userId?: string | null;
+//     username: string | null;
+//     tel: string | null;
+//     email: string | null;
+//     role: string | null;
+   
+// }
 export interface Activity {
     _id: string;
     type: string;
