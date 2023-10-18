@@ -20,7 +20,7 @@ const PopContantEvent = ({ title, detail, date, onClose, component }: PropContan
     }
 
     return (
-        <div className="PopContant">
+        <div className="PopContant" onClick={onClose} >
             <div className="popContantContainer">
 
                 <div className="headContant">

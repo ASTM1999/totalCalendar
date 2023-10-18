@@ -3,9 +3,9 @@ import { API_BASE_URL } from "../config/apiBase";
 
 
 
-async function getannouncement() {
+async function getannouncement(option:any) {
     try {
-        const response = await axios.get(`${API_BASE_URL}/announcement`)
+        const response = await axios.get(`${API_BASE_URL}/announcement?option=${option}`)
         // console.log(response)
         return response.data
     } catch (err) {

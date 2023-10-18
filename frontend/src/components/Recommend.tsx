@@ -3,11 +3,12 @@ import Header from "./Header"
 import { useEffect, useState } from "react"
 import { UserService } from "../services/userServices"
 import { contactService } from "../services/contactService"
+import { Contract } from "../services/interface"
+import PopContantEvent from './PopContant';
 import angleRight from '../../public/angle-right.svg'
 import angleLeft from '../../public/angle-left.svg'
-import PopContantEvent from './PopContant';
 
-const UserManagement = () => {
+const Recommend = () => {
     // user
     const [username, setUserName] = useState<string | null>()
     const [role, setRole] = useState<string | null>()
@@ -53,7 +54,7 @@ const UserManagement = () => {
     //data from contact
 
 
-     //pagination
+    //pagination
     //option
     const itemsPerPageOptions = [5, 10, 20];
     const [itemsPerPage, setItemsPerPage] = useState(itemsPerPageOptions[0]);
@@ -104,7 +105,7 @@ const UserManagement = () => {
         const data = await contactService.getContact()
         if (data) {
             const filteredData: any = data.filter((item: any) => {
-                return item.require_role !== '' && item.require_role !== undefined && item.require_role !== null;
+                return item.recommend !== '' && item.recommend !== undefined && item.recommend !== null;
             });
 
             const usernameRequire = await Promise.all(
@@ -125,7 +126,7 @@ const UserManagement = () => {
                     return newItem
                 })
             )
-            console.log("usernameRequire : ", usernameRequire)
+            // console.log("usernameRequire : ", usernameRequire)
             setContactRequire(usernameRequire)
         }
     }
@@ -184,6 +185,8 @@ const UserManagement = () => {
     const onClose = () => {
         setPopup(false)
     }
+
+
     return (
         <>
             <Header />
@@ -195,7 +198,7 @@ const UserManagement = () => {
                     <div className="headBox">
                         <div className="dv-headbox">
                             <div className="">
-                                <h1>User Management</h1>
+                                <h1>Recommend</h1>
                                 <div className="breadcrum-info">
                                     <b>
                                         <p onClick={handleClickHome} style={{ marginRight: "6px", cursor: "pointer" }}>Home</p>
@@ -221,32 +224,27 @@ const UserManagement = () => {
                                     <tr>
                                         <th>NAME</th>
                                         <th>ROLE</th>
-                                        <th>REQUIRE ROLE</th>
-                                        <th>STATUS</th>
+                                        <th>RECOMMEND</th>
+
                                         <th style={{ width: '100px' }}>CREATED DATE</th>
-                                        <th>ACTIONS</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {contactRequire.slice().reverse().map((item: any, index: any) => (
+                                    {currentItem.slice().reverse().map((item: any, index: any) => (
                                         <tr key={index}>
                                             <td>{item.username}</td>
                                             <td>{item.role}</td>
                                             <td >
                                                 <b>
-                                                    <p onClick={() => handleShowDetailRequire(item.detail, item.require_role, item.time)} className={`th-requureRole ${item.status === "active" ? "active" : ""}`}>
-                                                        {item.require_role}
+                                                    <p>
+                                                        {item.recommend}
                                                     </p>
                                                 </b>
                                             </td>
-                                            <td>{item.status}</td>
+
                                             <td>{formatDateTime(item.time)}</td>
-                                            <td>
-                                                <img className="icon-approve" src="../../public/check-green.svg" alt="check"
-                                                    onClick={() => handleApprove(item.userOwner, item.require_role, 'active', "useradmin")} />
-                                                <img className="icon-approve" src="../../public/xmark-red.svg" alt="xmark"
-                                                    onClick={() => handleCencle(item.userOwner, item.require_role, 'pending', "user")} />
-                                            </td>
+
                                         </tr>
                                     ))}
                                 </tbody>
@@ -305,4 +303,4 @@ const UserManagement = () => {
     )
 }
 
-export default UserManagement
+export default Recommend

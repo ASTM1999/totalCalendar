@@ -15,6 +15,7 @@ import ContactAdmin from './components/Contact';
 import UserProfile from './components/UserProfile';
 import Activity from './components/Activity';
 import UserManagement from './components/UserManagement';
+import Recommend from './components/Recommend';
 
 
 
@@ -31,6 +32,8 @@ function App() {
           {/* <Route path="/" element={<Home />} /> */}
           <Route path="/UserProfile" element={<UserProfile />} />
           <Route path="/UserManagement" element={<UserManagement />} />
+          
+          <Route path="/Recommend" element={<Recommend />} />
           <Route path="/practice/counter" element={<Counter />} />
           <Route path="/practice/todolist" element={<TodoList />} />
           <Route path="/practice/looper" element={<Looper />} />

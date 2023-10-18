@@ -11,8 +11,8 @@ export class ContractController {
     ) { }
     @Post()
     async createContract(@Body() createContractdto: CreateContractDto) {
-        console.log(createContractdto)
-        console.log(createContractdto.title && createContractdto.recommend)
+        // console.log(createContractdto)
+        // console.log(createContractdto.title && createContractdto.recommend)
         if (createContractdto.title && createContractdto.recommend) {
             if (createContractdto.userOwner) {
                 createContractdto.userOwner = new ObjectId(createContractdto.userOwner)
@@ -30,7 +30,7 @@ export class ContractController {
 
     @Get()
     async get() {
-        console.log("contact work backend")
+        // console.log("contact work backend")
         return await this.ContractService.getAll()
     }
 }

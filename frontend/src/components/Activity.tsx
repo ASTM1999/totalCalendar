@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { announcementsState, activityState, campsState, writingPostState, dataEventState } from "../contexts/atoms/contextValueState";
+import { announcementsState, activityState, campsState, writingPostState, } from "../contexts/atoms/contextValueState";
 import PostList from "./PostList";
 import { activityServices } from "../services/activityService";
 import { campServices } from "../services/campService";
 import { announcementServices } from "../services/announementService";
-import SearchBar from "./SearchBar";
-import { EventsServices } from "../services/eventsService";
+// import SearchBar from "./SearchBar";
+// import { EventsServices } from "../services/eventsService";
 import { UserService } from "../services/userServices";
 import WritingPopup from "./WritingPopup";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +26,7 @@ const Activity = () => {
     const setActivities = useSetRecoilState(activityState);
     const setCamp = useSetRecoilState(campsState)
     const setAnnouncement = useSetRecoilState(announcementsState)
-    const setDataEvent = useSetRecoilState(dataEventState)
+    // const setDataEvent = useSetRecoilState(dataEventState)
     const [selectedOption, setSelectedOption] = useState('วันหยุด');
 
     const [, setSearchText] = useState('');
@@ -64,35 +64,23 @@ const Activity = () => {
 
 
 
-    const handleTypeChange = (type: any) => {
-        // setActiveType(type);
-        setWritingPost({ type, title: '', detail: '' });
+    // const handleTypeChange = (type: any) => {
+    //     // setActiveType(type);
+    //     setWritingPost({ type, title: '', detail: '' });
 
-    };
+    // };
 
 
-    const fetchActivity = async () => {
-        try {
-            const ac = await activityServices.getActivity()
-            const ca = await campServices.getCamp()
-            const an = await announcementServices.getannouncement()
-            // console.log("camp: ", ca)
-            setActivities(ac)
-            setCamp(ca)
-            setAnnouncement(an)
-        } catch (err) {
-            console.log(`Error fetching data: ${err}`)
-        }
-    }
 
-    const getEventData = async () => {
-        try {
-            const dataEvent = await EventsServices.getEvents()
-            setDataEvent(dataEvent)
-        } catch (err) {
-            console.log(`Error fetch data: ${err}`)
-        }
-    }
+
+    // const getEventData = async () => {
+    //     try {
+    //         const dataEvent = await EventsServices.getEvents()
+    //         setDataEvent(dataEvent)
+    //     } catch (err) {
+    //         console.log(`Error fetch data: ${err}`)
+    //     }
+    // }
 
 
 
@@ -168,9 +156,25 @@ const Activity = () => {
             console.error("เกิดข้อผิดพลาดในการอัปเดตข้อมูลผู้ใช้:", error);
         }
     }
-    const handleOptionChange = (event: any) => {
+    const handleOptionChange = async (event: any) => {
+        // console.log("Handle option click");
+        // console.log("selectedOption Before:", selectedOption);
+        // console.log("event:", event.target.value);
+
         setSelectedOption(event.target.value);
+        setTimeout(async (newOption: any) => {
+            // console.log("selectedOption After:", newOption);
+
+           
+            const ac = await activityServices.getActivity(newOption)
+            const ca = await campServices.getCamp(newOption)
+            const an = await announcementServices.getannouncement(newOption);
+            setActivities(ac)
+            setCamp(ca)
+            setAnnouncement(an);
+        }, 0, event.target.value);
     };
+
 
     async function fetchUser() {
         const id = await UserService.getUserId()
@@ -180,9 +184,22 @@ const Activity = () => {
         setRole(data.role)
         setId(id)
     }
+    const fetchActivity = async () => {
+        try {
+            const ac = await activityServices.getActivity(selectedOption)
+            const ca = await campServices.getCamp(selectedOption)
+            const an = await announcementServices.getannouncement(selectedOption)
+            console.log("announcementServices: ", an)
+            setActivities(ac)
+            setCamp(ca)
+            setAnnouncement(an)
+        } catch (err) {
+            console.log(`Error fetching data: ${err}`)
+        }
+    }
     useEffect(() => {
         fetchActivity()
-        getEventData()
+        // getEventData()
         fetchUser()
     }, [])
 

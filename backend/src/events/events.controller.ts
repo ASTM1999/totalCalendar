@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { EventsService } from './events.service';
 
@@ -14,9 +14,10 @@ export class EventsController {
 
     @Get('pullbuffer')
     async pullBuffer(
-        // @Body() data: { selectedOption: string }
+        @Query('option') option: string
     ) {
-        return this.eventsService.get()
+        console.log(option)
+        return this.eventsService.get(option)
     }
 
     // ตัวทดสอบ

@@ -2,9 +2,9 @@ import axios from "axios";
 import { API_BASE_URL } from "../config/apiBase";
 
 
-async function getActivity() {
+async function getActivity(option:any) {
   try {
-    const response = await axios.get(`${API_BASE_URL}/activity`)
+    const response = await axios.get(`${API_BASE_URL}/activity?option=${option}`)
     // console.log(response)
     return response.data
   } catch (err) {

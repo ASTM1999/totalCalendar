@@ -6,6 +6,7 @@ import { Events } from './events.entity';
 // import { buffer } from 'stream/consumers';
 import * as xlsx from 'xlsx';
 import * as fs from 'fs';
+import { ObjectId } from 'mongodb';
 // import { parse } from 'date-fns';
 // import { off } from 'process';
 
@@ -45,8 +46,8 @@ export class EventsService {
         return targetDate
     }
 
-    async get() {
-        const data = await this.eventsRepository.find();
+    async get(option) {
+        const data = await this.eventsRepository.find({ where: { option: option } });
         const formattedDataPromises = data.map(async (file) => {
             const event = new Events();
             event.fieldname = file.fieldname;
@@ -55,6 +56,7 @@ export class EventsService {
             event.mimetype = file.mimetype;
             event.size = file.size;
             event.path = file.path
+            event.option = file.option
 
             const fileData = fs.readFileSync(file.path);
             const workbook = xlsx.read(fileData, { type: 'buffer' });
@@ -89,9 +91,15 @@ export class EventsService {
         return allFormattedData;
     }
 
-    async createEvent(files: Express.Multer.File[], data: string) {
+    async createEvent(files: Express.Multer.File[], option: string) {
         try {
-            // ทำการประมวลผลข้อมูลจากไฟล์ Excel ตามความต้องการ
+            const findFile = await this.eventsRepository.findOne({ where: { option: option } })
+            console.log("fineFile: ", findFile)
+            if (findFile) {
+                console.log(`work findFile delete ${findFile.id}`)
+                await this.eventsRepository.delete(new ObjectId(findFile.id))
+                console.log("deleted")
+            }
             console.log(files)
             const savedEvents = await Promise.all(
                 files.map(async (file) => {
@@ -102,35 +110,7 @@ export class EventsService {
                     event.mimetype = file.mimetype;
                     event.size = file.size;
                     event.path = file.path
-                    event.date = data
-
-
-
-                    // อ่านข้อมูลจากไฟล์ Excel
-                    // const fileData = fs.readFileSync(file.path);
-                    // const workbook = xlsx.read(fileData, { type: 'buffer' });
-                    // const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-
-                    // // อ่านข้อมูลจากไฟล์ Excel
-                    // const data: ExcelRow[] = xlsx.utils.sheet_to_json(worksheet);
-
-                    // console.log(data)
-                    // const formattedData = await Promise.all(
-                    //     data.map(async (item) => ({
-
-                    //         date: (await this.formatDateToYYYYMMDD((await this.serialNumberToDate(item.date)).toLocaleDateString())),
-                    //         event: item.event
-                    //     }))
-                    // )
-                    // console.log(formattedData)
-                    // ดึงข้อมูล Date และ event จากอ็อบเจ็กต์
-                    // const datesAndEvents = data.map((row) => {
-                    //     return {
-                    //         date: row.date, // สมมติว่า "date" เป็นชื่อคอลัมน์ใน Excel
-                    //         event: row.event, // สมมติว่า "eventName" เป็นชื่อคอลัมน์ใน Excel
-                    //     };
-                    // });
-
+                    event.option = option
                     return await this.eventsRepository.save(event);
                 }),
             );

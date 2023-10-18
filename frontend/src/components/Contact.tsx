@@ -40,34 +40,46 @@ const ContactAdmin = () => {
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     try {
-                        if (title && recommend) {
-                            const createContract: Contract = {
-                                title: title,
-                                recommend: recommend,
-                                userOwner: id,
-                                time: new Date()
-                            }
-                            console.log("createContract: ", createContract)
-                            await contactService.createContact(createContract)
-                            Swal.fire(
-                                'Sended!',
-                                'Your file has been Sended.',
-                                'success'
-                            )
-                        } else if (selectedOption && detail) {
+                        if (selectedOption && detail) {
                             const createContract: Contract = {
                                 require_role: selectedOption,
                                 detail: detail,
                                 userOwner: id,
                                 time: new Date()
                             }
-                            console.log("createContract: ", createContract)
+                            // console.log("createContract: ", createContract)
+                            const res = await contactService.createContact(createContract)
+                            if (res) {
+
+                                Swal.fire(
+                                    'Required!',
+                                    'Your file has been Required.',
+                                    'success'
+                                )
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Required',
+                                    // footer: '<a href="">Why do I have this issue?</a>'
+                                })
+                            }
+                        } else if (title && recommend) {
+                            const createContract: Contract = {
+                                title: title,
+                                recommend: recommend,
+                                userOwner: id,
+                                time: new Date()
+                            }
+                            // console.log("createContract: ", createContract)
                             await contactService.createContact(createContract)
                             Swal.fire(
-                                'Required!',
-                                'Your file has been Required.',
+                                'Recommed!',
+                                'Your file has been Recommed.',
                                 'success'
                             )
+
+
                         } else {
                             Swal.fire({
                                 icon: 'error',
@@ -118,6 +130,10 @@ const ContactAdmin = () => {
         navigate('/')
     }
     const handleTabClick = (tabName: any) => {
+        if (tabName === "recommend") {
+            setSelectedOption('')
+            setDetail('')
+        }
         setActiveTab(tabName);
     };
     useEffect(() => {

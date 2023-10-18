@@ -132,7 +132,7 @@ const Comment = ({ postId, activityTab }: CommentProps) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {commentRecoil.map((commentRecoil, index) => (
+                    {commentRecoil.slice().reverse().map((commentRecoil, index) => (
                         <tr key={index}>
                             <td>{commentRecoil.userId.data.username}</td>
                             <td>{commentRecoil.comment}</td>

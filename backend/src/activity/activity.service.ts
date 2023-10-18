@@ -30,8 +30,8 @@ export class ActivityService {
 
     async update(id: ObjectId, updateActivityDto: UpdateActivityDto) {
         try {
-            const res = await this.activityRepository.findOne({where: {_id: id}})
-            console.log("res:",res)
+            const res = await this.activityRepository.findOne({ where: { _id: id } })
+            console.log("res:", res)
             if (updateActivityDto.startDate) {
                 res.startDate = updateActivityDto.startDate
             }
@@ -44,7 +44,7 @@ export class ActivityService {
             if (updateActivityDto.detail) {
                 res.detail = updateActivityDto.detail
             }
-            if(res){
+            if (res) {
                 res.userOwner = new ObjectId(updateActivityDto.userOwner)
             }
             const update = await this.activityRepository.save(res)
@@ -62,7 +62,7 @@ export class ActivityService {
         return this.activityRepository.save(createActivityDto)
     }
 
-    async findActivity() {
-        return this.activityRepository.find()
+    async findActivity(option) {
+        return this.activityRepository.find({ where: { option: option } })
     }
 }

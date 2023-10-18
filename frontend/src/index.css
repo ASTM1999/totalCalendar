@@ -1155,17 +1155,51 @@ header {
 
 /* post */
 .icon-rl {
-  width: 10px;
+  width: 35px;
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  /* cursor: pointer; */
+}
+
+.icon-rl {
+  cursor: pointer;
+}
+
+.icon-rl img {
+  width: 100%;
+}
+
+.icon-rl:disabled {
+  background-color: WhiteSmoke;
+  /* กำหนดสีเมื่อปุ่ม disabled */
+  cursor: not-allowed;
+  /* เปลี่ยน cursor เป็นไม่อนุญาตเมื่อปุ่ม disabled */
+}
+
+.icon-rl:not([disabled]) {
+  background-color: rgb(212, 212, 212);
+
+  /* สไตล์เมื่อปุ่มไม่ใช่สถานะ disabled */
+  /* แทรกสไตล์ที่คุณต้องการใช้เมื่อปุ่มสามารถกดได้ที่นี่ */
 }
 
 .page-numbers li {
-  padding: 0px 5px;
+  border-radius: 10px;
+  width: 35px;
+  height: 35px;
+  font-size: 18px;
+  /* padding: 10px; */
   cursor: pointer;
   margin: 0px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
 }
 
 .page-numbers li:hover {
-  border-bottom: 1px solid #3E97FF;
+  border-bottom: 4px solid #3E97FF;
 }
 
 .activePage {
@@ -1182,14 +1216,31 @@ header {
 
 }
 
+.selectPagination {
+  width: 72px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  padding: 7.15px 15.15px 7.15px 15.15px;
+  border: none;
+  background-color: whitesmoke;
+  border-radius: 10px;
+}
+
 .pagination {
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   align-content: center;
   flex-direction: row;
 }
 
+.numpage {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
 .post-list {
   height: 100%;
@@ -1374,12 +1425,12 @@ header {
 
 .SingIn {
   width: 407px;
-  height: 510px;
+  height: 550px;
   display: flex;
   /* justify-content: center; */
   margin-top: 120px;
   border: 2px solid whitesmoke;
-  border-radius: 5px;
+  border-radius: 20px;
   flex-direction: column;
   align-items: center;
   padding: 40px;

@@ -14,7 +14,7 @@ async function getContact() {
 async function createContact(data: Contract) {
     try {
         const res = await axios.post(`${API_BASE_URL}/contract`, data)
-        // console.log(res)
+        console.log(res)
         return res
     } catch (err) {
         console.log(`create failed ${err}`)

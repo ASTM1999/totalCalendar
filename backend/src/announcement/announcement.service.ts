@@ -54,8 +54,8 @@ export class AnnouncementService {
         }
     }
 
-    async getAnnouncement() {
-        return this.announcementRepository.find()
+    async getAnnouncement(option) {
+        return this.announcementRepository.find({ where: { option: option } })
     }
 
     async createAnouncement(createAnnouncementDto: CreateAnnouncementDto) {

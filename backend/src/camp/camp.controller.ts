@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Delete, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Delete, Param, Post, Put, Query } from '@nestjs/common';
 import { CampService } from './camp.service';
 import { CreateCampDto } from './dto/create-camp.dto';
 import { ObjectId } from 'mongodb';
@@ -20,9 +20,11 @@ export class CampController {
 
 
     @Get()
-    async get() {
+    async get(
+        @Query('option') option:string 
+    ) {
         // console.log("wdwd")
-        return await this.campService.getAll()
+        return await this.campService.getAll(option)
     }
 
     @Delete(':activityId/comment/:id/delete')

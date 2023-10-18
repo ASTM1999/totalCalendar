@@ -2,10 +2,10 @@ import axios from "axios";
 import { API_BASE_URL } from "../config/apiBase";
 
 
-async function getEvents() {
+async function getEvents(option: any) {
   try {
-
-    const response = await axios.get(`${API_BASE_URL}/Events/pullbuffer`)
+    console.log(option)
+    const response = await axios.get(`${API_BASE_URL}/events/pullbuffer?option=${option}`)
     return response.data
   } catch (err) {
     console.log(`Error fetching data`, err)

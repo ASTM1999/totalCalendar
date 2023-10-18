@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 
 import { AnnouncementService } from './announcement.service';
 import { ParseObjectIdPipe } from 'src/common/pipes';
@@ -69,8 +69,11 @@ export class AnnouncementController {
     }
 
     @Get()
-    async getAnnouncement() {
-        return this.announcementService.getAnnouncement()
+    async getAnnouncement(
+        @Query('option') option: string
+    ) {
+        console.log(option)
+        return this.announcementService.getAnnouncement(option)
     }
 
 

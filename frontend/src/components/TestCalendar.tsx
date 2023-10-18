@@ -120,7 +120,7 @@ const TestCalendar = () => {
   };
   const getEventData = async () => {
     try {
-      const dataEvent = await EventsServices.getEvents()
+      const dataEvent = await EventsServices.getEvents(selectedOption)
       setDataEvent(dataEvent)
       console.log("fetch Event: ", dataEvent)
     } catch (err) {
@@ -134,8 +134,11 @@ const TestCalendar = () => {
     navigate('/')
   }
 
-  const handleOptionChange = (e: any) => {
+  const handleOptionChange = async (e: any) => {
     setSelectedOption(e.target.value);
+    console.log(e.target.value)
+    const dataEvent = await EventsServices.getEvents(e.target.value)
+    setDataEvent(dataEvent)
   };
 
 

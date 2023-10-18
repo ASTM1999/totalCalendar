@@ -5,6 +5,7 @@ import { useSetRecoilState } from "recoil";
 import { userState } from "../contexts/atoms/contextValueState";
 import { UserService } from "../services/userServices";
 import { useGoogleLogin } from "@react-oauth/google";
+import Swal from "sweetalert2";
 
 const Login = () => {
     // const [userlogin, setUserLogin] = useState('Anusorn sriprom')
@@ -25,11 +26,11 @@ const Login = () => {
             console.log("google login")
             try {
                 const user = await UserService.getGoogle(tokenResponse)
-                await navigate('/')
-                // console.log("googleLogin",user)
+                navigate('/')
+                console.log("googleLogin", user)
                 setUserState((prevUserState) => [...prevUserState, user])
-                localStorage.setItem('username', user.name)
-                window.location.reload()
+                localStorage.setItem('username', user.username)
+                // window.location.reload()
             } catch (err) {
                 console.log(`Register Failed ${err}`)
             }
@@ -61,6 +62,11 @@ const Login = () => {
                 const userData = await UserService.authUser({ username: email });
                 console.log(userData)
                 if (userData.message === 'Email not found') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Email not found!',
+                    })
                     console.log(`test`)
                 } else {
                     setName(userData.username)
@@ -75,6 +81,11 @@ const Login = () => {
                 // console.log("from recoil: loogin", userData)
                 // console.log("from recoil: loogin", userData.message)
                 if (userData.message === 'Inconrect email') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Inconrect Password!',
+                    })
                     console.log("try again")
                 } else {
                     setUserState((prevUserState) => [...prevUserState, userData])
@@ -83,6 +94,12 @@ const Login = () => {
 
                 }
             } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+
+                })
                 console.error(`Login failed: ${error}`);
             }
         }

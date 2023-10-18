@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ActivityService } from './activity.service';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { ParseObjectIdPipe } from 'src/common/pipes';
@@ -63,9 +63,11 @@ export class ActivityController {
     }
 
     @Get()
-    async getActivity() {
+    async getActivity(
+        @Query('option') option:string 
+    ) {
         // console.log('hello')
-        return this.activityService.findActivity()
+        return this.activityService.findActivity(option)
     }
 
     @Post()

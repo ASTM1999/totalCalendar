@@ -56,9 +56,9 @@ export class CampService {
         return this.campRepository.save(createCampdto)
     }
 
-    async getAll() {
+    async getAll(option) {
         try {
-            const camp = await this.campRepository.find()
+            const camp = await this.campRepository.find({ where: { option: option } })
             // console.log(camp)
             return camp
         } catch (error) {

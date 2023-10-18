@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectId } from 'mongodb';
 import { Repository } from 'typeorm';
@@ -57,7 +57,7 @@ export class UsersController {
     @Post('register')
     async registerUser(
         @Body() createUserDto: CreateUserDto,
-        ) {
+    ) {
         console.log("createUserDto: ", createUserDto)
         console.log(createUserDto.sub)
         if (createUserDto.sub) {
@@ -69,13 +69,14 @@ export class UsersController {
             console.log("const user:", user);
 
             if (user && createUserDto.email === user.email) {
-                return "Email already exists"
+                console.log("aready")
+                throw new HttpException('Bad request', HttpStatus.BAD_REQUEST)
             } else {
                 return this.usersService.registerUser(createUserDto);
             }
         } catch (error) {
             console.error(error);
-            return false;
+            throw new HttpException('Bad request', HttpStatus.BAD_REQUEST)
         }
     }
 }

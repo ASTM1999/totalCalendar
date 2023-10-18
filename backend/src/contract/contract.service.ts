@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -14,6 +14,11 @@ export class ContractService {
     ) { }
 
     async createContract(createContractdto: CreateContractDto) {
+        const find = this.ContractRepository.findOne({ where: { userOwner: createContractdto.userOwner } })
+        if (find && createContractdto.require_role) {
+            // console.log("require")
+            throw new InternalServerErrorException("Error create Contract")
+        }
         return this.ContractRepository.save(createContractdto)
     }
     async getAll() {

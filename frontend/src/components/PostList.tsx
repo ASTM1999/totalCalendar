@@ -1,11 +1,11 @@
 
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { announcementsState, activityState, campsState } from '../contexts/atoms/contextValueState';
 import { useEffect, useState } from 'react';
 import { UserService } from '../services/userServices';
 import { activityServices } from '../services/activityService';
-import { campServices } from '../services/campService';
-import { announcementServices } from '../services/announementService';
+// import { campServices } from '../services/campService';
+// import { announcementServices } from '../services/announementService';
 import SearchBar from './SearchBar';
 import { Activity, Users } from '../services/interface';
 import DatePicker from 'react-datepicker';
@@ -14,7 +14,7 @@ import angleRight from '../../public/angle-right.svg'
 import angleLeft from '../../public/angle-left.svg'
 import Comment from './Comment';
 
-const PostList = ({ type }: { type: string }) => {
+const PostList = ({ type }: { type: string; }) => {
     const posts = useRecoilValue(type === 'activity' ? activityState : type === 'camp' ? campsState : announcementsState);
     const [isEditingMap, setIsEditingMap] = useState<{ [key: string]: boolean }>({});
 
@@ -37,31 +37,28 @@ const PostList = ({ type }: { type: string }) => {
     const [selectedDateEnd, setSelectedDateEnd] = useState<Date | null>(new Date());
 
 
-    //แสดงหน้า
-    const [currentPage, setCurrentPage] = useState(1)
-    const itemPerPage = 7
-    const indexOfLastItem = currentPage * itemPerPage
-    const indexOfFirstItem = indexOfLastItem - itemPerPage
-    const moreNewDate = posts.filter((item) => new Date(item.endDate) > new Date())
-    const currentItem = moreNewDate.slice(indexOfFirstItem, indexOfLastItem)
-    const totalPages = Math.ceil(moreNewDate.length / itemPerPage);
 
-    const pageNumbers = [];
-    for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(i);
+    function formatText(text: any) {
+        if (!text) {
+            return '';
+        }
+
+        // แยกบรรทัดโดย '\n'
+        const lines = text.split('\n');
+
+        // สร้างลำดับของข้อความ
+        const formattedText = lines.map((line: any, index: any) => {
+            return (
+                <p key={index}>
+                    {` ${line}`}
+                </p>
+            );
+        });
+
+        return formattedText.map((item: any, index: any) => (
+            <div key={index}>{item.props.children}</div>
+        ));
     }
-    const renderPageNumbers = pageNumbers.map((number) => (
-        <li
-            key={number}
-            // id={number}
-            onClick={() => setCurrentPage(number)}
-            className={number === currentPage ? "activePage" : ""}
-
-        >
-            {number}
-        </li>
-    ));
-
     // console.log("currentPage: ", currentPage)
     // console.log("indexOfLastItem: ", indexOfLastItem)
     // console.log("indexOfFirstItem: ", indexOfFirstItem)
@@ -69,22 +66,22 @@ const PostList = ({ type }: { type: string }) => {
     // console.log("currentItem: ", currentItem)
 
 
-    const setActivities = useSetRecoilState(activityState);
-    const setCamp = useSetRecoilState(campsState)
-    const setAnnouncement = useSetRecoilState(announcementsState)
-    const getActivity = async () => {
-        try {
-            const ac = await activityServices.getActivity()
-            const ca = await campServices.getCamp()
-            const an = await announcementServices.getannouncement()
-            console.log("camp: ", ca)
-            setActivities(ac)
-            setCamp(ca)
-            setAnnouncement(an)
-        } catch (err) {
-            console.log(`Error fetching data: ${err}`)
-        }
-    }
+    // const setActivities = useSetRecoilState(activityState);
+    // const setCamp = useSetRecoilState(campsState)
+    // const setAnnouncement = useSetRecoilState(announcementsState)
+    // const getActivity = async () => {
+    //     try {
+    //         const ac = await activityServices.getActivity()
+    //         const ca = await campServices.getCamp()
+    //         const an = await announcementServices.getannouncement(selectedOption)
+    //         console.log("camp: ", ca)
+    //         setActivities(ac)
+    //         setCamp(ca)
+    //         setAnnouncement(an)
+    //     } catch (err) {
+    //         console.log(`Error fetching data: ${err}`)
+    //     }
+    // }
     // console.log(posts)
     const handleEditClick = (postId: string) => {
         setIsEditingMap((prevState) => ({
@@ -107,7 +104,7 @@ const PostList = ({ type }: { type: string }) => {
                 ...prevState,
                 [postId]: false,
             }));
-            getActivity()
+            // getActivity()
 
         } catch (error) {
             console.error(`Error updating activity: ${error}`);
@@ -154,34 +151,44 @@ const PostList = ({ type }: { type: string }) => {
 
     useEffect(() => {
         fetchUserData()
+        // getActivity()
         // console.log("userpost useEffect: ", userpost)
     }, [userpost])
 
 
 
-    function formatText(text: any) {
-        if (!text) {
-            return '';
-        }
 
-        // แยกบรรทัดโดย '\n'
-        const lines = text.split('\n');
+    //option
+    const itemsPerPageOptions = [5, 10, 20];
+    const [itemsPerPage, setItemsPerPage] = useState(itemsPerPageOptions[0]);
 
-        // สร้างลำดับของข้อความ
-        const formattedText = lines.map((line: any, index: any) => {
-            return (
-                <p key={index}>
-                    {` ${line}`}
-                </p>
-            );
-        });
+    //แสดงหน้า
+    const [currentPage, setCurrentPage] = useState(1)
+    const indexOfLastItem = currentPage * itemsPerPage
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage
+    const moreNewDate = posts.filter((item) => new Date(item.endDate) > new Date())
+    const currentItem = moreNewDate.slice(indexOfFirstItem, indexOfLastItem)
+    const totalPages = Math.ceil(moreNewDate.length / itemsPerPage);
 
-        return formattedText.map((item: any, index: any) => (
-            <div key={index}>{item.props.children}</div>
-        ));
+    console.log("currentItem: ", moreNewDate)
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
     }
+    const renderPageNumbers = pageNumbers.map((number) => (
+        <li
+            key={number}
+            // id={number}
+            onClick={() => setCurrentPage(number)}
+            className={number === currentPage ? "activePage" : ""}
 
-    console.log(type)
+        >
+            {number}
+        </li>
+    ));
+
+
+    // console.log(type)
 
     return (
         <div className="post-list">
@@ -205,24 +212,46 @@ const PostList = ({ type }: { type: string }) => {
                                 </div>
                             </li>
                         ))}
+
+
+
+
                     <div className="pagination">
-                        <button
-                            onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
-                            disabled={currentPage === 1}
-                        >
-                            {/* Previous */}
-                            <img className="icon-rl" src={angleLeft} />
-                        </button>
-                        <ul className="page-numbers">
-                            {renderPageNumbers}
-                        </ul>
-                        <button
-                            onClick={() => setCurrentPage((prevPage) => prevPage + 1)}
-                            disabled={indexOfLastItem >= posts.length}
-                        >
-                            <img className="icon-rl" src={angleRight} />
-                            {/* Next */}
-                        </button>
+                        <div>
+                            <select
+                                className='selectPagination'
+                                value={itemsPerPage}
+                                onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                            >
+                                {itemsPerPageOptions.map((option, index) => (
+                                    <option key={index} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="numpage">
+                            <button className="icon-rl"
+                                onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
+                                disabled={currentPage === 1}
+                            >
+                                {/* Previous */}
+                                <img src={angleLeft} />
+                            </button>
+                            <ul className="page-numbers">
+                                {renderPageNumbers}
+                            </ul>
+                            <button className="icon-rl"
+                                onClick={() => setCurrentPage((prevPage) => prevPage + 1)}
+                                disabled={indexOfLastItem >= moreNewDate.length}
+                            >
+                                <img src={angleRight} />
+                                {/* Next */}
+                            </button>
+                        </div>
+
+
                     </div>
                 </ul>
             </div>

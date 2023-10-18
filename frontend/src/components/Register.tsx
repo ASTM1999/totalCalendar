@@ -1,6 +1,8 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { UserService } from "../services/userServices";
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -10,19 +12,26 @@ const Register = () => {
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const navigate = useNavigate();
 
-    const handleEmailChange = (e:any) => {
+    const isPasswordValid = (password: string) => {
+        // ตรวจสอบความยาว
+
+
+        // ตัวเลข
+
+    };
+    const handleEmailChange = (e: any) => {
         setEmail(e.target.value);
     };
 
-    const handlePasswordChange = (e:any) => {
+    const handlePasswordChange = (e: any) => {
         setPassword(e.target.value);
     };
 
-    const handleUsername = (e:any) => {
+    const handleUsername = (e: any) => {
         setUsername(e.target.value);
     };
 
-    const handlePasswordConfirmChange = (e:any) => {
+    const handlePasswordConfirmChange = (e: any) => {
         setPasswordConfirm(e.target.value);
         setPasswordsMatch(password === e.target.value);
     };
@@ -34,17 +43,68 @@ const Register = () => {
         navigate('/registerOption');
     };
 
-    const handleSubmit = () => {
-        if (passwordsMatch) {
+
+    const handleSubmit = async () => {
+
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (!emailPattern.test(email)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please Check format Email!',
+            })
+        }
+        else if (password.length < 8) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please make sure your password is at least 8 characters long!',
+            })
+        }
+        else if (passwordsMatch && email && password && username) {
             console.log("Registration data:", { email, password, username });
-            navigate('/');
+            const data = {
+                email: email,
+                password: password,
+                username: username,
+                role: "user",
+            }
+            const res = await UserService.createUserDto(data)
+            if (res) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Successed',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                navigate('/login')
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: '400 (Bad Request)',
+                    text: 'Email Aready',
+                })
+            }
+
+
+        } else if (!/\d/.test(password) || !/[a-z]/.test(password) || !/[A-Z]/.test(password)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please make sure your password is includes a mix of numbers, uppercase, and lowercase letters.!',
+            })
         } else {
-            console.error("Passwords do not match");
-            alert("Passwords do not match");
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Passwords do not match!',
+            })
+
         }
     };
 
-   
+
     return (
         <div className="container-signin">
 

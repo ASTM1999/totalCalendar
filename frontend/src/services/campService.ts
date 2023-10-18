@@ -2,9 +2,9 @@ import axios from "axios";
 import { API_BASE_URL } from "../config/apiBase";
 
 
-async function getCamp() {
+async function getCamp(option:any) {
     try {
-        const response = await axios.get(`${API_BASE_URL}/camp`)
+        const response = await axios.get(`${API_BASE_URL}/camp?option=${option}`)
         // console.log(response)
         return response.data
     } catch (err) {

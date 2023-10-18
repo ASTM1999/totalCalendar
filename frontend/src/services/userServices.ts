@@ -153,6 +153,7 @@ async function getGoogle(tokenResponse: any) {
         })
     if (res.data) {
         localStorage.setItem('picture', res.data.picture)
+        localStorage.setItem('username', res.data.name)
     }
     createDataUserGoogle(res.data)
     return createDataUserGoogle(res.data)
@@ -184,7 +185,14 @@ async function getUserbyId(id: any) {
     }
 }
 
-
+async function createUserDto(data: any) {
+    try {
+        const res = await axios.post(`${API_BASE_URL}/users/register`, data)
+        return res.data
+    } catch (err) {
+        console.log(`Failed ${err}`)
+    }
+}
 
 export const UserService = {
     getUserbyId,
@@ -202,6 +210,7 @@ export const UserService = {
     updateUserData,
     getGoogle,
     getPicture,
-    getOption
+    getOption,
+    createUserDto
 
 }

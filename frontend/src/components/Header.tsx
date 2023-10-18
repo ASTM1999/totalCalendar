@@ -67,6 +67,7 @@ const Header = () => {
     };
     useEffect(() => {
         fetchUserData()
+
     }, [])
 
 
@@ -89,6 +90,9 @@ const Header = () => {
         }
         else if (tabName === 'userManagement') {
             navigate('/UserManagement', { state: { activeTab: tabName } });
+        }
+        else if (tabName === 'Recommend') {
+            navigate('/Recommend', { state: { activeTab: tabName } });
         }
         // setActiveTab(tabName); // ลบหรือคอมเมนต์บรรทัดนี้
     };
@@ -131,9 +135,14 @@ const Header = () => {
                             </li>
 
                         ) : (
-                            <li className="tap-item">
-                                <a className={`tap-link ${activeTab === "userManagement" ? "active" : ""}`} onClick={() => handleTabClick('userManagement')}>User Management</a>
-                            </li>
+                            <>
+                                <li className="tap-item">
+                                    <a className={`tap-link ${activeTab === "userManagement" ? "active" : ""}`} onClick={() => handleTabClick('userManagement')}>User Management</a>
+                                </li>
+                                <li className="tap-item">
+                                    <a className={`tap-link ${activeTab === "Recommend" ? "active" : ""}`} onClick={() => handleTabClick('Recommend')}>Recommend</a>
+                                </li>
+                            </>
                         )}
                     </ul>
                 </div>
