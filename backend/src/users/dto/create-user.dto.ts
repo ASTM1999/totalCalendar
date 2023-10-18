@@ -16,15 +16,19 @@ export class CreateUserDto {
 
     @IsNotEmpty()
     username: string
-
+    
     //กำหรดให่เมื่อเริ่มสมัครเป็น user // เมื่อได้รับการแก้ไขบทบาทให้เป็น userAdmin
+    @IsNotEmpty()
+    status?: string
+
+    @IsNotEmpty()
+    option?: string
     
     @IsNotEmpty() //user //userAdmin
     role?: string
     
     @IsInt()
     tel: string
-
     
     byGoogle?: boolean
     sub?:string

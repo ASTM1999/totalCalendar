@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import Comment from './comment.entity';
+import Comments from './comment.entity';
 import { ObjectId } from 'mongodb';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -9,8 +9,8 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 @Injectable()
 export class CommentService {
     constructor(
-        @InjectRepository(Comment)
-        private commentRepository: Repository<Comment>,
+        @InjectRepository(Comments)
+        private commentRepository: Repository<Comments>,
     ) { }
 
     async delete(id: string): Promise<boolean> {
@@ -23,7 +23,7 @@ export class CommentService {
         }
     }
 
-    async findComment(): Promise<Comment[]> {
+    async findComment(): Promise<Comments[]> {
         const comment = await this.commentRepository.find()
         return comment
     }

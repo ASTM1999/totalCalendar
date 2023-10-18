@@ -1,0 +1,24 @@
+<svg width="384" height="512" xmlns="http://www.w3.org/2000/svg">
+ <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <path fill="#45b158" id="svg_1" d="m320,496c26.5,0 48,-21.5 48,-48l0,-268.1c0,-1.3 -0.1,-2.6 -0.2,-3.9l-119.8,0c-22.1,0 -40,-17.9 -40,-40l0,-119.8c-1.3,-0.2 -2.6,-0.2 -3.9,-0.2l-140.1,0c-26.5,0 -48,21.5 -48,48l0,384c0,26.5 21.5,48 48,48l256,0zm41.1,-336c-0.8,-1 -1.6,-1.9 -2.4,-2.7l-132,-131.9c-0.9,-0.9 -1.8,-1.7 -2.7,-2.4l0,113c0,13.3 10.7,24 24,24l113.1,0zm-361.1,-96c0,-35.3 28.7,-64 64,-64l140.1,0c12.7,0 24.9,5.1 33.9,14.1l131.9,131.8c9,9 14.1,21.2 14.1,33.9l0,268.2c0,35.3 -28.7,64 -64,64l-256,0c-35.3,0 -64,-28.7 -64,-64l0,-384z"/>
+  <rect stroke="null" id="svg_4" height="452.52602" width="205.791599" y="29.849188" x="13.144466" stroke-opacity="null" stroke-width="NaN" fill="#45b158"/>
+  <rect stroke="null" id="svg_6" height="315.690733" width="256.431417" y="164.529572" x="118.733857" stroke-opacity="null" stroke-width="NaN" fill="#45b158"/>
+  <rect stroke="null" id="svg_7" height="311.380973" width="326.465197" y="185.000975" x="30.383538" stroke-opacity="null" stroke-width="NaN" fill="#45b158"/>
+  <rect stroke="null" id="svg_8" height="367.408015" width="195.01717" y="11.532669" x="28.22868" stroke-opacity="null" stroke-width="NaN" fill="#45b158"/>
+  <path id="svg_14" d="m256.646568,67.559716" opacity="0.5" fill-opacity="null" stroke-opacity="null" stroke-width="NaN" stroke="null" fill="none"/>
+  <path id="svg_15" d="m232.942824,57.86273" opacity="0.5" fill-opacity="null" stroke-opacity="null" stroke-width="NaN" stroke="null" fill="none"/>
+  <path id="svg_16" d="m232.942824,80.489031c0,0 130.370592,68.956346 109.899177,68.956346c-20.471415,0 -23.703744,-4.309772 -19.393972,0" opacity="0.5" fill-opacity="null" stroke-opacity="null" stroke-width="NaN" stroke="null" fill="none"/>
+  <path id="svg_17" d="m346.074329,152.677706c1.077443,-1.077443 -92.66009,39.865388 -94.814976,1.077443" opacity="0.5" fill-opacity="null" stroke-opacity="null" stroke-width="NaN" stroke="null" fill="none"/>
+  <path id="svg_18" d="m171.528578,177.458893l-28.228671,6.783844" opacity="0.5" fill-opacity="null" stroke-opacity="null" stroke-width="NaN" stroke="null" fill="none"/>
+  <path id="svg_19" d="m210.316523,202.24008" opacity="0.5" fill-opacity="null" stroke-opacity="null" stroke-width="NaN" stroke="null" fill="none"/>
+  <path stroke="null" id="svg_21" d="m223.265534,22.307303l-1.312304,119.21439c0.21844,0.78192 6.781647,10.781617 6.781647,13.003775c0,0 12.032539,5.55538 11.814099,4.77345c0.21844,0.78193 124.919321,6.337321 124.919321,5.226237c0,-1.111074 -141.108898,-143.328925 -142.202763,-142.217851z" stroke-opacity="null" stroke-width="NaN" fill="#a3d7ab"/>
+  <text stroke="null" transform="matrix(20.18300691382798,0,0,18.34017270766409,-1528.9411526766032,-6462.1836100078635) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="9" id="svg_22" y="375.708388" x="77.791045" stroke-opacity="null" stroke-width="0" fill="#e8e5e5">xlsx</text>
+ </g>
+</svg>

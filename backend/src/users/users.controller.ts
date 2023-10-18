@@ -32,7 +32,7 @@ export class UsersController {
     }
 
     @Get(':id')
-    async findAllReviews(@Param('id', ParseObjectIdPipe) item: ObjectId): Promise<Users> {
+    async getUserbyId(@Param('id', ParseObjectIdPipe) item: ObjectId): Promise<Users> {
         return this.usersService.findById(item)
     }
 

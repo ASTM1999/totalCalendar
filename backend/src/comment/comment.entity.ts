@@ -2,7 +2,7 @@ import { Entity, Column, ObjectIdColumn } from 'typeorm';
 import { ObjectId } from 'mongodb';
 
 @Entity()
-export class Comment {
+export class Comments {
     @ObjectIdColumn()
     _id?: ObjectId;
 
@@ -10,13 +10,17 @@ export class Comment {
     comment: string;
 
     @Column()
+    date: string;
+
+    @Column()
     userId?: ObjectId;
 
     @Column()
-    like: number
+    like?: number
 
     @Column()
     activityId?: ObjectId;
 
+
 }
-export default Comment;
+export default Comments;

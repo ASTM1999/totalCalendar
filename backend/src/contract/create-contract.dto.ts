@@ -8,10 +8,19 @@ export class CreateContractDto {
     _id?: ObjectId;
 
     @IsNotEmpty()
-    recomment: string
-    
+    title: string
+
+    @IsNotEmpty()
+    recommend: string
+
     @IsNotEmpty()
     require_role: string
+    
+    @IsNotEmpty()
+    detail: string
+    
+    @IsNotEmpty()
+    time: string
 
     @IsNotEmpty()
     userOwner: ObjectId

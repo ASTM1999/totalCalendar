@@ -10,13 +10,16 @@ import { EventsServices } from "../services/eventsService";
 import { UserService } from "../services/userServices";
 import WritingPopup from "./WritingPopup";
 import { useNavigate } from "react-router-dom";
+import Option from "./Option";
+import Header from "./Header";
+import Swal from "sweetalert2";
 
-interface activityProp {
-    selectedOption: string
-}
+// interface activityProp {
+//     selectedOption: string
+// }
 
 
-const Activity = (selectedOption: activityProp) => {
+const Activity = () => {
     const [writingPost, setWritingPost] = useRecoilState(writingPostState);
     // const announcements = useRecoilValue(announcementsState);
     // const camps = useRecoilValue(campsState);
@@ -24,8 +27,10 @@ const Activity = (selectedOption: activityProp) => {
     const setCamp = useSetRecoilState(campsState)
     const setAnnouncement = useSetRecoilState(announcementsState)
     const setDataEvent = useSetRecoilState(dataEventState)
+    const [selectedOption, setSelectedOption] = useState('วันหยุด');
 
     const [, setSearchText] = useState('');
+    const login = UserService.isUserloggedIn()
 
     // console.log("selecttion: ",selectedOption)
 
@@ -38,7 +43,8 @@ const Activity = (selectedOption: activityProp) => {
     const [id, setId] = useState('')
 
     const [selectedDateStart, setSelectedDateStart] = useState<Date | null>(new Date());
-    const [selectedDateEnd, setSelectedDateEnd] = useState<Date | null>(new Date());
+    const [selectedDateEnd, setSelectedDateEnd] = useState<Date | null | any>(new Date());
+    const [username, setUserName] = useState<string | null>()
 
 
     // console.log(writingPost)
@@ -61,7 +67,7 @@ const Activity = (selectedOption: activityProp) => {
     const handleTypeChange = (type: any) => {
         // setActiveType(type);
         setWritingPost({ type, title: '', detail: '' });
-        
+
     };
 
 
@@ -70,7 +76,7 @@ const Activity = (selectedOption: activityProp) => {
             const ac = await activityServices.getActivity()
             const ca = await campServices.getCamp()
             const an = await announcementServices.getannouncement()
-            console.log(ac,ca,an)
+            // console.log("camp: ", ca)
             setActivities(ac)
             setCamp(ca)
             setAnnouncement(an)
@@ -88,16 +94,11 @@ const Activity = (selectedOption: activityProp) => {
         }
     }
 
-    async function fetchUser() {
-        const id = await UserService.getUserId()
-        const data = await UserService.getUserData(id)
-        setRole(data.role)
-        setId(id)
-    }
 
-    const handleSearch = (text: any) => {
-        setSearchText(text);
-    };
+
+    // const handleSearch = (text: any) => {
+    //     setSearchText(text);
+    // };
 
     const handleEditClick = () => {
         setIsEditing(true);
@@ -108,111 +109,151 @@ const Activity = (selectedOption: activityProp) => {
     };
     const handleSaveClick = async () => {
         try {
-            const createActivityData = {
-                type: activeTab,
-                title: title,
-                detail: detail,
-                userOwner: id,
-                startDate: selectedDateStart,
-                endDate: selectedDateEnd,
-                option: selectedOption.selectedOption
-                //
-            };
-            console.log(createActivityData)
-            await activityServices.createActivity(createActivityData, activeTab);
-            setIsEditing(false);
-            fetchActivity()
+            if (!activeTab || !title || !detail || !id || !selectedDateStart || !selectedOption) {
+                console.error("กรุณากรอกข้อมูลให้ครบถ้วน");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+                })
+                return;
+            } else if (new Date() > new Date(selectedDateEnd)) {
+                console.error("เลือกวันสิ้นสุดให้มากกว่าวันปัจจุบัน");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'เลือกวันสิ้นสุดให้มากกว่าวันปัจจุบัน',
+                })
+                return;
+            }
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, post it!'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const createActivityData = {
+                        type: activeTab,
+                        title: title,
+                        detail: detail,
+                        userOwner: id,
+                        startDate: selectedDateStart,
+                        endDate: selectedDateEnd,
+                        option: selectedOption
+                    };
+                    console.log(createActivityData)
+                    await activityServices.createActivity(createActivityData, activeTab);
+                    Swal.fire(
+                        'Created!',
+                        'Your file has been Created.',
+                        'success'
+                    )
+                    setIsEditing(false);
+                    fetchActivity()
+                }
+            })
+
         } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                // footer: '<a href="">Why do I have this issue?</a>'
+            })
             console.error("เกิดข้อผิดพลาดในการอัปเดตข้อมูลผู้ใช้:", error);
         }
     }
+    const handleOptionChange = (event: any) => {
+        setSelectedOption(event.target.value);
+    };
 
-
-
+    async function fetchUser() {
+        const id = await UserService.getUserId()
+        const data = await UserService.getUserData(id)
+        const username = await UserService.getUsername()
+        setUserName(username)
+        setRole(data.role)
+        setId(id)
+    }
     useEffect(() => {
         fetchActivity()
         getEventData()
         fetchUser()
     }, [])
 
-
+    // console.log(activeTab)
     return (
-        <div className="activity">
+        <>
+            <Header />
 
-            <div className="container-activity">
+            <div className="activity">
+                <div className="container-activity">
 
-                <div className="nav-activity">
-                    <ul className="nav-card-profile">
-                        <li className="nav-item">
-                            <a className={`nav-link-activity ${activeTab === "announcement" ? "active" : ""}`}
-                                onClick={() => handleTabClick("announcement")}>ประกาศเกี่ยวกับมหาลัย</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className={`nav-link-activity ${activeTab === "camp" ? "active" : ""}`}
-                                onClick={() => handleTabClick("camp")}>ค่ายของมหาลัย</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className={`nav-link-activity ${activeTab === "activity" ? "active" : ""}`}
-                                onClick={() => handleTabClick("activity")}>กิจกรรมภายในมหาลัย</a>
-                        </li>
-                    </ul>
-                </div>
-
-
-
-                <div className="headActivity">
                     <div className="headBox">
-                        <h1>{activeTab}</h1>
-                        <div className="breadcrum-info">
-                            <b>
-                                <p onClick={handleClickHome} style={{ marginRight: "6px", cursor: "pointer" }}>Home</p>
-                            </b>
-                            <p>- Accout</p>
+                        <div className="dv-headbox">
+                            <div className="">
+
+                                <h1>Announcement</h1>
+                                <div className="breadcrum-info">
+                                    <b>
+                                        <p onClick={handleClickHome} style={{ marginRight: "6px", cursor: "pointer" }}>Home</p>
+                                    </b>
+                                    <p>- {username}</p>
+                                </div>
+                            </div>
+                            <div className="bt-activity" style={{ marginRight: "20px" }}>
+                                <div style={{ marginRight: "20px" }}>
+                                    <Option selectedOption={selectedOption} onOptionChange={handleOptionChange} />
+                                </div>
+                                {login && (
+                                    <button onClick={handleEditClick} className="bt-headPD">Create</button>
+                                )}
+                            </div>
                         </div>
                     </div>
 
-                    <div className="bt-activity">
-                        <button onClick={handleEditClick} className="bt-headPD">Create</button>
+
+
+                    <div className="headActivity">
+
+
+                        <div className="nav-activity">
+                            <ul className="nav-card-profile">
+                                <li className="nav-item">
+                                    <a className={`nav-link-activity ${activeTab === "announcement" ? "active" : ""}`}
+                                        onClick={() => handleTabClick("announcement")}>ประกาศเกี่ยวกับมหาลัย</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className={`nav-link-activity ${activeTab === "camp" ? "active" : ""}`}
+                                        onClick={() => handleTabClick("camp")}>ค่ายของมหาลัย</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className={`nav-link-activity ${activeTab === "activity" ? "active" : ""}`}
+                                        onClick={() => handleTabClick("activity")}>กิจกรรมภายในมหาลัย</a>
+                                </li>
+                            </ul>
+                        </div>
+
+
+
+                    </div>
+
+
+
+                    <div className="body-activity">
+                        <div style={{ height: "100%", display: "flex", justifyContent: "center", padding: "10px", borderRadius: "20px" }}>
+                            <PostList type={writingPost.type} />
+                        </div>
                     </div>
                 </div>
 
 
-
-                <div className="body-activity">
-                    <div>
-                        <PostList type={writingPost.type} />
-                    </div>
-                </div>
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-            <p>w</p>
-            <p>w</p>
-            <p>w</p>
-            <p>w</p>
-            <p>w</p>
-            <p>w</p>
-            <p>w</p>
-            <p>w</p>
-            <p>w</p>
-            <p>w</p>
-            <p>w</p>
-            <p>w</p>
-            <p>w</p>
-            <p>w</p>
-            <p>w</p>
-            <p>w</p>
-
-            {/* <div className="title-activity">
+                {/* <div className="title-activity">
                 <button
                     style={{ width: "33.33%", backgroundColor: activeType === 'announcement' ? '#FAF0D7' : '' }}
                     onClick={() => handleTypeChange('announcement')}
@@ -234,7 +275,7 @@ const Activity = (selectedOption: activityProp) => {
             </div> */}
 
 
-            {/* <div className="container-post">
+                {/* <div className="container-post">
                 <SearchBar onSearch={handleSearch} /> */}
                 {/* 
                 {isEditing && (
@@ -256,7 +297,8 @@ const Activity = (selectedOption: activityProp) => {
                 )} */}
 
 
-                {(role === "useradmin" || role === "admin" || (role === "user" && activeTab !== "announcement")) &&
+                {
+                    (role === "useradmin" || role === "admin" || (role === "user" && activeTab !== "announcement")) &&
                     (isEditing ? (
                         <>
                             {/* <button onClick={handleSaveClick}>ยืนยัน</button>
@@ -273,18 +315,18 @@ const Activity = (selectedOption: activityProp) => {
                                 onConfirm={handleSaveClick}
                                 onCancel={handleCancelClick}
                             />
-
                         </>
                     ) : (
                         <>
-                        {/*  <button onClick={handleEditClick}>เขียน</button> */}
+                            {/*  <button onClick={handleEditClick}>เขียน</button> */}
                         </>
                     )
                     )
                 }
                 {/* <PostList type={writingPost.type} /> */}
-            {/* </div> */}
-        </div>
+                {/* </div> */}
+            </div >
+        </>
     );
 }
 

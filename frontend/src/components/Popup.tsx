@@ -1,7 +1,7 @@
 
 import ReactDOM from 'react-dom';
 interface PopupProps {
-    event: string | null;
+    event: any;
     onClose: () => void;
 }
 const Popup = ({ event, onClose }: PopupProps) => {

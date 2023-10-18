@@ -8,23 +8,66 @@ import { campServices } from '../services/campService';
 import { announcementServices } from '../services/announementService';
 import SearchBar from './SearchBar';
 import { Activity, Users } from '../services/interface';
-import WritingPopup from './WritingPopup';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import angleRight from '../../public/angle-right.svg'
+import angleLeft from '../../public/angle-left.svg'
+import Comment from './Comment';
 
 const PostList = ({ type }: { type: string }) => {
     const posts = useRecoilValue(type === 'activity' ? activityState : type === 'camp' ? campsState : announcementsState);
     const [isEditingMap, setIsEditingMap] = useState<{ [key: string]: boolean }>({});
-    const [isEditing, setIsEditing] = useState<boolean>(false);
+
+    // const [EditTitleMap, setEditTitleMap] = useState<{ [key: string]: string }>({});
+    // console.log(posts)
+    // console.log("posts : ", posts)
+    // const [isEditing, setIsEditing] = useState<boolean>(false);
     const [, setSearchText] = useState('');
 
     const [userId, setUserId] = useState<string>()
     const [title, setTitle] = useState<string>()
     const [detail, setDetail] = useState<string>()
-    const [email, setEmail] = useState<string | null>()
-    const [tel, setTel] = useState<string | null>()
-    const [username, setUsername] = useState<string | null>()
+    // const [email, setEmail] = useState<string | null>()
+    // const [tel, setTel] = useState<string | null>()
+    // const [username, setUsername] = useState<string | null>()
     const [filteredData, setFilteredData] = useState<Activity[]>([]);
 
     const [userpost, setUserpost] = useState<Users>()
+    const [selectedDateStart, setSelectedDateStart] = useState<Date | null>(new Date());
+    const [selectedDateEnd, setSelectedDateEnd] = useState<Date | null>(new Date());
+
+
+    //แสดงหน้า
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemPerPage = 7
+    const indexOfLastItem = currentPage * itemPerPage
+    const indexOfFirstItem = indexOfLastItem - itemPerPage
+    const moreNewDate = posts.filter((item) => new Date(item.endDate) > new Date())
+    const currentItem = moreNewDate.slice(indexOfFirstItem, indexOfLastItem)
+    const totalPages = Math.ceil(moreNewDate.length / itemPerPage);
+
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+    }
+    const renderPageNumbers = pageNumbers.map((number) => (
+        <li
+            key={number}
+            // id={number}
+            onClick={() => setCurrentPage(number)}
+            className={number === currentPage ? "activePage" : ""}
+
+        >
+            {number}
+        </li>
+    ));
+
+    // console.log("currentPage: ", currentPage)
+    // console.log("indexOfLastItem: ", indexOfLastItem)
+    // console.log("indexOfFirstItem: ", indexOfFirstItem)
+    // console.log("moreNewDate: ", moreNewDate)
+    // console.log("currentItem: ", currentItem)
+
 
     const setActivities = useSetRecoilState(activityState);
     const setCamp = useSetRecoilState(campsState)
@@ -34,7 +77,7 @@ const PostList = ({ type }: { type: string }) => {
             const ac = await activityServices.getActivity()
             const ca = await campServices.getCamp()
             const an = await announcementServices.getannouncement()
-            // console.log(ac,ca,an)
+            console.log("camp: ", ca)
             setActivities(ac)
             setCamp(ca)
             setAnnouncement(an)
@@ -42,6 +85,7 @@ const PostList = ({ type }: { type: string }) => {
             console.log(`Error fetching data: ${err}`)
         }
     }
+    // console.log(posts)
     const handleEditClick = (postId: string) => {
         setIsEditingMap((prevState) => ({
             ...prevState,
@@ -55,9 +99,9 @@ const PostList = ({ type }: { type: string }) => {
         }));
     };
     const handleUpdateActivity = async (postId: any) => {
+        console.log("type:", type)
         try {
-            console.log(postId)
-            const updateActivity = await activityServices.updateActivity(postId, title, detail, type);
+            const updateActivity = await activityServices.updateActivity(type, postId, title, detail, selectedDateStart, selectedDateEnd);
             console.log("ipdateActivity: ", updateActivity)
             setIsEditingMap((prevState) => ({
                 ...prevState,
@@ -70,20 +114,27 @@ const PostList = ({ type }: { type: string }) => {
         }
     };
     function formatDate(e: any) {
-        const dateTime = new Date();
-        const justLocalDate = dateTime.toLocaleDateString();
+        const justLocalDate = new Date(e).toLocaleDateString();
         return justLocalDate
     }
+    function formatDateTime(dateTime: any) {
+        const options: any = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' };
+        const date = new Date(dateTime);
+        const formattedDate = date.toLocaleDateString('en-US', options);
+        const suffix = (date.getHours() >= 12) ? 'pm' : 'am';
+        return `${formattedDate} - ${date.getHours() % 12}:${date.getMinutes()} ${suffix}`;
+    }
+
     const fetchUserData = async () => {
         try {
-            const tel = await UserService.getTel()
-            setTel(tel)
-            const userEmail = await UserService.getEmail()
-            setEmail(userEmail)
+            // const tel = await UserService.getTel()
+            // setTel(tel)
+            // const userEmail = await UserService.getEmail()
+            // setEmail(userEmail)
             const id = await UserService.getUserId()
             setUserId(id)
-            const name = await UserService.getUsername()
-            setUsername(name)
+            // const name = await UserService.getUsername()
+            // setUsername(name)
 
         } catch (error) {
             console.error("Error fetching user data:", error);
@@ -99,13 +150,38 @@ const PostList = ({ type }: { type: string }) => {
         setUserpost(userPost)
         setFilteredData(filtered);
     }
+
+
     useEffect(() => {
         fetchUserData()
-        console.log("userpost useEffect: ", userpost)
+        // console.log("userpost useEffect: ", userpost)
     }, [userpost])
 
-    const [selectedDateStart, setSelectedDateStart] = useState<Date | null>(new Date());
-    const [selectedDateEnd, setSelectedDateEnd] = useState<Date | null>(new Date());
+
+
+    function formatText(text: any) {
+        if (!text) {
+            return '';
+        }
+
+        // แยกบรรทัดโดย '\n'
+        const lines = text.split('\n');
+
+        // สร้างลำดับของข้อความ
+        const formattedText = lines.map((line: any, index: any) => {
+            return (
+                <p key={index}>
+                    {` ${line}`}
+                </p>
+            );
+        });
+
+        return formattedText.map((item: any, index: any) => (
+            <div key={index}>{item.props.children}</div>
+        ));
+    }
+
+    console.log(type)
 
     return (
         <div className="post-list">
@@ -113,83 +189,194 @@ const PostList = ({ type }: { type: string }) => {
             <div className="post">
                 <ul className='postlist-ul'>
                     <SearchBar onSearch={handleSearch} />
-                    {posts.map((post) => (
-                        <li key={post._id} className='postlist-li'>
-                            <div className='div-post-li' onClick={() => handleClickPost(post._id)}>
-                                <h2>{post.title}</h2>
-                                <p>{formatDate(post.startDate)} - {formatDate(post.endDate)}</p>
-                            </div>
-
-                            {/* )} */}
-                            {(post.userOwner === userId) && (
-                                isEditingMap[post._id] ? (
-                                    <>
-                                        <button onClick={() => handleUpdateActivity(post._id)}>ยืนยัน</button>
-                                        <button onClick={() => handleCancelClick(post._id)}>ยกเลิก</button>
-                                    </>
-                                ) : (
-                                    <button onClick={() => handleEditClick(post._id)}>แก้ไข</button>
-                                )
-                            )}
-                        </li>
-                    ))}
+                    {currentItem
+                        .map((post) => (
+                            <li key={post._id} className='postlist-li'>
+                                <div className='div-post-li' onClick={() => handleClickPost(post._id)}>
+                                    <h2>{post.title}</h2>
+                                    <div className="post-h">
+                                        <p>{formatDate(post.startDate)} - {formatDate(post.endDate)}</p>
+                                        {(post.userOwner === userId) && (
+                                            <div className="icon-owner" style={{ fontSize: "16px" }}>
+                                                👑
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </li>
+                        ))}
+                    <div className="pagination">
+                        <button
+                            onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
+                            disabled={currentPage === 1}
+                        >
+                            {/* Previous */}
+                            <img className="icon-rl" src={angleLeft} />
+                        </button>
+                        <ul className="page-numbers">
+                            {renderPageNumbers}
+                        </ul>
+                        <button
+                            onClick={() => setCurrentPage((prevPage) => prevPage + 1)}
+                            disabled={indexOfLastItem >= posts.length}
+                        >
+                            <img className="icon-rl" src={angleRight} />
+                            {/* Next */}
+                        </button>
+                    </div>
                 </ul>
             </div>
 
             <div className="contantActivity">
-                {filteredData.map((item) => (
-                    <>
-                        <div className="head-contantActivity">
-                            <h1>Contact Poster</h1>
-                            <div className="cpname">
-                                <p>Post by</p>
-                                <p>{userpost?.username}</p>
-                                <p>{userpost?.email}</p>
+                <div className="contantActivity-container">
+                    {filteredData.map((item) => (
+                        <>
+                            <div className="head-contantActivity">
+                                <h1>Contact Poster</h1>
+                                <div className="cpname">
+                                    <p>Post by</p>
+                                    <b>
+                                        <p>{userpost?.username}</p>
+                                    </b>
+                                    <p>{userpost?.email}</p>
+                                </div>
+
+                                <div className="cptel">
+                                    <p style={{ marginRight: "5px" }}>เบอร์ติดต่อ:</p>
+                                    <p>{userpost?.tel}</p>
+                                </div>
                             </div>
 
-                            <div className="cptel">
-                                <p>เบอร์ติดต่อ: </p>
-                                <p>{userpost?.tel}</p>
-                            </div>
-                        </div>
 
-                        <div className="body-contantActivity" key={item._id}>
-                            <div className="hbody-contantActivity">
-                                <h2>
-                                    {item.title}
-                                </h2>
-                            </div>
-                            <div className="dbody-containActivity">
-                                {item.detail}
-                            </div>
-                        </div>
-                        <div className="bt-edit">
-                            {(item.userOwner === userId) && (
-                                !isEditingMap[item._id] ? (
-                                    <div className="" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                        <button className='bt-st-sc' onClick={() => handleEditClick(item._id)}>แก้ไข</button>
-                                    </div>
+
+                            {/* contant */}
+                            <div key={item._id}>
+                                {!isEditingMap[item._id] ? (
+                                    <>
+                                        <div className="body-contantActivity">
+
+                                            <div className="hbody-contantActivity">
+                                                <h2>
+                                                    {item.title}
+                                                </h2>
+                                            </div>
+                                            <div className="dbody-containActivity">
+
+                                                <p style={{ marginBottom: "20px" }}>
+                                                    {formatText(item.detail)}
+                                                </p>
+                                                <div>
+
+                                                    <p className='date'><img src="../../public/iconfinder-icon(green).svg" alt="logOut" style={{ width: "16px", marginRight: "10px" }} />
+                                                        <b style={{ marginRight: "10px" }}>
+                                                            Start Date
+                                                        </b>
+                                                        {formatDateTime(item.startDate)}
+                                                    </p>
+                                                </div>
+                                                <div>
+
+                                                    <p className='date'><img src="../../public/iconfinder-icon.svg" alt="logOut" style={{ width: "16px", marginRight: "10px" }} />
+                                                        <b style={{ marginRight: "10px" }}>
+                                                            End Date
+                                                        </b>
+                                                        {formatDateTime(item.endDate)}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="bt-edit">
+                                            {(item.userOwner === userId) && (
+                                                !isEditingMap[item._id] ? (
+                                                    <div className="" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                                        <button className='bt-st-sc' onClick={() => handleEditClick(item._id)}>Edit</button>
+                                                    </div>
+                                                ) : (
+                                                    <div className="" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                                        <button className='bt-st' onClick={() => handleCancelClick(item._id)}>Cancel</button>
+                                                        <button className='bt-st-sc' onClick={() => handleUpdateActivity(item._id)}>Save Change</button>
+                                                    </div>
+                                                )
+                                            )}
+
+                                        </div>
+                                        <Comment postId={item._id} activityTab={type} />
+                                    </>
                                 ) : (
                                     <>
-                                        <WritingPopup
-                                            title={item.title}
-                                            detail={item.detail}
-                                            selectedDateStart={selectedDateStart}
-                                            selectedDateEnd={selectedDateEnd}
-                                            onStartDate={(date) => setSelectedDateStart(date)}
-                                            onEndDate={(date) => setSelectedDateEnd(date)}
-                                            onTitleChange={(e) => setTitle(e.target.value)}
-                                            onDetailChange={(e) => setDetail(e.target.value)}
-                                            onConfirm={() => handleUpdateActivity(item._id)}
-                                            onCancel={() => handleCancelClick(item._id)}
-                                        />
-                                    </>
-                                )
+                                        <div>
 
-                            )}
-                        </div>
-                    </>
-                ))}
+
+                                            <div className="inhead">
+                                                <label htmlFor="title"><h1>Title</h1></label>
+                                                <input
+                                                    className='editTextInput'
+                                                    value={title}
+                                                    placeholder={item.title}
+                                                    onChange={(e) => setTitle(e.target.value)}
+                                                />
+                                            </div>
+
+                                            <div className="indetail">
+                                                <label htmlFor="detail"><h1>Detail</h1></label>
+                                                <textarea
+                                                    className='editTextArea'
+                                                    value={detail}
+                                                    placeholder={item.detail}
+                                                    onChange={(e) => setDetail(e.target.value)}
+
+                                                />
+                                            </div>
+                                            <div className="sdate">
+                                                <label style={{ width: "253px" }}>Event Start Date</label>
+                                                <DatePicker
+                                                    selected={selectedDateStart}
+                                                    onChange={(date: Date) => {
+                                                        if (selectedDateEnd && date > selectedDateEnd) {
+                                                            return;
+                                                        }
+                                                        setSelectedDateStart(date);
+                                                    }}
+                                                    showTimeSelect
+                                                    timeFormat="HH:mm"
+                                                    timeIntervals={15}
+                                                    dateFormat="MMMM d, yyyy h:mm aa"
+                                                    className="datecustom-picker"
+                                                />
+                                            </div>
+                                            <div className="edate">
+                                                <label style={{ width: "253px" }}>Event end Date Time</label>
+                                                <DatePicker
+                                                    selected={selectedDateEnd}
+                                                    onChange={(date: Date) => {
+                                                        if (selectedDateStart && date < selectedDateStart) {
+                                                            return;
+                                                        }
+                                                        setSelectedDateEnd(date);
+                                                    }}
+                                                    showTimeSelect
+                                                    timeFormat="HH:mm"
+                                                    timeIntervals={15}
+                                                    dateFormat="MMMM d, yyyy h:mm aa"
+                                                    className="datecustom-picker"
+                                                />
+                                            </div>
+                                        </div>
+
+
+                                    </>
+                                )}
+                            </div>
+
+                        </>
+                    ))}
+                </div>
+
+
+
+
+
+
             </div>
 
         </div>

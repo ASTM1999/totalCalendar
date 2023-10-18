@@ -15,7 +15,7 @@ function isUserloggedIn() {
 async function getUsername(): Promise<string | null> {
     // console.log("localStorage: ", localStorage)
     if (isUserloggedIn()) {
-        return localStorage.name
+        return localStorage.username
     } else {
         return null
     }
@@ -39,6 +39,13 @@ async function getTel(): Promise<string | null> {
 async function getrole(): Promise<string | null> {
     if (isUserloggedIn()) {
         return localStorage.role
+    } else {
+        return null
+    }
+}
+async function getOption(): Promise<string | null> {
+    if (isUserloggedIn()) {
+        return localStorage.option
     } else {
         return null
     }
@@ -67,6 +74,8 @@ async function authUser(params: any) {
             localStorage.setItem("userId", userData.data.userId)
             localStorage.setItem("useremail", userData.data.email)
             localStorage.setItem("role", userData.data.role)
+            localStorage.setItem("username", userData.data.username)
+            localStorage.setItem("option", userData.data.option)
             return userData.data
         } else {
             console.log('else')
@@ -87,11 +96,9 @@ async function updateUserData(userId: any, updatedUserData: any) {
                 },
             });
 
-            if (response.status === 200) {
-                return response.data;
-            } else {
-                throw new Error('เกิดข้อผิดพลาดในการอัปเดตข้อมูลผู้ใช้');
-            }
+
+            return response.data;
+
         } catch (error) {
             console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูลผู้ใช้:', error);
             throw error;
@@ -167,9 +174,20 @@ const createDataUserGoogle = async (userdata: any) => {
     return user
 }
 
+async function getUserbyId(id: any) {
+    try {
+        const user = await axios.get(`${API_BASE_URL}/users/${id}`, id)
+        // console.log(user)
+        return user
+    } catch (err) {
+        console.log(`Failed ${err}`)
+    }
+}
+
 
 
 export const UserService = {
+    getUserbyId,
     fetchUsers,
     getAccessToken,
     getUserId,
@@ -184,5 +202,6 @@ export const UserService = {
     updateUserData,
     getGoogle,
     getPicture,
+    getOption
 
 }

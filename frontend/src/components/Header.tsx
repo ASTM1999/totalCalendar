@@ -1,21 +1,25 @@
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { UserService } from "../services/userServices";
 import { useEffect, useState } from "react";
 // import { useState } from "react";
 
-import userIcon from "../../public/user-solid.svg"
-import TestCalendar from "./TestCalendar";
-import Activity from "./Activity";
-import Option from "./Option";
+import userIcon from "../../public/user-regular.svg"
+import iconApp from '../../public/calendar.png'
+
 
 const Header = () => {
-    const [useremail, setEmail] = useState<string | null>()
+    const [email, setEmail] = useState<string | null>(null)
+    const [username, setUserName] = useState<string | null>()
     const [Role, setRole] = useState<string | null>()
     // console.log("useremail:",email)
     const login = UserService.isUserloggedIn()
     // console.log(userEmails);
     const [selectedOption, setSelectedOption] = useState('วันหยุด');
+
+    // const [activeTab, setActiveTab] = useState("calendar");
+    const location = useLocation();
+    const { activeTab } = location.state || { activeTab: 'defaultTabValue' };
 
 
     const handleOptionChange = (event: any) => {
@@ -24,14 +28,7 @@ const Header = () => {
     // console.log(userIcon)
     const navigate = useNavigate()
 
-    function handleClick() {
-        if (login) {
-            navigate('/contactAdmin')
-            console.log('test')
-        } else {
-            navigate('/login')
-        }
-    }
+
     function handleClickUserInfo() {
         navigate('/UserProfile')
         console.log('UserProfile')
@@ -61,6 +58,8 @@ const Header = () => {
             // console.log("role",role)
             const userEmail = await UserService.getEmail()
             setEmail(userEmail)
+            const user = await UserService.getUsername()
+            setUserName(user)
             // console.log("useEffect")
         } catch (error) {
             console.error("Error fetching user data:", error);
@@ -68,12 +67,42 @@ const Header = () => {
     };
     useEffect(() => {
         fetchUserData()
-    })
+    }, [])
 
-    const [activeTab, setActiveTab] = useState("overview");
+
+
     const handleTabClick = (tabName: any) => {
-        setActiveTab(tabName);
+        console.log(tabName);
+        if (tabName === 'contactAdmin') {
+            console.log("tabname: ", tabName);
+            console.log("tabname: ", tabName === 'contactAdmin');
+            if (login) {
+                navigate('/contactAdmin');
+                console.log('test');
+            } else {
+                navigate('/login');
+            }
+        } else if (tabName === 'announcement') {
+            navigate('/Activity', { state: { activeTab: tabName } });
+        } else if (tabName === 'calendar') {
+            navigate('/', { state: { activeTab: tabName } });
+        }
+        else if (tabName === 'userManagement') {
+            navigate('/UserManagement', { state: { activeTab: tabName } });
+        }
+        // setActiveTab(tabName); // ลบหรือคอมเมนต์บรรทัดนี้
     };
+
+    function handleButtonClick(route: string): void {
+        console.log("handleButtonClick")
+        if (!login) {
+            navigate("/login");
+        } else {
+            navigate(route);
+        }
+    }
+    // console.log("activityTap: ", activeTab)
+    // console.log(Role)
     return (
         <>
             <div className="header">
@@ -82,17 +111,30 @@ const Header = () => {
 
                     <ul className="tap-card">
                         <li className="tap-item">
-                            <a className={`tap-link ${activeTab === "overview" ? "active" : ""}`} onClick={() => handleTabClick("overview")}>Overview</a>
+                            <a >
+                                <img
+                                    style={{ width: "58px" }}
+                                    src={iconApp}
+                                />
+                            </a>
                         </li>
                         <li className="tap-item">
-                            <a className={`tap-link ${activeTab === "setting" ? "active" : ""}`} onClick={() => handleTabClick("announcement")}>Announcement</a>
+                            <a className={`tap-link ${activeTab === "calendar" ? "active" : ""}`} onClick={() => handleTabClick("calendar")}>Calendar</a>
                         </li>
                         <li className="tap-item">
-                            <a className={`tap-link ${activeTab === "security" ? "active" : ""}`} onClick={() => handleTabClick("calendar")}>Calendar</a>
+                            <a className={`tap-link ${activeTab === "announcement" ? "active" : ""}`} onClick={() => handleTabClick("announcement")}>Announcement</a>
                         </li>
-                        <li className="tap-item">
-                            <a className={`contactAdminButton `} onClick={handleClick}>ติดต่อ Admin</a>
-                        </li>
+
+                        {Role !== 'admin' ? (
+                            <li className="tap-item">
+                                <a className={`tap-link ${activeTab === "contactAdmin" ? "active" : ""}`} onClick={() => handleTabClick('contactAdmin')}>Contact Us</a>
+                            </li>
+
+                        ) : (
+                            <li className="tap-item">
+                                <a className={`tap-link ${activeTab === "userManagement" ? "active" : ""}`} onClick={() => handleTabClick('userManagement')}>User Management</a>
+                            </li>
+                        )}
                     </ul>
                 </div>
 
@@ -102,35 +144,47 @@ const Header = () => {
                             Login
                         </p>
                     ) : (
-                        <div style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center"
-                        }}>
-                            {Role === "admin" && (
-                                <img
-                                    // style={ {width: "16px", }}
-                                    src="../../public/bell-regular.svg"
-                                    alt="bell Logo"
-                                    className="bell-logo"
-                                    onClick={handleChangePage}
-                                />
-                            )}
-                            <p className="userinfo" onClick={handleClickUserInfo}>
-                                {/* <b>{useremail}</b> */}
-                                <img src={userIcon} alt="react logo" width={"32px"} />
+                        <div className="iconDropdown">
+                            {/* noti Icon */}
+                            {/* <div className="dropdown-noti" style={{ marginRight: "10px" }}>
+                                <img className="dropdown-icon-noti" alt="react logo" width={"32px"} src="../../public/bell-regular.svg" onClick={handleChangePage} />
+                                <div className="dropdown-menu-noti">
+                                    <div className="showname">
+                                       
+                                    </div>
+                                    
+                                </div>
+                            </div> */}
 
-                            </p>
-                            <button
-                                style={{
-                                    marginLeft: "10px"
-                                }}
-                                onClick={logOut}>Log out</button>
+
+                            {/* //userIcon */}
+                            <div className="dropdown">
+                                {/* <p style={{margin:"10px"}}>
+                                    {username}
+                                </p> */}
+                                <img className="dropdown-icon" src={userIcon} alt="react logo" width={"32px"} onClick={handleClickUserInfo} />
+                                <div className="dropdown-menu">
+                                    <div className="showname">
+                                        <p>{username}</p>
+                                        <p style={{ fontSize: "14px", marginBottom: "10px" }}>{email}</p>
+                                        {/* <p style={{ fontSize: "14px", marginBottom:"10px" }}>{Role}</p> */}
+
+                                        {/* <p>test</p> */}
+                                    </div>
+                                    <button className="dropdown-bt" onClick={() => handleButtonClick('/UserProfile')}>
+                                        <img src="../../public/table-columns.svg" alt="logOut" style={{ width: "24px", marginRight: "10px" }} />
+                                        Dashoards</button>
+                                    <button className="dropdown-bt" onClick={logOut}>
+                                        <img src="../../public/arrow-right-from-bracket.svg" alt="logOut" style={{ width: "24px", marginRight: "10px" }} />
+                                        Log out</button>
+                                </div>
+                            </div>
                         </div>
+
                     )}
                 </div>
             </div>
-            {activeTab === "overview" && (
+            {/* {activeTab === "overview" && (
                 <>
                     <div>
                         <Option selectedOption={selectedOption} onOptionChange={handleOptionChange} />
@@ -138,23 +192,25 @@ const Header = () => {
                     <TestCalendar />
                     <Activity selectedOption={selectedOption} />
                 </>
-            )}
-            {activeTab === "announcement" && (
+            )} */}
+
+            {/* {activeTab === "announcement" && (
                 <>
-                    <div>
-                        <Option selectedOption={selectedOption} onOptionChange={handleOptionChange} />
-                    </div>
-                    <Activity selectedOption={selectedOption} />
+                   
+                    <Activity />
                 </>
             )}
             {activeTab === "calendar" && (
-                <>
-                    <div>
-                        <Option selectedOption={selectedOption} onOptionChange={handleOptionChange} />
-                    </div>
+
+                <div className='container-calendart'>
+                    <Option selectedOption={selectedOption} onOptionChange={handleOptionChange} />
                     <TestCalendar />
-                </>
+                </div>
+
             )}
+            {activeTab === 'contactAdmin' && (
+                <ContactAdmin />
+            )} */}
         </>
     );
 };

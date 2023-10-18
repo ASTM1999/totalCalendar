@@ -10,7 +10,7 @@ import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
 import { CreateCommentDto } from 'src/comment/dto/create-comment.dto';
 import { UpdateCommentDto } from 'src/comment/dto/update-comment.dto';
 import { CommentService } from 'src/comment/comment.service';
-
+import Comments from 'src/comment/comment.entity';
 
 @Controller('announcement')
 export class AnnouncementController {
@@ -18,7 +18,14 @@ export class AnnouncementController {
         private announcementService: AnnouncementService,
         private commentService: CommentService
     ) { }
-
+    // @Get(':activityId/comment')
+    // async getComment() {
+    //     return "Test Get"
+    // }
+    @Get(':activityId/comment')
+    async getComment() {
+        return this.commentService.findComment()
+    }
     @Delete(':activityId/comment/:id/delete')
     async deleteComment(
         @Param('id') id: string) {
@@ -41,6 +48,8 @@ export class AnnouncementController {
     async createComment(
         @Param('activityId', ParseObjectIdPipe) activityId: ObjectId,
         @Body() createCommentDto: CreateCommentDto) {
+        // console.log("create Comment Work")
+        // console.log(createCommentDto)
         createCommentDto.userId = new ObjectId(createCommentDto.userId)
         return this.commentService.createComment(activityId, createCommentDto)
     }

@@ -18,6 +18,10 @@ export class ActivityController {
         public commentService: CommentService,
     ) { }
 
+    @Get(':activityId/comment')
+    async getComment() {
+        return this.commentService.findComment()
+    }
     @Delete(':activityId/comment/:id/delete')
     async deleteComment(
         @Param('id') id: string) {
@@ -32,12 +36,13 @@ export class ActivityController {
         const update = await this.commentService.updateComment(id, updateCommentDTO)
         return update
     }
-    
+
 
     @Post(':activityId/comment')
     async createComment(
         @Param('activityId', ParseObjectIdPipe) activityId: ObjectId,
         @Body() createCommentDto: CreateCommentDto) {
+        console.log("comment Work")
         createCommentDto.userId = new ObjectId(createCommentDto.userId)
         return this.commentService.createComment(activityId, createCommentDto)
     }

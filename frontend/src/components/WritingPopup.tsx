@@ -1,13 +1,14 @@
 // import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import xmark from '../../public/xmark-solid.svg';
 
 interface WritingPopupProps {
     title: string;
     detail: string;
     selectedDateStart: Date | null;
     selectedDateEnd: Date | null;
-    onTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onTitleChange: (e: React.ChangeEvent<HTMLInputElement>, _id?: any) => void;
     onDetailChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 
     onStartDate: (e: any) => void;
@@ -20,10 +21,10 @@ interface WritingPopupProps {
 const WritingPopup = ({ onConfirm, onCancel, title, detail, selectedDateStart, selectedDateEnd, onStartDate, onEndDate, onTitleChange, onDetailChange }: WritingPopupProps) => {
     // const [selectedDateStart, setSelectedDateStart] = useState<Date | null>(new Date());
     // const [selectedDateEnd, setSelectedDateEnd] = useState<Date | null>(new Date());
-    console.log(onTitleChange)
-    console.log(onDetailChange)
-    console.log(onStartDate)
-    console.log(onEndDate)
+    // console.log(onTitleChange)
+    // console.log(onDetailChange)
+    // console.log(onStartDate)
+    // console.log(onEndDate)
     const handleSaveClick = () => {
         onConfirm();
     };
@@ -34,7 +35,13 @@ const WritingPopup = ({ onConfirm, onCancel, title, detail, selectedDateStart, s
             <div className="writingPopup" style={{ backgroundColor: "white", width: "650px" }}>
                 <div className="writingHead">
                     <h3 className="addNewEvent">Add a New Event</h3>
-                    <button onClick={onCancel} style={{ marginRight: "25px" }}>..</button>
+                    <img
+                        style={{ marginRight: "25px", width: "18px", cursor: "pointer" }}
+                        src={xmark}
+                        alt='Icon Xmark'
+                        onClick={onCancel}
+                    />
+                    {/* <button onClick={onCancel} style={{ marginRight: "25px" }}>.</button> */}
                 </div>
                 <div className="writingPopup-container">
                     <div className="eventn">
@@ -63,7 +70,7 @@ const WritingPopup = ({ onConfirm, onCancel, title, detail, selectedDateStart, s
                         <label style={{ width: "253px" }}>Event Start Date</label>
                         <DatePicker
                             selected={selectedDateStart}
-                            onChange={(date) => {
+                            onChange={(date: Date) => {
                                 if (selectedDateEnd && date > selectedDateEnd) {
                                     return;
                                 }
@@ -80,7 +87,7 @@ const WritingPopup = ({ onConfirm, onCancel, title, detail, selectedDateStart, s
                         <label style={{ width: "253px" }}>Event end Date Time</label>
                         <DatePicker
                             selected={selectedDateEnd}
-                            onChange={(date) => {
+                            onChange={(date: Date) => {
                                 if (selectedDateStart && date < selectedDateStart) {
                                     return;
                                 }

@@ -17,7 +17,8 @@ export class CampController {
         private commentService: CommentService,
     ) { }
 
-    
+
+
     @Get()
     async get() {
         // console.log("wdwd")
@@ -30,8 +31,8 @@ export class CampController {
         return this.commentService.delete(id)
     }
 
-    @Get()
-    async findComment(): Promise<Comment[]> {
+    @Get(':activityId/comment')
+    async getComment() {
         return this.commentService.findComment()
     }
 

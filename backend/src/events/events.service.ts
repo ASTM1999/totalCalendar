@@ -12,8 +12,10 @@ import * as fs from 'fs';
 
 interface ExcelRow {
     date: string;
+    // startDate: string;
+    // endDate: string;
     event: string;
-    // เพิ่มคุณลักษณะอื่น ๆ ตามความต้องการ
+    detail: string;
 }
 
 
@@ -34,7 +36,6 @@ export class EventsService {
         return null;
     }
 
-    // สร้างฟังก์ชันเพื่อแปลงตัวเลข serial number เป็นวันที่
     async serialNumberToDate(serialNumber) {
         const oneDay = 24 * 60 * 60 * 1000;
         const startDate = new Date(1357, 0, 9)
@@ -58,14 +59,19 @@ export class EventsService {
             const fileData = fs.readFileSync(file.path);
             const workbook = xlsx.read(fileData, { type: 'buffer' });
             const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+            // console.log(worksheet)
 
             const Edata: ExcelRow[] = xlsx.utils.sheet_to_json(worksheet);
             // console.log(`Edata: ${Edata}`)
 
             const formattedData = await Promise.all(
                 Edata.map(async (item) => ({
-                    date: (await this.formatDateToYYYYMMDD((await this.serialNumberToDate(item.date)).toLocaleDateString())),
+                    // startDate: (await this.formatDateToYYYYMMDD((await this.serialNumberToDate(item.startDate)).toLocaleDateString())),
+                    // endDate: (await this.formatDateToYYYYMMDD((await this.serialNumberToDate(item.endDate)).toLocaleDateString())),
                     event: item.event,
+                    detail: item.detail,
+                    date: item.date
+                    // date: (await this.formatDateToYYYYMMDD((await this.serialNumberToDate(item.date)).toLocaleDateString())),     
                 })),
             );
 
@@ -83,7 +89,7 @@ export class EventsService {
         return allFormattedData;
     }
 
-    async createEvent(files: Express.Multer.File[]) {
+    async createEvent(files: Express.Multer.File[], data: string) {
         try {
             // ทำการประมวลผลข้อมูลจากไฟล์ Excel ตามความต้องการ
             console.log(files)
@@ -96,6 +102,8 @@ export class EventsService {
                     event.mimetype = file.mimetype;
                     event.size = file.size;
                     event.path = file.path
+                    event.date = data
+
 
 
                     // อ่านข้อมูลจากไฟล์ Excel
@@ -105,11 +113,11 @@ export class EventsService {
 
                     // // อ่านข้อมูลจากไฟล์ Excel
                     // const data: ExcelRow[] = xlsx.utils.sheet_to_json(worksheet);
-                    
+
                     // console.log(data)
                     // const formattedData = await Promise.all(
                     //     data.map(async (item) => ({
-                            
+
                     //         date: (await this.formatDateToYYYYMMDD((await this.serialNumberToDate(item.date)).toLocaleDateString())),
                     //         event: item.event
                     //     }))

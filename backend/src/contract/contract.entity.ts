@@ -7,11 +7,20 @@ export class Contract {
     _id?: ObjectId;
 
     @Column()
-    recomment: string;
+    title: string;
+
+    @Column()
+    recommend: string;
 
     @Column()
     require_role: string;
 
+    @Column()
+    detail: string;
+
+    @Column()
+    time: string;
+    
     @Column()
     userOwner: ObjectId;
 }

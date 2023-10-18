@@ -44,10 +44,10 @@ const Month = ({ year, month }: any) => {
     console.log(date)
 
     const clickedDate = new Date(date);
-    const formattedDate = format(clickedDate, 'yyyy-MM-dd');
+    const formattedDate: any = format(clickedDate, 'yyyy-MM-dd');
 
 
-    const event = events.find(event => event.date === formattedDate);
+    const event: any = events.find((event: any) => event.date === formattedDate);
     // console.log(`event ${event.date} && ${event.event}`)
     if (event.event) {
       setSelectedEvent(event);
@@ -105,7 +105,7 @@ const Month = ({ year, month }: any) => {
                     onClick={() => handleDateClick(`${year}-${month + 1}-${day}`)}
                     style={{
                       border: day !== null && day !== undefined ? '1px solid #ccc' : 'none',
-                      
+
                     }}
                   >
                     {day !== null ? day : ''}

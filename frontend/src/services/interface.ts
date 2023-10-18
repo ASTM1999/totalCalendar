@@ -4,12 +4,25 @@ export interface Todo {
     completed: boolean;
 }
 
+export interface events {
+    date: any;
+    event: any;
+}
+export interface CommentUI {
+    comment: string;
+    userId: any;
+    activityId: string;
+    type: string
+    date: any
+}
 export interface Contract {
     id?: string;
+    title?: string
     recommend?: string;
     require_role?: string;
+    detail?: string;
     userOwner: string;
-    time:string;
+    time: any;
 }
 
 export interface Users {
@@ -30,7 +43,7 @@ export interface Users {
 //     tel: string | null;
 //     email: string | null;
 //     role: string | null;
-   
+
 // }
 export interface Activity {
     _id: string;

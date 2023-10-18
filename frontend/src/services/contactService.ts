@@ -2,11 +2,16 @@ import axios from "axios"
 import { Contract } from "./interface"
 import { API_BASE_URL } from "../config/apiBase"
 
-async function getContract() {
-    console.log("test get contract")
+async function getContact() {
+    try {
+        const res = await axios.get(`${API_BASE_URL}/contract`)
+        return res.data
+    } catch (err) {
+        console.log(`contact failed ${err}`)
+    }
 }
 
-async function createContract(data: Contract) {
+async function createContact(data: Contract) {
     try {
         const res = await axios.post(`${API_BASE_URL}/contract`, data)
         // console.log(res)
@@ -15,7 +20,7 @@ async function createContract(data: Contract) {
         console.log(`create failed ${err}`)
     }
 }
-export const contractService = {
-    getContract,
-    createContract,
+export const contactService = {
+    getContact,
+    createContact,
 }

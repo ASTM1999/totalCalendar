@@ -12,24 +12,9 @@ function SearchBar({ onSearch }: SearchProps) {
     };
 
     return (
-        <div className="input-group mb-3">
-            {/* <input
-                type="text"
-                className="form-control"
-                placeholder="Search..."
-                aria-label="Search..."
-                aria-describedby="search-button"
-                onChange={handleSearch}
-            />
-            <button
-                className="btn btn-outline-secondary"
-                type="button"
-                id="search-button"
-            >
-                Search
-            </button> */}
-
-            <InputGroup className="mb-3">
+        <div className="card-search">
+            <img src="../../public/search.svg" alt="search" style={{ width: "24px", marginRight: "10px" }} />
+            <InputGroup >
                 <InputGroup.Text id="basic-addon1">
                     {/* <BiSearch /> */}
                 </InputGroup.Text>

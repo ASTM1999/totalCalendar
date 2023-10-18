@@ -7,20 +7,30 @@ import { CreateContractDto } from './create-contract.dto';
 export class ContractController {
     constructor(
         private ContractService: ContractService,
-        
+
     ) { }
     @Post()
     async createContract(@Body() createContractdto: CreateContractDto) {
-        if(createContractdto.userOwner){
-            createContractdto.userOwner = new ObjectId(createContractdto.userOwner)
-            return this.ContractService.createContract(createContractdto)
+        console.log(createContractdto)
+        console.log(createContractdto.title && createContractdto.recommend)
+        if (createContractdto.title && createContractdto.recommend) {
+            if (createContractdto.userOwner) {
+                createContractdto.userOwner = new ObjectId(createContractdto.userOwner)
+                return this.ContractService.createContract(createContractdto)
+            }
+        } else if (createContractdto.require_role) {
+            if (createContractdto.userOwner) {
+                createContractdto.userOwner = new ObjectId(createContractdto.userOwner)
+                return this.ContractService.createContract(createContractdto)
+            }
+        } else {
+            return "failed"
         }
-        return "failed"
     }
 
     @Get()
     async get() {
-        console.log("wdwd")
+        console.log("contact work backend")
         return await this.ContractService.getAll()
     }
 }

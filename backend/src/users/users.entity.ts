@@ -16,7 +16,13 @@ export class Users {
     username: string; //userAdmin //user //Admin
 
     @Column()
-    role: string;  
+    status: string;  //for require role  // active?
+
+    @Column()
+    option: string;  
+
+    @Column()
+    role: string;
 
     @Column()
     tel: string;
@@ -24,9 +30,9 @@ export class Users {
     @Column()
     byGoogle?: boolean;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     resetToken?: string;
-    
+
     sub?: string;
 
 

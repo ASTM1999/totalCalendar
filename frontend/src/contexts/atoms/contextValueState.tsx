@@ -1,13 +1,22 @@
 import { atom } from "recoil";
-import { Activity, Todo, Users } from "../../services/interface";
+import { Activity, CommentUI, Todo, Users } from "../../services/interface";
 
 // ในส่วนนี้ไม่ค่อยได้ใช้งาน เลยไม่ต้องแยกออกไปเป็น Component ตามตัวอื่นก็ได้
-
 export const contextValueState = atom({
   key: 'contextValueState',
   default: 'Initial Value'
 })
 
+
+export const commentState = atom<CommentUI[]>({
+  key: 'commentState',
+  default: [],
+})
+
+export const announcementsState = atom<Activity[]>({
+  key: 'announcementsState',
+  default: [],
+})
 export const todoListState = atom<Todo[]>({
   key: 'todoListState',
   default: []
@@ -19,7 +28,7 @@ export const counterState = atom({
 })
 
 export const loginState = atom({
-  key:'loginState',
+  key: 'loginState',
   default: false,
 })
 
@@ -42,14 +51,11 @@ export const selectedDateEventsState = atom({
 })
 
 export const dataEventState = atom({
-  key:'dataEventState',
+  key: 'dataEventState',
   default: [],
 })
 
-export const announcementsState = atom<Activity[]>({
-  key: 'announcementsState',
-  default: [],
-})
+
 
 
 export const campsState = atom<Activity[]>({
@@ -60,7 +66,7 @@ export const campsState = atom<Activity[]>({
 
 export const writingPostState = atom({
   key: 'writingPostState',
-  default: { type: '', title: '', detail: '' },
+  default: { type: 'announcement', title: '', detail: '' },
 })
 
 export const activityState = atom<Activity[]>({

@@ -28,6 +28,7 @@ const Login = () => {
                 await navigate('/')
                 // console.log("googleLogin",user)
                 setUserState((prevUserState) => [...prevUserState, user])
+                localStorage.setItem('username', user.name)
                 window.location.reload()
             } catch (err) {
                 console.log(`Register Failed ${err}`)
@@ -62,7 +63,7 @@ const Login = () => {
                 if (userData.message === 'Email not found') {
                     console.log(`test`)
                 } else {
-                    setName(userData.name)
+                    setName(userData.username)
                     setEmailloged(1)
                 }
             } catch (err) {

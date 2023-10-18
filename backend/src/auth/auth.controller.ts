@@ -27,13 +27,14 @@ export class AuthController {
     // @UseGuards(LocalAuthGuard)
     @Post('login')
     async login(@Body() loginData: { username: string, password: string }): Promise<{
-        name?: string;
+        username?: string;
         message: string;
         accessToken?: string;
         email?: string;
         role?: string;
         tel?: string;
-        userId?:ObjectId;
+        userId?: ObjectId;
+        option?: string;
     }> {
         const { username, password } = loginData;
         console.log("login: ", loginData)
@@ -50,16 +51,17 @@ export class AuthController {
                 message: 'Login success',
                 // accessToken: accessToken,
                 accessToken: this.jwtService.sign(payload),
-                name: user.username,
+                username: user.username,
                 email: user.email,
                 role: user.role,
                 tel: user.tel,
-                userId: user._id
+                userId: user._id,
+                option: user.option
             };
         } else {
             return {
                 message: 'Inconrect email',
-                name: user.username
+                username: user.username
             };
         }
     }

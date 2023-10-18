@@ -5,11 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import Announcement from './announcement.entity';
 import { CommentModule } from 'src/comment/comment.module';
 import { CommentService } from 'src/comment/comment.service';
-import Comment from 'src/comment/comment.entity';
+import Comments from 'src/comment/comment.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Announcement,Comment]),
+    TypeOrmModule.forFeature([Announcement,Comments]),
     CommentModule
   ],
   providers: [AnnouncementService,CommentService],

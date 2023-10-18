@@ -15,7 +15,7 @@ import { AnnouncementModule } from './announcement/announcement.module';
 import { CommentModule } from './comment/comment.module';
 import { EventsModule } from './events/events.module';
 import { Events } from './events/events.entity';
-import Comment from './comment/comment.entity';
+import Comments from './comment/comment.entity';
 
 
 import { MulterModule } from '@nestjs/platform-express'
@@ -34,7 +34,7 @@ import Contract from './contract/contract.entity';
         Activity,
         Announcement,
         Camp,
-        Comment,
+        Comments,
         Events,
         Contract,
       ],

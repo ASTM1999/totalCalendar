@@ -4,12 +4,17 @@ import { ObjectId } from "mongodb"
 
 
 export class CreateCommentDto {
-
+    @IsNotEmpty()
     comment: string;
 
+    @IsNotEmpty()
     userId: ObjectId;
 
-    like: number;
-
+    like?: number;
+    
+    @IsNotEmpty()
     activityId: ObjectId;
+
+    @IsNotEmpty()
+    date: string;
 }

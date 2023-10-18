@@ -26,7 +26,7 @@ export class UsersService {
 
     async findOneAuth(email: string): Promise<Users | undefined> {
         email = email.toLocaleLowerCase()
-        console.log(typeof(email))
+        console.log(typeof (email))
         console.log("findOneAuth:", email)
         const user = await this.userRepository.findOne({ where: { email } })
         console.log(`user : ${user}`)
@@ -78,25 +78,32 @@ export class UsersService {
     async updateUser(id: ObjectId, updateUserDto: UpdateUserDto): Promise<Users> {
         try {
             const user = await this.userRepository.findOne({ where: { _id: new ObjectId(id) } })
-            console.log("found:",user)
-            if(!user){
+            console.log("found:", user)
+            if (!user) {
                 return null //ถ้าไม่พยให้ return null
             }
-            if(updateUserDto.role){
+            if (updateUserDto.role) {
                 user.role = updateUserDto.role
             }
-            if(updateUserDto.username){
+            if (updateUserDto.username) {
                 user.username = updateUserDto.username
             }
-            if(updateUserDto.tel){
+            if (updateUserDto.tel) {
                 user.tel = updateUserDto.tel
             }
-            if(updateUserDto.email){
+            if (updateUserDto.email) {
                 user.email = updateUserDto.email
             }
-            if(updateUserDto.password){
+            if (updateUserDto.password) {
                 user.password = updateUserDto.password
             }
+            if (updateUserDto.option) {
+                user.option = updateUserDto.option
+            }
+            if (updateUserDto.status) {
+                user.status = updateUserDto.status
+            }
+
             const updateUser = await this.userRepository.save(user)
             return updateUser
         } catch (error) {
@@ -127,8 +134,8 @@ export class UsersService {
     // }
 
 
-   
-   
+
+
 
     async registerUser(createUserDto: CreateUserDto) {
         return this.userRepository.save(createUserDto)

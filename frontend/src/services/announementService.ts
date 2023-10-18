@@ -2,6 +2,7 @@ import axios from "axios";
 import { API_BASE_URL } from "../config/apiBase";
 
 
+
 async function getannouncement() {
     try {
         const response = await axios.get(`${API_BASE_URL}/announcement`)
@@ -13,6 +14,7 @@ async function getannouncement() {
     }
 }
 
+
 // async function createannouncementService() {
 //     try{
 //         const response = await axios.post(`${API_BASE_URL}acivity`)
@@ -21,4 +23,5 @@ async function getannouncement() {
 
 export const announcementServices = {
     getannouncement,
+    
 }

@@ -17,26 +17,28 @@ const Home = () => {
                     {/* <li><Link to="/testcalendar">Calendar</Link></li> */}
                 </ul>
             </nav>
-            <Header />
+            {/* <Header /> */}
             {/* <TestCalendar /> */}
-            <p>
-                activity: 1comment  2like 
+            {/* <p>
+                activity: 1comment  2like
             </p>
             <p>ปุ่ม search</p>
             <p>เพิ่มการแจ้งเตือน && หน้า approve && list user ให้กับ admin </p>
-    
-            <p>
-                login เหลือ validate
-            </p>
+
+
             <p>
                 ปฏิทิน: 2แก้ไข 3จัดตามหมวด excel
             </p>
             <p>
-                activity: 1comment  2like 
+                activity: 1comment  2like
             </p>
             <p>ปุ่ม search</p>
-           
-            <p> ss </p>
+            <p>Alert Case Succes & Failed</p>
+            <p>
+                login เหลือ validate
+            </p>
+
+            <p> ss </p> */}
 
 
 
