@@ -23,7 +23,7 @@ export class EmailService {
             from: 'anusornsriprom1999@gmail.com',
             to: email,
             subject: 'Password Reset',
-            text: `this is new pass word: ${resetUrl}`,
+            text: `You have requested a password reset. Click the following link to reset your password: ${resetUrl}`,
         };
 
         // console.log("mailOptions",mailOptions)

@@ -33,6 +33,7 @@ const TestCalendar = () => {
   // const [selectedOption, setSelectedOption] = useState('วันหยุด');
   const [role, setRole] = useState<string | null>('')
   const [option, setOption] = useState<string | null>('')
+  const [username, setUsername] = useState<string | null>('')
   const setDataEvent = useSetRecoilState(dataEventState)
   const [eventDataFormath, setEventDataFormath] = useState()
   const [formatDate, setFormatDate] = useState<string>()
@@ -113,6 +114,8 @@ const TestCalendar = () => {
       setRole(role);
       const option = await UserService.getOption()
       setOption(option)
+      const username = await UserService.getUsername()
+      setUsername(username)
       // console.log("role", role)
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -122,7 +125,7 @@ const TestCalendar = () => {
     try {
       const dataEvent = await EventsServices.getEvents(selectedOption)
       setDataEvent(dataEvent)
-      console.log("fetch Event: ", dataEvent)
+      // console.log("fetch Event: ", dataEvent)
     } catch (err) {
       console.log(`Error fetch data: ${err}`)
     }
@@ -208,7 +211,7 @@ const TestCalendar = () => {
       console.log(`failed ${err}`);
     }
   }
-  console.log(findEvent)
+  // console.log(findEvent)
   const onClose = () => {
     setPopup(false)
   }
@@ -230,14 +233,14 @@ const TestCalendar = () => {
                 <b>
                   <p onClick={handleClickHome} style={{ marginRight: "6px", cursor: "pointer" }}>Home</p>
                 </b>
-                <p>- Accout</p>
+                <p>- {username}</p>
               </div>
             </div>
             <div className="bt-activity" style={{ marginRight: "20px", }}>
               <div className='optionCalendar'>
                 <Option selectedOption={selectedOption} onOptionChange={handleOptionChange} />
               </div>
-              {((role === "useradmin" && option === selectedOption) || role === "admin") && (
+              {((role === "admin" && option === selectedOption) || role === "superadmin") && (
                 <div className='upload'>
                   <div className="uploadExcelFile">
 

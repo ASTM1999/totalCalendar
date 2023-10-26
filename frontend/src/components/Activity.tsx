@@ -45,6 +45,7 @@ const Activity = () => {
     const [selectedDateStart, setSelectedDateStart] = useState<Date | null>(new Date());
     const [selectedDateEnd, setSelectedDateEnd] = useState<Date | null | any>(new Date());
     const [username, setUserName] = useState<string | null>()
+    const [option, setOption] = useState<string | null>()
 
 
     // console.log(writingPost)
@@ -165,7 +166,7 @@ const Activity = () => {
         setTimeout(async (newOption: any) => {
             // console.log("selectedOption After:", newOption);
 
-           
+
             const ac = await activityServices.getActivity(newOption)
             const ca = await campServices.getCamp(newOption)
             const an = await announcementServices.getannouncement(newOption);
@@ -186,10 +187,12 @@ const Activity = () => {
     }
     const fetchActivity = async () => {
         try {
+            const option = await UserService.getOption()
+            setOption(option)
             const ac = await activityServices.getActivity(selectedOption)
             const ca = await campServices.getCamp(selectedOption)
             const an = await announcementServices.getannouncement(selectedOption)
-            console.log("announcementServices: ", an)
+            // console.log("announcementServices: ", an)
             setActivities(ac)
             setCamp(ca)
             setAnnouncement(an)
@@ -227,7 +230,7 @@ const Activity = () => {
                                 <div style={{ marginRight: "20px" }}>
                                     <Option selectedOption={selectedOption} onOptionChange={handleOptionChange} />
                                 </div>
-                                {login && (
+                                {(login && selectedOption === option) && (
                                     <button onClick={handleEditClick} className="bt-headPD">Create</button>
                                 )}
                             </div>
@@ -264,7 +267,7 @@ const Activity = () => {
 
                     <div className="body-activity">
                         <div style={{ height: "100%", display: "flex", justifyContent: "center", padding: "10px", borderRadius: "20px" }}>
-                            <PostList type={writingPost.type} />
+                            <PostList type={writingPost.type} fetch={fetchActivity} />
                         </div>
                     </div>
                 </div>
@@ -315,7 +318,7 @@ const Activity = () => {
 
 
                 {
-                    (role === "useradmin" || role === "admin" || (role === "user" && activeTab !== "announcement")) &&
+                    (role === "admin" || role === "superadmin" || (role === "user" && activeTab !== "announcement")) &&
                     (isEditing ? (
                         <>
                             {/* <button onClick={handleSaveClick}>ยืนยัน</button>

@@ -6,6 +6,7 @@ import { contactService } from "../services/contactService"
 import angleRight from '../../public/angle-right.svg'
 import angleLeft from '../../public/angle-left.svg'
 import PopContantEvent from './PopContant';
+import Swal from "sweetalert2"
 
 const UserManagement = () => {
     // user
@@ -53,7 +54,7 @@ const UserManagement = () => {
     //data from contact
 
 
-     //pagination
+    //pagination
     //option
     const itemsPerPageOptions = [5, 10, 20];
     const [itemsPerPage, setItemsPerPage] = useState(itemsPerPageOptions[0]);
@@ -157,29 +158,83 @@ const UserManagement = () => {
         }
     }
     const handleApprove = async (id: any, require: any, status: any, roleUpdate: any) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, post it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                await setOption(require)
+                try {
+                    const data = {
+                        role: roleUpdate,
+                        status: status,
+                        option: require,
+                        id: id
+                    }
+                    console.log("data: ", data)
+                    const res = await UserService.updateUserData(id, data)
+                    if (res) {
+                        Swal.fire(
+                            'Changed Role!',
+                            'Your file has been Changed.',
+                            'success'
+                        )
+                    }
+                    fetchRequest()
 
-        await setOption(require)
-        try {
-            const data = {
-                role: roleUpdate,
-                status: status,
-                option: require,
-                id: id
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+
+                    })
+                }
+
             }
-            console.log("data: ", data)
-            const res = await UserService.updateUserData(id, data)
-            fetchRequest()
-        } catch (err) {
-            console.log(`Approve Failed ${err}`)
-        }
+        })
 
     }
+
+
     const handleShowDetailRequire = (detail: any, title: string, time: any) => {
         console.log("detail :", detail)
         setPopup(true)
         setTitle(title)
         setDetail(detail)
         setTime(time)
+    }
+
+    const handleDelete = async (userOwner: string) => {
+        try {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Delete it!'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const res = await contactService.deleteContact(userOwner)
+                    console.log(res)
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been Delete.',
+                        'success'
+                    )
+                    fetchRequest()
+                }
+            })
+        } catch (err) {
+            console.log(`Failed : ${err}`)
+        }
     }
     const onClose = () => {
         setPopup(false)
@@ -243,9 +298,11 @@ const UserManagement = () => {
                                             <td>{formatDateTime(item.time)}</td>
                                             <td>
                                                 <img className="icon-approve" src="../../public/check-green.svg" alt="check"
-                                                    onClick={() => handleApprove(item.userOwner, item.require_role, 'active', "useradmin")} />
+                                                    onClick={() => handleApprove(item.userOwner, item.require_role, 'active', "admin")} />
                                                 <img className="icon-approve" src="../../public/xmark-red.svg" alt="xmark"
                                                     onClick={() => handleCencle(item.userOwner, item.require_role, 'pending', "user")} />
+                                                <img className="icon-delete" src="../../public/trash-green.svg" alt="xmark"
+                                                    onClick={() => handleDelete(item.userOwner)} />
                                             </td>
                                         </tr>
                                     ))}

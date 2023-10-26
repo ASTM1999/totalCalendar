@@ -9,6 +9,7 @@ function UserProfile() {
     const [name, setName] = useState<string | null>(null);
     const [tel, setTel] = useState<string | undefined>(undefined);
     const [email, setEmail] = useState<string | null>(null);
+    const [option, setOption] = useState<string | null>(null);
     const [role, setRole] = useState<string | undefined>(undefined);
     const [userId, setUserId] = useState<string | null>(null);
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -21,6 +22,7 @@ function UserProfile() {
     const [password, setPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    
     // const [picture, setPicture] = useState()
 
     // console.log("picture:", picture)
@@ -39,7 +41,9 @@ function UserProfile() {
                     const users = await UserService.fetchUsers()
                     const findUser = users.find((item) => item._id === getUserId);
                     setUserLoggedIn(findUser);
-                    const pic = await UserService.getPicture()
+                    const option = await UserService.getOption()
+                    setOption(option)
+
                     // setPicture(pic)
                 }
             } catch (error) {
@@ -260,9 +264,10 @@ function UserProfile() {
                                 <label style={{ width: "350px" }}>Role</label>
                                 <p className="plabel">{role}</p>
                             </div>
-                            {role === 'useradmin' && (
+                            {role === 'admin' && (
                                 <div className="lbox">
-                                    <label style={{ width: "350px" }}>Admin</label>
+                                    <label style={{ width: "350px" }}>Admin of</label>
+                                    <p className="plabel">{option}</p>
 
                                 </div>
                             )}

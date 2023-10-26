@@ -121,6 +121,17 @@ body {
   margin: 10px
 }
 
+.icon-delete {
+  cursor: pointer;
+  width: 24px;
+  /* padding: 10px; */
+  margin: 10px
+}
+
+.icon-delete:hover {
+  content: url('../public/trash-red.svg');
+}
+
 .usermanagement {
   width: 1234px;
   height: 100%;
@@ -151,7 +162,7 @@ body {
   background-color: rgb(156, 240, 168);
   font-size: 16px;
   color: #000000;
-
+  width: 120%;
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
@@ -168,6 +179,7 @@ body {
   font-size: 0;
   opacity: 0;
   pointer-events: none;
+
 }
 
 .custom-file-upload:hover {

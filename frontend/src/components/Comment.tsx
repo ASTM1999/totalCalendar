@@ -69,7 +69,7 @@ const Comment = ({ postId, activityTab }: CommentProps) => {
                 return item;
             }));
             const commentFilter = commentData.filter((item) => item.activityId === postId)
-            console.log("commentFilter: ", commentFilter)
+            // console.log("commentFilter: ", commentFilter)
             setCommentState(commentFilter)
             // const commentFilter = commentData.filter((item) => {
             //     console.log("item.id", item._id)

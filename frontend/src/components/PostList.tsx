@@ -14,7 +14,13 @@ import angleRight from '../../public/angle-right.svg'
 import angleLeft from '../../public/angle-left.svg'
 import Comment from './Comment';
 
-const PostList = ({ type }: { type: string; }) => {
+interface PropsPostList {
+    type: string;
+    fetch: () => void;
+}
+
+
+const PostList = ({ type, fetch }: PropsPostList) => {
     const posts = useRecoilValue(type === 'activity' ? activityState : type === 'camp' ? campsState : announcementsState);
     const [isEditingMap, setIsEditingMap] = useState<{ [key: string]: boolean }>({});
 
@@ -22,7 +28,8 @@ const PostList = ({ type }: { type: string; }) => {
     // console.log(posts)
     // console.log("posts : ", posts)
     // const [isEditing, setIsEditing] = useState<boolean>(false);
-    const [, setSearchText] = useState('');
+
+
 
     const [userId, setUserId] = useState<string>()
     const [title, setTitle] = useState<string>()
@@ -35,6 +42,7 @@ const PostList = ({ type }: { type: string; }) => {
     const [userpost, setUserpost] = useState<Users>()
     const [selectedDateStart, setSelectedDateStart] = useState<Date | null>(new Date());
     const [selectedDateEnd, setSelectedDateEnd] = useState<Date | null>(new Date());
+
 
 
 
@@ -104,8 +112,7 @@ const PostList = ({ type }: { type: string; }) => {
                 ...prevState,
                 [postId]: false,
             }));
-            // getActivity()
-
+            fetch()
         } catch (error) {
             console.error(`Error updating activity: ${error}`);
         }
@@ -137,9 +144,7 @@ const PostList = ({ type }: { type: string; }) => {
             console.error("Error fetching user data:", error);
         }
     }
-    const handleSearch = (text: any) => {
-        setSearchText(text);
-    }
+
     const handleClickPost = async (e: any) => {
         const filtered = posts.filter((item: any) => item._id === e);
         const ownerPost = filtered.map((e: any) => e.userOwner)
@@ -147,6 +152,7 @@ const PostList = ({ type }: { type: string; }) => {
         setUserpost(userPost)
         setFilteredData(filtered);
     }
+
 
 
     useEffect(() => {
@@ -169,8 +175,10 @@ const PostList = ({ type }: { type: string; }) => {
     const moreNewDate = posts.filter((item) => new Date(item.endDate) > new Date())
     const currentItem = moreNewDate.slice(indexOfFirstItem, indexOfLastItem)
     const totalPages = Math.ceil(moreNewDate.length / itemsPerPage);
+    const [searchResults, setSearchResults] = useState<Activity[]>([]);
+    const [searchValue, setSearchValue] = useState('');
 
-    console.log("currentItem: ", moreNewDate)
+    // console.log("currentItem: ", moreNewDate)
     const pageNumbers = [];
     for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
@@ -188,7 +196,21 @@ const PostList = ({ type }: { type: string; }) => {
     ));
 
 
+    const handleSearch = (value: string) => {
+        // console.log("searchValue: ", searchValue)
+        // console.log("value handleSearch: ", value)
+        setSearchValue(value);
+        const results: Activity[] = currentItem.filter((item) => item.title.includes(value));
+
+        setTimeout(() => {
+            setSearchResults(results);
+        }, 100);
+    };
+    const displayItems = searchResults.length > 0 ? searchResults : currentItem;
+
     // console.log(type)
+    // console.log(searchValue)
+    // console.log("searchResults: ", searchResults)
 
     return (
         <div className="post-list">
@@ -196,7 +218,7 @@ const PostList = ({ type }: { type: string; }) => {
             <div className="post">
                 <ul className='postlist-ul'>
                     <SearchBar onSearch={handleSearch} />
-                    {currentItem
+                    {displayItems
                         .map((post) => (
                             <li key={post._id} className='postlist-li'>
                                 <div className='div-post-li' onClick={() => handleClickPost(post._id)}>
@@ -211,7 +233,8 @@ const PostList = ({ type }: { type: string; }) => {
                                     </div>
                                 </div>
                             </li>
-                        ))}
+                        ))
+                    }
 
 
 
@@ -328,6 +351,7 @@ const PostList = ({ type }: { type: string; }) => {
                                                 )
                                             )}
 
+
                                         </div>
                                         <Comment postId={item._id} activityTab={type} />
                                     </>
@@ -390,6 +414,18 @@ const PostList = ({ type }: { type: string; }) => {
                                                     className="datecustom-picker"
                                                 />
                                             </div>
+                                            {(item.userOwner === userId) && (
+                                                !isEditingMap[item._id] ? (
+                                                    <div className="" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                                        <button className='bt-st-sc' onClick={() => handleEditClick(item._id)}>Edit</button>
+                                                    </div>
+                                                ) : (
+                                                    <div className="" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                                        <button className='bt-st' onClick={() => handleCancelClick(item._id)}>Cancel</button>
+                                                        <button className='bt-st-sc' onClick={() => handleUpdateActivity(item._id)}>Save Change</button>
+                                                    </div>
+                                                )
+                                            )}
                                         </div>
 
 

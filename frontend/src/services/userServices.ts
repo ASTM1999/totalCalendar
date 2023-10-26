@@ -51,17 +51,6 @@ async function getOption(): Promise<string | null> {
     }
 }
 
-async function createUser(newUser: Users) {
-    try {
-        const res = await axios.post(`${API_BASE_URL}/users/register`, newUser)
-        console.log("res data creat user")
-        console.log(res.data)
-
-    } catch (err) {
-        console.log(`Error create data`, err)
-        throw err
-    }
-}
 
 async function authUser(params: any) {
     try {
@@ -69,7 +58,7 @@ async function authUser(params: any) {
         // console.log(`params : ${params.username}`)
         const userData = await axios.post(`${API_BASE_URL}/auth/login`, params)
         if (userData) {
-            console.log("test authUser")
+            // console.log("test authUser")
             localStorage.setItem("accessToken", userData.data.accessToken)
             localStorage.setItem("userId", userData.data.userId)
             localStorage.setItem("useremail", userData.data.email)
@@ -144,7 +133,7 @@ async function getPicture() {
 }
 
 async function getGoogle(tokenResponse: any) {
-    console.log("tokenResponse", tokenResponse)
+    // console.log("tokenResponse", tokenResponse)
     const res = await axios
         .get('https://www.googleapis.com/oauth2/v3/userinfo', {
             headers: {
@@ -155,7 +144,7 @@ async function getGoogle(tokenResponse: any) {
         localStorage.setItem('picture', res.data.picture)
         localStorage.setItem('username', res.data.name)
     }
-    createDataUserGoogle(res.data)
+    // createDataUserGoogle(res.data)
     return createDataUserGoogle(res.data)
 }
 
@@ -169,10 +158,22 @@ const createDataUserGoogle = async (userdata: any) => {
         byGoogle: true,
         sub: userdata.sub,
     };
-    console.log("newuser:", newUser)
+    // console.log("newuser:", newUser)
     await createUser(newUser)
     const user = await authUser({ username: newUser.email, password: newUser.sub })
     return user
+}
+
+async function createUser(newUser: Users) {
+    try {
+        const res = await axios.post(`${API_BASE_URL}/users/register`, newUser)
+        // console.log("res data creat user")
+        // console.log(res.data)
+        return res.data
+    } catch (err) {
+        console.log(`Error create data`, err)
+        throw err
+    }
 }
 
 async function getUserbyId(id: any) {
@@ -193,8 +194,25 @@ async function createUserDto(data: any) {
         console.log(`Failed ${err}`)
     }
 }
-
+async function forgotPassword(email: string) {
+    await fetch(`${API_BASE_URL}/users/forgot-Password`, {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+}
+async function getAllUser() {
+    try {
+        const user = await axios.get(`${API_BASE_URL}/users`)
+        return user.data
+    } catch (err) {
+        console.log(`Failed ${err}`)
+    }
+}
 export const UserService = {
+    getAllUser,
     getUserbyId,
     fetchUsers,
     getAccessToken,
@@ -211,6 +229,6 @@ export const UserService = {
     getGoogle,
     getPicture,
     getOption,
-    createUserDto
-
+    createUserDto,
+    forgotPassword,
 }

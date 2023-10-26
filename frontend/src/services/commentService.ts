@@ -18,7 +18,7 @@ async function getComment(data: any) {
     try {
         // console.log(data)
         const res = await axios.get(`${API_BASE_URL}/${data.type}/${data.activityId}/comment`)
-        console.log(res.data)
+        // console.log(res.data)
         return res.data
     } catch (err) {
         console.log(`Failed ${err}`)

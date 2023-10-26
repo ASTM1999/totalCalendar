@@ -138,6 +138,7 @@ export class UsersService {
 
 
     async registerUser(createUserDto: CreateUserDto) {
+        createUserDto.email = createUserDto.email.toLocaleLowerCase()
         return this.userRepository.save(createUserDto)
     }
 

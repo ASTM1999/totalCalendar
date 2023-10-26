@@ -28,6 +28,7 @@ export class AnnouncementService {
 
     async update(id: ObjectId, updateActivityDto: UpdateAnnouncementDto) {
         try {
+            console.log("updateActivityDto : ", updateActivityDto)
             const user = await this.announcementRepository.findOne({ where: { _id: new ObjectId(id) } })
             if (!user) {
                 return null //ถ้าไม่พยให้ return null

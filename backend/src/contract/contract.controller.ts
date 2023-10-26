@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { ContractService } from './contract.service';
 import { ObjectId } from 'mongodb';
 import { CreateContractDto } from './create-contract.dto';
@@ -9,9 +9,15 @@ export class ContractController {
         private ContractService: ContractService,
 
     ) { }
+    @Delete()
+    async deleteContact(@Query('userOwner') userOwner: string) {
+        console.log(userOwner)
+        return this.ContractService.deleteContact(userOwner)
+    }
+
     @Post()
     async createContract(@Body() createContractdto: CreateContractDto) {
-        // console.log(createContractdto)
+        console.log(createContractdto)
         // console.log(createContractdto.title && createContractdto.recommend)
         if (createContractdto.title && createContractdto.recommend) {
             if (createContractdto.userOwner) {
@@ -20,6 +26,7 @@ export class ContractController {
             }
         } else if (createContractdto.require_role) {
             if (createContractdto.userOwner) {
+                console.log("require_role : ", createContractdto.require_role)
                 createContractdto.userOwner = new ObjectId(createContractdto.userOwner)
                 return this.ContractService.createContract(createContractdto)
             }

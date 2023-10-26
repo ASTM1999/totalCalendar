@@ -73,13 +73,13 @@ const Header = () => {
 
 
     const handleTabClick = (tabName: any) => {
-        console.log(tabName);
+        // console.log(tabName);
         if (tabName === 'contactAdmin') {
-            console.log("tabname: ", tabName);
-            console.log("tabname: ", tabName === 'contactAdmin');
+            // console.log("tabname: ", tabName);
+            // console.log("tabname: ", tabName === 'contactAdmin');
             if (login) {
-                navigate('/contactAdmin');
-                console.log('test');
+                navigate('/contactAdmin', { state: { activeTab: tabName } });
+                // console.log('test');
             } else {
                 navigate('/login');
             }
@@ -98,7 +98,7 @@ const Header = () => {
     };
 
     function handleButtonClick(route: string): void {
-        console.log("handleButtonClick")
+        // console.log("handleButtonClick")
         if (!login) {
             navigate("/login");
         } else {
@@ -129,7 +129,7 @@ const Header = () => {
                             <a className={`tap-link ${activeTab === "announcement" ? "active" : ""}`} onClick={() => handleTabClick("announcement")}>Announcement</a>
                         </li>
 
-                        {Role !== 'admin' ? (
+                        {Role !== 'superadmin' ? (
                             <li className="tap-item">
                                 <a className={`tap-link ${activeTab === "contactAdmin" ? "active" : ""}`} onClick={() => handleTabClick('contactAdmin')}>Contact Us</a>
                             </li>

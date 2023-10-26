@@ -64,6 +64,7 @@ export class AnnouncementController {
         @Param('id', ParseObjectIdPipe) activityId: ObjectId,
         @Body() updateAnnouncement: UpdateAnnouncementDto
     ) {
+        console.log("updateAnnouncement : ", updateAnnouncement)
         const update = await this.announcementService.update(activityId, updateAnnouncement)
         return update
     }

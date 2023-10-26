@@ -4,7 +4,7 @@ import { API_BASE_URL } from "../config/apiBase";
 
 async function getEvents(option: any) {
   try {
-    console.log(option)
+    // console.log(option)
     const response = await axios.get(`${API_BASE_URL}/events/pullbuffer?option=${option}`)
     return response.data
   } catch (err) {
@@ -22,11 +22,11 @@ async function postEvent(formData: FormData) {
       },
       data: formData,
     });
-    console.log('File uploaded successfully');
-    // You can add any additional logic here after successful upload
+    // console.log('File uploaded successfully');
+    
   } catch (error) {
     console.error('Error uploading file:', error);
-    throw error; // Rethrow the error to handle it in your component if needed
+    throw error; 
   }
 }
 

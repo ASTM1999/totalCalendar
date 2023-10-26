@@ -1,28 +1,31 @@
 
+import { useEffect, useState } from 'react';
 import { FormControl, InputGroup } from 'react-bootstrap';
 // import { BiSearch } from 'react-icons/bi'; 
 
 interface SearchProps {
-    onSearch: any;
+    onSearch: (searchValue: string) => void;
+
 }
 
 function SearchBar({ onSearch }: SearchProps) {
-    const handleSearch = (e: any) => {
-        onSearch(e.target.value);
-    };
-
+    const [searchValue, setSearchValue] = useState('');
+    useEffect(() => {
+        onSearch(searchValue);
+    }, [searchValue, onSearch])
     return (
         <div className="card-search">
             <img src="../../public/search.svg" alt="search" style={{ width: "24px", marginRight: "10px" }} />
-            <InputGroup >
+            <InputGroup>
                 <InputGroup.Text id="basic-addon1">
                     {/* <BiSearch /> */}
                 </InputGroup.Text>
                 <FormControl
-                    // className='formSearch'
                     placeholder="Search..."
                     aria-label="Search..."
                     aria-describedby="basic-addon1"
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
                 />
             </InputGroup>
         </div>

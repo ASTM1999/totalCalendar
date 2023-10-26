@@ -30,7 +30,7 @@ const Login = () => {
                 console.log("googleLogin", user)
                 setUserState((prevUserState) => [...prevUserState, user])
                 localStorage.setItem('username', user.username)
-                // window.location.reload()
+                window.location.reload()
             } catch (err) {
                 console.log(`Register Failed ${err}`)
             }
@@ -42,6 +42,7 @@ const Login = () => {
     const handleSignInWithGoogle = async () => {
         console.log('คลิก Sign up with Google')
         googleLogin()
+
         // console.log(googleLogin)
     }
 
@@ -53,14 +54,25 @@ const Login = () => {
     }
 
 
+    const handleForgotPasswordSubmit = async (e: any) => {
+        await UserService.forgotPassword(email)
+            .then(() => {
+                alert('Password Resetted! Check your email.');
+                navigate('/login');
+            })
+            .catch((error) => {
+                console.log('Error resetting password:', error);
+            });
+    };
+
     // ทอสอบ code
     const handleNextClick = async () => {
-        console.log(password)
+        // console.log(password)
         if (!password) {
             try {
                 // const params = { username, password }; // แนบข้อมูลที่จำเป็นในการยืนยันตัวตน
                 const userData = await UserService.authUser({ username: email });
-                console.log(userData)
+                // console.log(userData)
                 if (userData.message === 'Email not found') {
                     Swal.fire({
                         icon: 'error',
@@ -195,7 +207,7 @@ const Login = () => {
                         </div>
 
                     ) : (
-                        <div className="createAccout-1">
+                        <div className="createAccout-1" onClick={handleForgotPasswordSubmit}>
                             <a><b>Forgot password?</b></a>
                         </div>
 

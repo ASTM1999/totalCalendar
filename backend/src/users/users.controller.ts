@@ -20,7 +20,9 @@ export class UsersController {
     // reset password
     @Post('forgot-password')
     async forgotPassword(@Body('email') email: string): Promise<void> {
-        await this.usersService.requestPasswordReset(email);
+
+        console.log("email: ",  email.toLocaleLowerCase())
+        await this.usersService.requestPasswordReset(email.toLocaleLowerCase());
     }
 
     @Post('reset-password')
