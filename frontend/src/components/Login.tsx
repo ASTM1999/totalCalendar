@@ -83,6 +83,7 @@ const Login = () => {
                 } else {
                     setName(userData.username)
                     setEmailloged(1)
+                  
                 }
             } catch (err) {
                 console.error(`Login failed: ${err}`);
@@ -102,7 +103,7 @@ const Login = () => {
                 } else {
                     setUserState((prevUserState) => [...prevUserState, userData])
                     // setLogin(true)
-                    // navigate('/')
+                    navigate('/')
 
                 }
             } catch (error) {
