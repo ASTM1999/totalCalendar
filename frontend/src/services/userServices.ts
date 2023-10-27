@@ -149,6 +149,7 @@ async function getGoogle(tokenResponse: any) {
 }
 
 const createDataUserGoogle = async (userdata: any) => {
+
     console.log("createDataUser work", userdata)
     const newUser: Users = {
         email: userdata.email,
@@ -162,6 +163,7 @@ const createDataUserGoogle = async (userdata: any) => {
     await createUser(newUser)
     const user = await authUser({ username: newUser.email, password: newUser.sub })
     return user
+
 }
 
 async function createUser(newUser: Users) {
@@ -171,8 +173,7 @@ async function createUser(newUser: Users) {
         // console.log(res.data)
         return res.data
     } catch (err) {
-        console.log(`Error create data`, err)
-        throw err
+        return await authUser({ username: newUser.email, password: newUser.sub })
     }
 }
 

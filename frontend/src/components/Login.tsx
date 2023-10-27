@@ -26,11 +26,11 @@ const Login = () => {
             console.log("google login")
             try {
                 const user = await UserService.getGoogle(tokenResponse)
-                navigate('/')
                 console.log("googleLogin", user)
                 setUserState((prevUserState) => [...prevUserState, user])
                 localStorage.setItem('username', user.username)
-                window.location.reload()
+                navigate('/')
+                // window.location.reload()
             } catch (err) {
                 console.log(`Register Failed ${err}`)
             }
@@ -102,7 +102,7 @@ const Login = () => {
                 } else {
                     setUserState((prevUserState) => [...prevUserState, userData])
                     // setLogin(true)
-                    navigate('/')
+                    // navigate('/')
 
                 }
             } catch (error) {
