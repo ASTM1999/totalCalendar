@@ -224,7 +224,7 @@ const PostList = ({ type, fetch }: PropsPostList) => {
                                 <div className='div-post-li' onClick={() => handleClickPost(post._id)}>
                                     <h2>{post.title}</h2>
                                     <div className="post-h">
-                                        <p>{formatDate(post.startDate)} - {formatDate(post.endDate)}</p>
+                                        {/* <p>{formatDate(post.startDate)} - {formatDate(post.endDate)}</p> */}
                                         {(post.userOwner === userId) && (
                                             <div className="icon-owner" style={{ fontSize: "16px" }}>
                                                 👑
@@ -314,11 +314,13 @@ const PostList = ({ type, fetch }: PropsPostList) => {
                                             </div>
                                             <div className="dbody-containActivity">
 
-                                                <p style={{ marginBottom: "20px" }}>
-                                                    {formatText(item.detail)}
-                                                </p>
                                                 <div>
+                                                    <p style={{ marginBottom: "20px" }}>
+                                                        {formatText(item.detail)}
+                                                    </p>
+                                                </div>
 
+                                                <div>
                                                     <p className='date'><img src="../../public/iconfinder-icon(green).svg" alt="logOut" style={{ width: "16px", marginRight: "10px" }} />
                                                         <b style={{ marginRight: "10px" }}>
                                                             Start Date

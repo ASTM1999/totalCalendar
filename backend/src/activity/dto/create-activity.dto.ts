@@ -9,7 +9,7 @@ export class CreateActivityDto {
 
     @IsNotEmpty()
     type: string
-    
+
     @IsNotEmpty()
     title: string
 
@@ -18,7 +18,7 @@ export class CreateActivityDto {
 
     @IsNotEmpty()
     endDate: string
-    
+
     @IsNotEmpty()
     startDate: string
 
@@ -28,4 +28,7 @@ export class CreateActivityDto {
 
     @IsNotEmpty()
     option: string
+
+    // @IsNotEmpty()
+    // picture: string
 }

@@ -20,14 +20,16 @@ import Swal from 'sweetalert2';
 import PopContantEvent from './PopContant';
 
 import 'reactjs-popup/dist/index.css';
+import { eventsExport } from '../config/event';
+
 
 
 const TestCalendar = () => {
-  const year = new Date().getFullYear();
-  const [currentMonth, setCurrentMonth] = useState(0); // 0 คือเดือนที่ 1
+  //   const year = new Date().getFullYear();
+  //   const [currentMonth, setCurrentMonth] = useState(0); // 0 คือเดือนที่ 1
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const [selectedOption, setSelectedOption] = useState('วันหยุด');
+  const [selectedOption, setSelectedOption] = useState('มหาวิทยาลัยเทคโนโลยีสุรนารี');
   // const users = useRecoilValue(userState);
   // const role = users.map((user) => user.role);
   // const [selectedOption, setSelectedOption] = useState('วันหยุด');
@@ -35,7 +37,7 @@ const TestCalendar = () => {
   const [option, setOption] = useState<string | null>('')
   const [username, setUsername] = useState<string | null>('')
   const setDataEvent = useSetRecoilState(dataEventState)
-  const [eventDataFormath, setEventDataFormath] = useState()
+  // const [eventDataFormath, setEventDataFormath] = useState()
   const [formatDate, setFormatDate] = useState<string>()
   const [popup, setPopup] = useState<boolean>()
   const [findEvent, setFindEvent] = useState<any>()
@@ -52,9 +54,16 @@ const TestCalendar = () => {
   //     setCurrentMonth((prevMonth) => prevMonth - 6);
   // };
 
+  const handleExportFile = async () => {
+    console.log('export work')
+    // console.log('events: ', events)
+    await EventsServices.exportToExcel(eventsExport)
 
+  }
 
+  const allowedExtensions = ['.xlsx', '.xls']
   const handleUpload = async () => {
+
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -67,31 +76,43 @@ const TestCalendar = () => {
       if (result.isConfirmed) {
         if (selectedFile) {
 
-          const formData = new FormData();
-          formData.append('files', selectedFile);
-          formData.append('option', selectedOption);
+          const fileExtension = selectedFile.name.slice(((selectedFile.name.lastIndexOf(".") - 1) >>> 0) + 2);
+          if (allowedExtensions.includes(`.${fileExtension.toLowerCase()}`)) {
+            // ไฟล์ถูกต้อง (ไฟล์ Excel)
+            const formData = new FormData();
+            formData.append('files', selectedFile);
+            formData.append('option', selectedOption);
+            try {
+              console.log("formData: ", formData)
+              console.log(selectedOption)
+              await EventsServices.postEvent(formData);
+              Swal.fire(
+                'Posted!',
+                'Your file has been Posted.',
+                'success'
+              )
+              console.log('File uploaded successfully');
+              getEventData()
 
-          try {
-            console.log("formData: ", formData)
-            console.log(selectedOption)
-            await EventsServices.postEvent(formData);
-            Swal.fire(
-              'Posted!',
-              'Your file has been Posted.',
-              'success'
-            )
-            console.log('File uploaded successfully');
-            getEventData()
-
-          } catch (error) {
+            } catch (error) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                // footer: '<a href="">Why do I have this issue?</a>'
+              })
+              console.error('Error uploading file:', error);
+            }
+          } else {
             Swal.fire({
               icon: 'error',
-              title: 'Oops...',
-              text: 'Something went wrong!',
+              title: 'File Not excel...',
+              text: 'please choose file excel!',
               // footer: '<a href="">Why do I have this issue?</a>'
             })
-            console.error('Error uploading file:', error);
           }
+
+
         } else {
           Swal.fire({
             icon: 'error',
@@ -125,7 +146,7 @@ const TestCalendar = () => {
     try {
       const dataEvent = await EventsServices.getEvents(selectedOption)
       setDataEvent(dataEvent)
-      // console.log("fetch Event: ", dataEvent)
+      console.log("fetch Event: ", dataEvent)
     } catch (err) {
       console.log(`Error fetch data: ${err}`)
     }
@@ -147,29 +168,76 @@ const TestCalendar = () => {
 
 
   const eventsJson = useRecoilValue(dataEventState)
-  const events: { title: string; date: string; detail: string }[] = [];
+  const events: any[] = [];
   const [fileName, setFileName] = useState('');
 
   // console.log(eventsJson)
 
+  // const convertDate = (dateStr: string) => {
+  //   const [day, month, year] = dateStr.split('/').map(Number); // แยกวันที่, เดือน, และปีจากสตริง
+  //   if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+  //     const newDate = new Date(year, month - 1, day); // month - 1 เนื่องจากเดือนใน JavaScript เริ่มที่ 0
+  //     return newDate.toISOString();
+  //   }
+  //   return null; // คืนค่า null เมื่อไม่สามารถแปลงได้
+  // }
+  
+  // for (const key in eventsJson) {
+  //   const item: any = eventsJson[key];
+  //   if (item.event && item.start) {
+  //     // ตรวจสอบค่าว่างเปล่าหรือไม่
+  //     const start = item.start ? convertDate(item.start) : null;
+  //     const end = item.end ? convertDate(item.end) : null;
+  
+  //     if (start) {
+  //       const event = {
+  //         start: start,
+  //         end: end,
+  //         title: item.event,
+  //         detail: item.detail,
+  //       };
+  
+  //       events.push(event);
+  //     }
+  //   }
+  // }
+  
+  
   const convertDate = (date: any) => {
     const baseDate = new Date(1900, 0, 1); // วันที่เริ่มต้น
     const newDate = new Date(baseDate);
-    newDate.setDate(baseDate.getDate() + date - 1); // เพิ่มหรือลดวันตามรหัส
-    return newDate.toISOString().substring(0, 10); // แปลงเป็น '2023-01-01'
+    newDate.setDate(baseDate.getDate() + date - 2); // เพิ่มหรือลดวันตามรหัส
+    return newDate.toISOString(); // แปลงเป็น '2023-01-01'
+  }
+  const convertDateEnd = (end: any) => {
+    if (typeof end === 'number' && !isNaN(end)) {
+      return convertDate(end);
+    }
+    return null;
   }
 
   for (const key in eventsJson) {
     const item: any = eventsJson[key];
     if (item.event) {
+      // console.log(item.end)
       const event = {
+        start: convertDate(item.start),
+        end: convertDateEnd(item.end),
         title: item.event,
-        date: convertDate(item.date),
         detail: item.detail,
       };
+      // console.log(event)
+      if (event.end) {
+        const endDate = new Date(event.end);
+        endDate.setSeconds(endDate.getSeconds() + 1);
+        event.end = endDate.toISOString();
+      }
+
       events.push(event);
     }
   }
+
+  console.log(`events`, events)
 
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -181,29 +249,42 @@ const TestCalendar = () => {
   };
 
 
-  async function formatData(e: any) {
-    const year = e.getFullYear();
-    const month = String(e.getMonth() + 1).padStart(2, "0");
-    const day = String(e.getDate()).padStart(2, "0");
+  // async function formatData(e: any) {
+  //   const year = e.getFullYear();
+  //   const month = String(e.getMonth() + 1).padStart(2, "0");
+  //   const day = String(e.getDate()).padStart(2, "0");
 
-    const formattedDate = `${year}-${month}-${day}`;
+  //   const formattedDate = `${year}-${month}-${day}`;
+  //   try {
+  //     setFormatDate(formattedDate)
+  //     return formattedDate
+  //   } catch (err) {
+  //     console.log(`failed ${err}`)
+  //   }
+  // }
+
+  async function formatData(e: any) {
+    const formattedDate = e.toISOString();
     try {
       setFormatDate(formattedDate)
-      return formattedDate
+      return formattedDate;
     } catch (err) {
       console.log(`failed ${err}`)
     }
   }
 
-  const handleClickEvent = async (e: any) => {
+
+  const handleClickEvent = async (e: any, date: any) => {
     try {
-      const formattedDate = await formatData(e);
-      // console.log(formatDate);
+      console.log(e)
+      console.log(date)
+      const formattedDate = await formatData(date);
+      console.log("formatDate: ", formattedDate);
       // console.log("event: ", events);
       // const filterEvent: any = events.filter((item: any) => item.date === formattedDate);
-      const findEvent: any = events.find((item) => item.date === formattedDate);
+      const findEvent: any = events.find((item) => item.start === formattedDate && item.title === e);
 
-      // console.log(findEvent);
+      console.log(findEvent);
       setFindEvent(findEvent)
       setPopup(true)
 
@@ -221,6 +302,15 @@ const TestCalendar = () => {
   }, [])
 
 
+  // const eventss = [
+  //   {
+  //     title: 'ไปเที่ยวกันไหม',
+  //     start: '2023-11-01',
+  //     end: '2023-12-02',
+  //     detail: 'จะไปก็รีบไป'
+  //   }
+  // ];
+
   return (
     <>
       <Header />
@@ -228,7 +318,7 @@ const TestCalendar = () => {
         <div className="headBox" style={{ width: "100%", display: "flex", justifyContent: "center" }}>
           <div className="dv-headbox" style={{ width: "95%", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div className="">
-              <h1>TotalCalendar</h1>
+              <h1>Overview</h1>
               <div className="breadcrum-info">
                 <b>
                   <p onClick={handleClickHome} style={{ marginRight: "6px", cursor: "pointer" }}>Home</p>
@@ -237,15 +327,26 @@ const TestCalendar = () => {
               </div>
             </div>
             <div className="bt-activity" style={{ marginRight: "20px", }}>
+
               <div className='optionCalendar'>
                 <Option selectedOption={selectedOption} onOptionChange={handleOptionChange} />
+                {((role === "admin" && option === selectedOption) || role === "superadmin") && (
+                  <div className='export'>
+
+                    <label className="custom-file-export" onClick={handleExportFile}>
+                      <img src='../../public/xlsx-icon.svg' alt='xlsx' style={{ width: "18px", marginLeft: "15px" }} />
+                      <p style={{ width: "18px", marginLeft: "10px" }}>{'FormatData'}</p>
+                    </label>
+                  </div>
+                )}
               </div>
+
               {((role === "admin" && option === selectedOption) || role === "superadmin") && (
                 <div className='upload'>
                   <div className="uploadExcelFile">
-
                     <b><p className='bt-upload' onClick={handleUpload}>Upload Excel File</p></b>
                   </div>
+
                   <label className="custom-file-upload">
                     <input className="hidden-text" type="file" onChange={handleFileChange} />
                     <img src='../../public/xlsx-icon.svg' alt='xlsx' style={{ width: "18px", marginRight: "10px" }} />
@@ -253,6 +354,7 @@ const TestCalendar = () => {
                   </label>
                 </div>
               )}
+
             </div>
           </div>
         </div>
@@ -262,7 +364,7 @@ const TestCalendar = () => {
             plugins={[dayGridPlugin]}
             initialView="dayGridMonth"
             events={events}
-            eventClick={(info) => handleClickEvent(info.event.start)}
+            eventClick={(info) => handleClickEvent(info.event.title, info.event.start)}
           />
 
 
@@ -287,7 +389,7 @@ const TestCalendar = () => {
         </div>
       </div>
       {popup && (
-        <PopContantEvent title={findEvent.title} detail={findEvent.detail} date={findEvent.date} onClose={onClose} component="calendar" />
+        <PopContantEvent title={findEvent.title} detail={findEvent.detail} start={findEvent.start} end={findEvent.end} onClose={onClose} component="calendar" />
       )}
     </>
   );

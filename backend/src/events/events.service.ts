@@ -12,7 +12,8 @@ import { ObjectId } from 'mongodb';
 
 
 interface ExcelRow {
-    date: string;
+    start: string;
+    end: string;
     // startDate: string;
     // endDate: string;
     event: string;
@@ -47,6 +48,7 @@ export class EventsService {
     }
 
     async get(option) {
+        console.log(`setvice get option : ${option}`)
         const data = await this.eventsRepository.find({ where: { option: option } });
         const formattedDataPromises = data.map(async (file) => {
             const event = new Events();
@@ -63,7 +65,7 @@ export class EventsService {
             const worksheet = workbook.Sheets[workbook.SheetNames[0]];
             // console.log(worksheet)
 
-            const Edata: ExcelRow[] = xlsx.utils.sheet_to_json(worksheet);
+            const Edata: ExcelRow[] = xlsx.utils.sheet_to_json(worksheet, { range: 0 });
             // console.log(`Edata: ${Edata}`)
 
             const formattedData = await Promise.all(
@@ -72,7 +74,9 @@ export class EventsService {
                     // endDate: (await this.formatDateToYYYYMMDD((await this.serialNumberToDate(item.endDate)).toLocaleDateString())),
                     event: item.event,
                     detail: item.detail,
-                    date: item.date
+                    start: item.start,
+                    end: item.end,
+
                     // date: (await this.formatDateToYYYYMMDD((await this.serialNumberToDate(item.date)).toLocaleDateString())),     
                 })),
             );

@@ -27,7 +27,7 @@ const Activity = () => {
     const setCamp = useSetRecoilState(campsState)
     const setAnnouncement = useSetRecoilState(announcementsState)
     // const setDataEvent = useSetRecoilState(dataEventState)
-    const [selectedOption, setSelectedOption] = useState('วันหยุด');
+    const [selectedOption, setSelectedOption] = useState('มหาวิทยาลัยเทคโนโลยีสุรนารี');
 
     const [, setSearchText] = useState('');
     const login = UserService.isUserloggedIn()
@@ -39,6 +39,7 @@ const Activity = () => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [role, setRole] = useState<string | null>()
     const [detail, setDetail] = useState('')
+    const [pic, setPic] = useState('')
     const [title, setTitle] = useState('')
     const [id, setId] = useState('')
 
@@ -46,6 +47,9 @@ const Activity = () => {
     const [selectedDateEnd, setSelectedDateEnd] = useState<Date | null | any>(new Date());
     const [username, setUserName] = useState<string | null>()
     const [option, setOption] = useState<string | null>()
+
+
+
 
 
     // console.log(writingPost)
@@ -133,7 +137,8 @@ const Activity = () => {
                         userOwner: id,
                         startDate: selectedDateStart,
                         endDate: selectedDateEnd,
-                        option: selectedOption
+                        option: selectedOption,
+                        picture: images,
                     };
                     console.log(createActivityData)
                     await activityServices.createActivity(createActivityData, activeTab);
@@ -200,13 +205,34 @@ const Activity = () => {
             console.log(`Error fetching data: ${err}`)
         }
     }
+    const [images, setImage] = useState<any>([])
+    const [imageURLs, setImageURLs] = useState<any>([])
+
+    // const fetchImage = () => {
+    //     if (images.length < 1) return;
+    //     const newImageUrls: any = []
+    //     images.forEach(image => newImageUrls.push(URL.createObjectURL(image)))
+    //     setImageURLs(newImageUrls)
+    // }
+    // function onImageChange(e:any) {
+    //     setImageURLs([...e.target.files])
+    // }
+
     useEffect(() => {
         fetchActivity()
-        // getEventData()
+        // getEventData
         fetchUser()
+        // fetchImage()
     }, [])
 
-    // console.log(activeTab)
+
+    // const onPicChange = (acceptedFiles: any) => {
+    //     setUploadedImage(acceptedFiles[0]);
+    //     console.log(uploadedImage)
+    // };
+
+    // console.log('images: ',images)
+    // console.log('imageURLs: ',imageURLs)
     return (
         <>
             <Header />
@@ -230,7 +256,7 @@ const Activity = () => {
                                 <div style={{ marginRight: "20px" }}>
                                     <Option selectedOption={selectedOption} onOptionChange={handleOptionChange} />
                                 </div>
-                                {(login && selectedOption === option) && (
+                                {((login && selectedOption === option)|| role === 'superadmin') && (
                                     <button onClick={handleEditClick} className="bt-headPD">Create</button>
                                 )}
                             </div>
@@ -241,23 +267,39 @@ const Activity = () => {
 
                     <div className="headActivity">
 
+                        {selectedOption === 'มหาวิทยาลัยเทคโนโลยีสุรนารี' ? (
+                            <div className="nav-activity">
+                                <ul className="nav-card-profile">
+                                    <li className="nav-item">
+                                        <a className={`nav-link-activity ${activeTab === "announcement" ? "active" : ""}`}
+                                            onClick={() => handleTabClick("announcement")}>ประกาศเกี่ยวกับมหาลัย</a>
+                                    </li>
+                                    <li className="nav-item">
+                                        <a className={`nav-link-activity ${activeTab === "camp" ? "active" : ""}`}
+                                            onClick={() => handleTabClick("camp")}>ค่ายของมหาลัย</a>
+                                    </li>
+                                    <li className="nav-item">
+                                        <a className={`nav-link-activity ${activeTab === "activity" ? "active" : ""}`}
+                                            onClick={() => handleTabClick("activity")}>กิจกรรมภายในมหาลัย</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        ) : (
+                            <div className="nav-activity">
+                                <ul className="nav-card-profile">
+                                    <li className="nav-item">
+                                        <a className={`nav-link-activity ${activeTab === "announcement" ? "active" : ""}`}
+                                            onClick={() => handleTabClick("announcement")}>ประกาศของคณะ</a>
+                                    </li>
+                                    <li className="nav-item">
+                                        <a className={`nav-link-activity ${activeTab === "activity" ? "active" : ""}`}
+                                            onClick={() => handleTabClick("activity")}>กิจกรรมภายในคณะ</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        )}
 
-                        <div className="nav-activity">
-                            <ul className="nav-card-profile">
-                                <li className="nav-item">
-                                    <a className={`nav-link-activity ${activeTab === "announcement" ? "active" : ""}`}
-                                        onClick={() => handleTabClick("announcement")}>ประกาศเกี่ยวกับมหาลัย</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className={`nav-link-activity ${activeTab === "camp" ? "active" : ""}`}
-                                        onClick={() => handleTabClick("camp")}>ค่ายของมหาลัย</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className={`nav-link-activity ${activeTab === "activity" ? "active" : ""}`}
-                                        onClick={() => handleTabClick("activity")}>กิจกรรมภายในมหาลัย</a>
-                                </li>
-                            </ul>
-                        </div>
+
 
 
 
@@ -326,8 +368,10 @@ const Activity = () => {
                             <WritingPopup
                                 title={title}
                                 detail={detail}
+                                // imageURLs={imageURLs}
                                 selectedDateStart={selectedDateStart}
                                 selectedDateEnd={selectedDateEnd}
+                                // onImageChange={(e) => onImageChange(e.target.value)}
                                 onStartDate={(date) => setSelectedDateStart(date)}
                                 onEndDate={(date) => setSelectedDateEnd(date)}
                                 onTitleChange={(e) => setTitle(e.target.value)}

@@ -15,7 +15,7 @@ const Header = () => {
     // console.log("useremail:",email)
     const login = UserService.isUserloggedIn()
     // console.log(userEmails);
-    const [selectedOption, setSelectedOption] = useState('วันหยุด');
+    const [selectedOption, setSelectedOption] = useState('มหาวิทยาลัยเทคโนโลยีสุรนารี');
 
     // const [activeTab, setActiveTab] = useState("calendar");
     const location = useLocation();
@@ -182,7 +182,7 @@ const Header = () => {
                                     </div>
                                     <button className="dropdown-bt" onClick={() => handleButtonClick('/UserProfile')}>
                                         <img src="../../public/table-columns.svg" alt="logOut" style={{ width: "24px", marginRight: "10px" }} />
-                                        Dashoards</button>
+                                        Dashboards</button>
                                     <button className="dropdown-bt" onClick={logOut}>
                                         <img src="../../public/arrow-right-from-bracket.svg" alt="logOut" style={{ width: "24px", marginRight: "10px" }} />
                                         Log out</button>

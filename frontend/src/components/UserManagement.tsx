@@ -19,6 +19,8 @@ const UserManagement = () => {
     const [popup, setPopup] = useState<boolean>()
     const [title, setTitle] = useState<string>('')
     const [time, setTime] = useState()
+    const [tel, setTel] = useState<string>('')
+    const [email, setEmail] = useState<string>('')
     const [detail, setDetail] = useState<string>('')
     const login = UserService.isUserloggedIn()
     const navigate = useNavigate()
@@ -35,7 +37,7 @@ const UserManagement = () => {
     const [contactRequire, setContactRequire] = useState<any>([])
 
 
-    console.log("contactRequire: ", contactRequire)
+    // console.log("contactRequire: ", contactRequire)
     //user from data 
 
 
@@ -66,7 +68,7 @@ const UserManagement = () => {
     const currentItem = contactRequire.slice(indexOfFirstItem, indexOfLastItem)
     const totalPages = Math.ceil(contactRequire.length / itemsPerPage);
 
-    console.log("currentItem: ", currentItem)
+    // console.log("currentItem: ", currentItem)
     const pageNumbers = [];
     for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
@@ -114,19 +116,23 @@ const UserManagement = () => {
                     const username = userRequire?.data.username;
                     const role = userRequire?.data.role;
                     const status = userRequire?.data.status
+                    const tel = userRequire?.data.tel
+                    const email = userRequire?.data.email
 
                     const newItem = {
                         ...item,
                         username: username,
                         role: role,
                         status: status,
+                        tel: tel,
+                        email: email
                     }
                     // console.log("userRequire: ", userRequire)
                     // console.log("userRequire: ", userRequire)
                     return newItem
                 })
             )
-            console.log("usernameRequire : ", usernameRequire)
+            // console.log("usernameRequire : ", usernameRequire)
             setContactRequire(usernameRequire)
         }
     }
@@ -160,7 +166,7 @@ const UserManagement = () => {
     const handleApprove = async (id: any, require: any, status: any, roleUpdate: any) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            // text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -202,12 +208,15 @@ const UserManagement = () => {
     }
 
 
-    const handleShowDetailRequire = (detail: any, title: string, time: any) => {
-        console.log("detail :", detail)
+    const handleShowDetailRequire = (detail: any, title: string, time: any, email: any, tel: any) => {
+
+        // console.log("detail :", detail)
         setPopup(true)
         setTitle(title)
         setDetail(detail)
         setTime(time)
+        setEmail(email)
+        setTel(tel)
     }
 
     const handleDelete = async (userOwner: string) => {
@@ -226,7 +235,7 @@ const UserManagement = () => {
                     console.log(res)
                     Swal.fire(
                         'Deleted!',
-                        'Your file has been Delete.',
+                        'Deleted!',
                         'success'
                     )
                     fetchRequest()
@@ -289,7 +298,7 @@ const UserManagement = () => {
                                             <td>{item.role}</td>
                                             <td >
                                                 <b>
-                                                    <p onClick={() => handleShowDetailRequire(item.detail, item.require_role, item.time)} className={`th-requureRole ${item.status === "active" ? "active" : ""}`}>
+                                                    <p onClick={() => handleShowDetailRequire(item.detail, item.require_role, item.time, item.email, item.tel)} className={`th-requureRole ${item.status === "active" ? "active" : ""}`}>
                                                         {item.require_role}
                                                     </p>
                                                 </b>
@@ -356,7 +365,7 @@ const UserManagement = () => {
                 </div>
             </div >
             {popup && (
-                <PopContantEvent title={title} detail={detail} date={time} component="userManagement" onClose={onClose} />
+                <PopContantEvent title={title} detail={detail} start={time}  tel={tel} component="userManagement" onClose={onClose} />
             )}
         </>
     )

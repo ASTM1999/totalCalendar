@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ActivityService } from './activity.service';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { ParseObjectIdPipe } from 'src/common/pipes';
@@ -8,6 +8,7 @@ import { ObjectId } from 'mongodb';
 import { CreateCommentDto } from 'src/comment/dto/create-comment.dto';
 import { UpdateCommentDto } from 'src/comment/dto/update-comment.dto';
 import { CommentService } from 'src/comment/comment.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 
 
@@ -64,7 +65,7 @@ export class ActivityController {
 
     @Get()
     async getActivity(
-        @Query('option') option:string 
+        @Query('option') option: string
     ) {
         // console.log('hello')
         return this.activityService.findActivity(option)
@@ -76,4 +77,12 @@ export class ActivityController {
         return this.activityService.createActivity(createActivityDto);
     }
 }
+//     @Post()
+//     @UseInterceptors(FileInterceptor('picture'))
+//     async createActivity(@UploadedFile() picture, @Body() createActivityDto: CreateActivityDto) {
+//         createActivityDto.userOwner = new ObjectId(createActivityDto.userOwner)
+//         createActivityDto.picture = picture.filename;
+//         return this.activityService.createActivity(createActivityDto);
+//     }
+// }
 

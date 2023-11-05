@@ -15,7 +15,7 @@ const ContactAdmin = () => {
     const [recommend, setRecommend] = useState("");
     const [detail, setDetail] = useState("");
 
-    const [selectedOption, setSelectedOption] = useState('วันหยุด');
+    const [selectedOption, setSelectedOption] = useState('มหาวิทยาลัยเทคโนโลยีสุรนารี');
     const login = UserService.isUserloggedIn()
     const [id, setId] = useState('')
     const [activeTab, setActiveTab] = useState("recommend");
@@ -45,6 +45,7 @@ const ContactAdmin = () => {
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     try {
+                        console.log(selectedOption, detail)
                         if (selectedOption && detail) {
                             const createContract: Contract = {
                                 require_role: selectedOption,
@@ -58,7 +59,7 @@ const ContactAdmin = () => {
 
                                 Swal.fire(
                                     'Required!',
-                                    'Your file has been Required.',
+                                    'Changed.',
                                     'success'
                                 )
                             } else {
@@ -80,7 +81,7 @@ const ContactAdmin = () => {
                             await contactService.createContact(createContract)
                             Swal.fire(
                                 'Recommed!',
-                                'Your file has been Recommed.',
+                                'require has been Recommed.',
                                 'success'
                             )
 
@@ -323,7 +324,10 @@ const ContactAdmin = () => {
                                                 <th>NAME</th>
                                                 <th>EMAIL</th>
                                                 <th>ROLE</th>
+                                                <th>Option</th>
                                                 <th>TEL</th>
+                                                {/* <th></th> */}
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -332,6 +336,7 @@ const ContactAdmin = () => {
                                                     <td>{item.username}</td>
                                                     <td>{item.email}</td>
                                                     <td>{item.role}</td>
+                                                    <td>{item.option}</td>
                                                     <td>{item.tel}</td>
                                                 </tr>
                                             ))}

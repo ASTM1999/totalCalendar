@@ -28,5 +28,8 @@ export class Activity {
     @Column()
     option: string
 
+    // @Column()
+    // picture: string;
+
 }
 export default Activity;

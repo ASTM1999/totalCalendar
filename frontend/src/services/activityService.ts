@@ -13,6 +13,7 @@ async function getActivity(option:any) {
   }
 }
 async function createActivity(createActivityData: any, activityType: any) {
+  console.log(createActivityData)
   try {
     const response = await axios.post(`${API_BASE_URL}/${activityType}`, createActivityData)
     console.log(response.data)

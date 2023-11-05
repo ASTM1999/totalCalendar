@@ -57,7 +57,7 @@ const Comment = ({ postId, activityTab }: CommentProps) => {
     }
     const getComment = async () => {
         try {
-            console.log("getComment: ")
+            // console.log("getComment: ")
             const res = await commentService.getComment({ type: activityTab, activityId: postId });
             // res.map(async (item: CommentUI) => {
             //     const userComment = await UserService.getUserbyId(item.userId)

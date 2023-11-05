@@ -2,15 +2,19 @@
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import xmark from '../../public/xmark-solid.svg';
+import { useDropzone } from 'react-dropzone';
+import { useState } from 'react';
 
 interface WritingPopupProps {
     title: string;
     detail: string;
+    // imageURLs: any;
     selectedDateStart: Date | null;
     selectedDateEnd: Date | null;
     onTitleChange: (e: React.ChangeEvent<HTMLInputElement>, _id?: any) => void;
     onDetailChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 
+    // onImageChange: (e: any) => void;
     onStartDate: (e: any) => void;
     onEndDate: (e: any) => void;
     onConfirm: () => void;
@@ -25,9 +29,21 @@ const WritingPopup = ({ onConfirm, onCancel, title, detail, selectedDateStart, s
     // console.log(onDetailChange)
     // console.log(onStartDate)
     // console.log(onEndDate)
+
+
+
+
     const handleSaveClick = () => {
         onConfirm();
     };
+
+    const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+        onDrop: (acceptedFiles) => {
+            console.log(acceptedFiles);
+        },
+    });
+
+
     return (
 
 
@@ -64,7 +80,20 @@ const WritingPopup = ({ onConfirm, onCancel, title, detail, selectedDateStart, s
                         />
                     </div>
 
-
+                    {/* <div {...getRootProps({ className: 'dropzone' })}>
+                        <input {...getInputProps()} type='file' multiple accept='image/*' onChange={onImageChange} />
+                        <p>ลากและวางไฟล์รูปภาพที่นี่หรือคลิกเพื่อเลือก</p>
+                        {imageURLs.map((imageSrc) => (
+                            <img src={imageSrc}/>
+                        ))}
+                    </div> */}
+                    <ul>
+                        {acceptedFiles.map((file: any) => (
+                            <li key={file.path}>
+                                {file.path} - {file.size} bytes
+                            </li>
+                        ))}
+                    </ul>
 
                     <div className="sdate">
                         <label style={{ width: "253px" }}>Event Start Date</label>

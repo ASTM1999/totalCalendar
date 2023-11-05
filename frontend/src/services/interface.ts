@@ -55,5 +55,6 @@ export interface Activity {
     userOwner: string;
     option: string;
     role: string;
+    picture: string;
 }
 

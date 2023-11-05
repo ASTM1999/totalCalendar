@@ -46,12 +46,12 @@ const Register = () => {
 
     const handleSubmit = async () => {
 
-        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        const emailPattern = /^[bB0-9]+@[aAtTsSuUcC0-9.-]+\.[a-zA-Z]{2,4}$/;
         if (!emailPattern.test(email)) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Please Check format Email!',
+                text: 'Please Check format email of Univercity!',
             })
         }
         else if (password.length < 8) {

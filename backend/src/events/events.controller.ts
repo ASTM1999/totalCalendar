@@ -16,7 +16,7 @@ export class EventsController {
     async pullBuffer(
         @Query('option') option: string
     ) {
-        console.log(option)
+        // console.log(option)
         return this.eventsService.get(option)
     }
 

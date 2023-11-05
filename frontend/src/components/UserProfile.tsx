@@ -266,7 +266,7 @@ function UserProfile() {
                             </div>
                             {role === 'admin' && (
                                 <div className="lbox">
-                                    <label style={{ width: "350px" }}>Admin of</label>
+                                    <label style={{ width: "350px" }}>Admin</label>
                                     <p className="plabel">{option}</p>
 
                                 </div>

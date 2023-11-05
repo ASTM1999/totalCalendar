@@ -139,6 +139,7 @@ export class UsersService {
 
     async registerUser(createUserDto: CreateUserDto) {
         createUserDto.email = createUserDto.email.toLocaleLowerCase()
+        createUserDto.status = 'pending'
         return this.userRepository.save(createUserDto)
     }
 

@@ -44,6 +44,9 @@ export class ActivityService {
             if (updateActivityDto.detail) {
                 res.detail = updateActivityDto.detail
             }
+            // if (updateActivityDto.picture) {
+            //     res.picture = updateActivityDto.picture
+            // }
             if (res) {
                 res.userOwner = new ObjectId(updateActivityDto.userOwner)
             }

@@ -35,7 +35,7 @@ const Recommend = () => {
     const [contactRequire, setContactRequire] = useState<any>([])
 
 
-    console.log("contactRequire: ", contactRequire)
+    // console.log("contactRequire: ", contactRequire)
     //user from data 
 
 
@@ -66,7 +66,7 @@ const Recommend = () => {
     const currentItem = contactRequire.slice(indexOfFirstItem, indexOfLastItem)
     const totalPages = Math.ceil(contactRequire.length / itemsPerPage);
 
-    console.log("currentItem: ", currentItem)
+    // console.log("currentItem: ", currentItem)
     const pageNumbers = [];
     for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
@@ -90,7 +90,8 @@ const Recommend = () => {
         const date = new Date(dateTime);
         const formattedDate = date.toLocaleDateString('en-US', options);
         const suffix = (date.getHours() >= 12) ? 'pm' : 'am';
-        return `${formattedDate} - ${date.getHours() % 12}:${date.getMinutes()} ${suffix}`;
+        return `${formattedDate}`;
+        // return `${formattedDate} - ${date.getHours() % 12}:${date.getMinutes()} ${suffix}`;
     }
 
     async function fetchUser() {
@@ -126,7 +127,7 @@ const Recommend = () => {
                     return newItem
                 })
             )
-            // console.log("usernameRequire : ", usernameRequire)
+            console.log("usernameRequire : ", usernameRequire)
             setContactRequire(usernameRequire)
         }
     }
@@ -237,8 +238,8 @@ const Recommend = () => {
                                             <td>{item.role}</td>
                                             <td >
                                                 <b>
-                                                    <p>
-                                                        {item.recommend}
+                                                    <p onClick={() => handleShowDetailRequire(item.recommend, item.title, item.time)} className={`th-requureRole ${item.status === "active" ? "active" : ""}`}>
+                                                        {item.title}
                                                     </p>
                                                 </b>
                                             </td>
@@ -297,7 +298,7 @@ const Recommend = () => {
                 </div>
             </div >
             {popup && (
-                <PopContantEvent title={title} detail={detail} date={time} component="userManagement" onClose={onClose} />
+                <PopContantEvent title={title} detail={detail} start={time} component="userManagement" onClose={onClose} />
             )}
         </>
     )
